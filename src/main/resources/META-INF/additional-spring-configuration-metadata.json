@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "spring.construction.url",
+      "type": "java.lang.String",
+      "description": "Description for spring.construction.url."
+  }
+] }

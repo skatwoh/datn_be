@@ -1,0 +1,68 @@
+image: docker:19.03
+
+variables:
+  DOCKER_DRIVER: overlay2
+  KUBECONFIG: /etc/deploy/config
+  
+  # mt dev tren server FIS IT
+  K8S_CLUSTER_FIS_DEV: microk8s-cluster
+  K8S_USER_FIS_DEV: admin
+  K8S_NAMESPACE_FIS_DEV: bds-dev
+
+services:
+  - name: docker:19.03-dind
+    command: ["–-privileged=true"]
+
+stages:
+  - containerize-dev
+  - deploy-dev
+  - cleanup-dev
+
+# Beggin::Dev
+docker-build-dev:
+  stage: containerize-dev
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $CI_REGISTRY/$CI_REGISTRY_ID/cons/tools-backend-dev:$CI_COMMIT_SHA -f Dockerfile .
+    - docker push $CI_REGISTRY/$CI_REGISTRY_ID/cons/tools-backend-dev:$CI_COMMIT_SHA
+  only:
+    - dev
+  when: manual
+#  tags:
+#    - k8s
+  allow_failure: false
+
+
+k8s-deploy-dev:
+  needs: ["docker-build-dev"]
+  stage: deploy-dev
+  image:
+    name: cylab/kubectl
+    entrypoint: [""]
+  before_script:
+    - export IMAGE_TAG=$CI_COMMIT_SHA
+    - alias kubectl="microk8s kubectl"
+    - kubectl config set-cluster $K8S_CLUSTER_FIS_DEV --server="$K8S_SERVER_FIS_DEV" --insecure-skip-tls-verify
+    - kubectl config set-credentials $K8S_USER_FIS_DEV --token=$(echo $K8S_TOKEN_FIS_DEV | base64 -d)
+    - kubectl config set-context $K8S_CLUSTER_FIS_DEV --cluster=$K8S_CLUSTER_FIS_DEV --namespace=$K8S_NAMESPACE_FIS_DEV --user=$K8S_USER_FIS_DEV
+    - kubectl config use-context $K8S_CLUSTER_FIS_DEV
+  script:
+    - awk '{gsub(/\$IMAGE_TAG/, ENVIRON["IMAGE_TAG"]); print}' deployments/deployment-dev.yaml | kubectl apply -f -
+  only:
+    - dev
+#  tags:
+#    - k8s
+
+cleanup-job-dev:
+  needs: ["docker-build-dev", "k8s-deploy-dev"]
+  stage: cleanup-dev
+  script:
+    - echo "Cleaning up"
+    - rm -rf "%CACHE_PATH%/%CI_PIPELINE_ID%"
+    - docker image rm $CI_REGISTRY/$CI_REGISTRY_ID/cons/tools-backend-dev:$CI_COMMIT_SHA
+  only:
+    - dev
+#  tags:
+#    - k8s
+
+# End::Dev   

@@ -1,0 +1,7 @@
+spring:
+  profiles:
+    active: @activatedProperties@
+    test: a
+  web:
+    resources:
+      add-mappings: true
