@@ -2,10 +2,7 @@ package be.bds.bdsbes.domain;
 
 import be.bds.bdsbes.utils.ValidationErrorUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.Hibernate;
 import be.bds.bdsbes.domain.audit.DateAudit;
 
