@@ -5,3 +5,6 @@ spring:
   web:
     resources:
       add-mappings: true
+
+jwt:
+  header: Authorization
