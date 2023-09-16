@@ -5,3 +5,4 @@ spring:
   web:
     resources:
       add-mappings: true
+
