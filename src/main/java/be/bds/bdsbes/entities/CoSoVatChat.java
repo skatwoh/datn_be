@@ -11,6 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Entity
 public class CoSoVatChat {
     @Id
@@ -18,8 +19,8 @@ public class CoSoVatChat {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Id_TaiSan")
-    private TaiSan idTaisan;
+    @JoinColumn(name = "IdTaiSan")
+    private TaiSan idTaiSan;
 
     @Column(name = "SoLuong")
     private Integer soLuong;
@@ -30,8 +31,8 @@ public class CoSoVatChat {
     private String ghiChu;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Id_ChiTietPhong")
-    private ChiTietPhong idChitietphong;
+    @JoinColumn(name = "IdChiTietPhong")
+    private ChiTietPhong idChiTietPhong;
 
     @Column(name = "TrangThai")
     private Integer trangThai;

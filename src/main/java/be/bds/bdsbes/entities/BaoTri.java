@@ -13,6 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Entity
 public class BaoTri {
     @Id
@@ -20,8 +21,8 @@ public class BaoTri {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Id_ChiTietPhong")
-    private ChiTietPhong idChitietphong;
+    @JoinColumn(name = "IdChiTietPhong")
+    private ChiTietPhong idChiTietPhong;
 
     @Column(name = "NgayBatDau")
     private LocalDate ngayBatDau;

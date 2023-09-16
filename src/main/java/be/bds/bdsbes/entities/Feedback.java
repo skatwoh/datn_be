@@ -11,6 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Entity
 public class Feedback {
     @Id
@@ -18,12 +19,12 @@ public class Feedback {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Id_ChiTietPhong")
-    private ChiTietPhong idChitietphong;
+    @JoinColumn(name = "IdChiTietPhong")
+    private ChiTietPhong idChiTietPhong;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Id_KhachHang")
-    private KhachHang idKhachhang;
+    @JoinColumn(name = "IdKhachHang")
+    private KhachHang idKhachHang;
 
     @Nationalized
     @Lob
