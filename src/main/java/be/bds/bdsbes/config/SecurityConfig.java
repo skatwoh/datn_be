@@ -113,6 +113,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/rpc/bds/auth/**", "/rpc/bds/oauth2/**")
                 .permitAll()
+                .antMatchers("/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**")
+                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

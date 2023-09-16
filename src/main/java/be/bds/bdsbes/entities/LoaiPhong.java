@@ -14,6 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Entity
 public class LoaiPhong {
     @Id
@@ -34,10 +35,10 @@ public class LoaiPhong {
     @Column(name = "GhiChu")
     private String ghiChu;
 
-    @OneToMany(mappedBy = "idLoaiphong")
+    @OneToMany(mappedBy = "idLoaiPhong")
     private Set<ChiTietPhong> chiTietPhongs = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "idLoaiphong")
+    @OneToMany(mappedBy = "idLoaiPhong")
     private Set<Phong> phongs = new LinkedHashSet<>();
 
 }

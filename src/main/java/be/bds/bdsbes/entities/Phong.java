@@ -12,6 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Entity
 public class Phong {
     @Id
@@ -23,8 +24,8 @@ public class Phong {
     private String ma;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Id_LoaiPhong")
-    private LoaiPhong idLoaiphong;
+    @JoinColumn(name = "IdLoaiPhong")
+    private LoaiPhong idLoaiPhong;
 
     @Column(name = "GiaPhong", precision = 18)
     private BigDecimal giaPhong;

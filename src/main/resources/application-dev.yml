@@ -7,7 +7,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:sqlserver://MSI\\SQLEXPRESS:1433;databaseName=Login;encrypt=true;trustServerCertificate=true
+    url: jdbc:sqlserver://MSI\\SQLEXPRESS:1433;databaseName=Hotel_Manager;encrypt=true;trustServerCertificate=true
     username: sa
     password: 123456
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
@@ -15,7 +15,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
       naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
     properties:
       hibernate:

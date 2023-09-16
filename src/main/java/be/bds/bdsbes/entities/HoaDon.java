@@ -15,6 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Entity
 public class HoaDon {
     @Id
@@ -39,14 +40,14 @@ public class HoaDon {
     private String ghiChu;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Id_KhachHang")
-    private KhachHang idKhachhang;
+    @JoinColumn(name = "IdKhachHang")
+    private KhachHang idKhachHang;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Id_DatPhong")
-    private DatPhong idDatphong;
+    @JoinColumn(name = "IdDatPhong")
+    private DatPhong idDatPhong;
 
-    @OneToMany(mappedBy = "idHoadon")
+    @OneToMany(mappedBy = "idHoaDon")
     private Set<HoaDonChiTiet> hoaDonChiTiets = new LinkedHashSet<>();
 
 }

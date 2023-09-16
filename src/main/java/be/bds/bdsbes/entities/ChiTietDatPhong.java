@@ -12,6 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Entity
 public class ChiTietDatPhong {
     @Id
@@ -19,12 +20,12 @@ public class ChiTietDatPhong {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Id_DatPhong")
-    private DatPhong idDatphong;
+    @JoinColumn(name = "IdDatPhong")
+    private DatPhong idDatPhong;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Id_ChiTietPhong")
-    private ChiTietPhong idChitietphong;
+    @JoinColumn(name = "IdChiTietPhong")
+    private ChiTietPhong idChiTietPhong;
 
     @Size(max = 100)
     @Nationalized

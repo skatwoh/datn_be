@@ -16,6 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Entity
 public class TheThanhVien {
     @Id
@@ -28,8 +29,8 @@ public class TheThanhVien {
 
     @Size(max = 50)
     @Nationalized
-    @Column(name = "CAPBAC", length = 50)
-    private String capbac;
+    @Column(name = "CapBac", length = 50)
+    private String capBac;
 
     @Column(name = "NgayHetHan")
     private LocalDate ngayHetHan;
@@ -42,7 +43,7 @@ public class TheThanhVien {
     @Column(name = "GhiChu")
     private String ghiChu;
 
-    @OneToMany(mappedBy = "idThethanhvien")
+    @OneToMany(mappedBy = "idTheThanhVien")
     private Set<KhachHang> khachHangs = new LinkedHashSet<>();
 
 }

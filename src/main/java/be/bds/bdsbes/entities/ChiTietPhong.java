@@ -14,6 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Entity
 public class ChiTietPhong {
     @Id
@@ -21,8 +22,8 @@ public class ChiTietPhong {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Id_LoaiPhong")
-    private LoaiPhong idLoaiphong;
+    @JoinColumn(name = "IdLoaiPhong")
+    private LoaiPhong idLoaiPhong;
 
     @Size(max = 20)
     @Column(name = "Tang", length = 20)
@@ -47,19 +48,19 @@ public class ChiTietPhong {
     @Column(name = "TrangThai")
     private Integer trangThai;
 
-    @OneToMany(mappedBy = "idChitietphong")
+    @OneToMany(mappedBy = "idChiTietPhong")
     private Set<BaoTri> baoTris = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "idChitietphong")
+    @OneToMany(mappedBy = "idChiTietPhong")
     private Set<ChiTietDatPhong> chiTietDatPhongs = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "idChitietphong")
+    @OneToMany(mappedBy = "idChiTietPhong")
     private Set<CoSoVatChat> coSoVatChats = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "idChitietphong")
+    @OneToMany(mappedBy = "idChiTietPhong")
     private Set<Feedback> feedbacks = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "idChitietphong")
+    @OneToMany(mappedBy = "idChiTietPhong")
     private Set<HoaDonChiTiet> hoaDonChiTiets = new LinkedHashSet<>();
 
 }
