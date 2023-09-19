@@ -13,25 +13,26 @@ import java.util.UUID;
 @Setter
 @ToString
 @Entity
+@Table(name = "feedback")
 public class Feedback {
     @Id
-    @Column(name = "Id", nullable = false)
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IdChiTietPhong")
+    @JoinColumn(name = "id_chi_tiet_phong")
     private ChiTietPhong idChiTietPhong;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IdKhachHang")
+    @JoinColumn(name = "id_khach_hang")
     private KhachHang idKhachHang;
 
     @Nationalized
     @Lob
-    @Column(name = "MoTa")
+    @Column(name = "mo_ta")
     private String moTa;
 
-    @Column(name = "TrangThai")
+    @Column(name = "trang_thai")
     private Integer trangThai;
 
 }

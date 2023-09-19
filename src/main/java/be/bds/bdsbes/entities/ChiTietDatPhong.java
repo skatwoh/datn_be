@@ -14,22 +14,23 @@ import java.util.UUID;
 @Setter
 @ToString
 @Entity
+@Table(name = "chi_tiet_dat_phong")
 public class ChiTietDatPhong {
     @Id
-    @Column(name = "Id", nullable = false)
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IdDatPhong")
+    @JoinColumn(name = "id_dat_phong")
     private DatPhong idDatPhong;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IdChiTietPhong")
+    @JoinColumn(name = "id_chi_tiet_phong")
     private ChiTietPhong idChiTietPhong;
 
     @Size(max = 100)
     @Nationalized
-    @Column(name = "GhiChu", length = 100)
+    @Column(name = "ghi_chu", length = 100)
     private String ghiChu;
 
 }

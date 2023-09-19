@@ -2,10 +2,12 @@ package be.bds.bdsbes.entities;
 
 import lombok.*;
 import org.hibernate.annotations.Nationalized;
+import org.hibernate.proxy.HibernateProxy;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -16,37 +18,49 @@ import java.util.UUID;
 @Setter
 @ToString
 @Entity
+@Table(name = DatPhong.TABLE_NAME)
 public class DatPhong {
+    public static final String TABLE_NAME = "dat_phong";
+    public static final String COLUMN_ID_NAME = "id";
+    public static final String COLUMN_NGAYDAT_NAME = "ngay_dat";
+    public static final String COLUMN_CHECKIN_NAME = "check_in";
+    public static final String COLUMN_CHECKOUT_NAME = "check_out";
+    public static final String COLUMN_SONGUOI_NAME = "so_nguoi";
+    public static final String COLUMN_GHICHU_NAME = "ghi_chu";
+    public static final String COLUMN_TRANGTHAI_NAME = "trang_thai";
+
+
     @Id
-    @Column(name = "Id", nullable = false)
+    @Column(name = COLUMN_ID_NAME, nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IdKhachHang")
+    @JoinColumn(name = "id_khach_hang")
     private KhachHang idKhachHang;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IdVoucher")
+    @JoinColumn(name = "id_voucher")
     private Voucher idVoucher;
 
-    @Column(name = "NgayDat")
+    @Column(name = COLUMN_NGAYDAT_NAME)
     private LocalDate ngayDat;
 
-    @Column(name = "CheckIn")
+    @Column(name = COLUMN_CHECKIN_NAME)
     private LocalDate checkIn;
 
-    @Column(name = "CheckOut")
+    @Column(name = COLUMN_CHECKOUT_NAME)
     private LocalDate checkOut;
 
-    @Column(name = "SoNguoi")
+    @Column(name = COLUMN_SONGUOI_NAME)
     private Integer soNguoi;
 
     @Nationalized
     @Lob
-    @Column(name = "GhiChu")
+    @Column(name = COLUMN_GHICHU_NAME)
     private String ghiChu;
 
-    @Column(name = "TrangThai")
+    @Column(name = COLUMN_TRANGTHAI_NAME)
     private Integer trangThai;
 
     @OneToMany(mappedBy = "idDatPhong")
@@ -61,4 +75,19 @@ public class DatPhong {
     @OneToMany(mappedBy = "idDatPhong")
     private Set<LichSuDatPhong> lichSuDatPhongs = new LinkedHashSet<>();
 
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        DatPhong datPhong = (DatPhong) o;
+        return getId() != null && Objects.equals(getId(), datPhong.getId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
 }

@@ -17,29 +17,30 @@ import java.util.UUID;
 @Setter
 @ToString
 @Entity
+@Table(name = "dich_vu")
 public class DichVu {
     @Id
-    @Column(name = "Id", nullable = false)
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     @Size(max = 20)
-    @Column(name = "Ma", length = 20)
+    @Column(name = "ma", length = 20)
     private String ma;
 
     @Size(max = 50)
     @Nationalized
-    @Column(name = "TenDichVu", length = 50)
+    @Column(name = "ten_dich_vu", length = 50)
     private String tenDichVu;
 
     @Nationalized
     @Lob
-    @Column(name = "GhiChu")
+    @Column(name = "ghi_chu")
     private String ghiChu;
 
-    @Column(name = "GiaDichVu", precision = 18)
+    @Column(name = "gia_dich_vu", precision = 18)
     private BigDecimal giaDichVu;
 
-    @Column(name = "TrangThai")
+    @Column(name = "trang_thai")
     private Integer trangThai;
 
     @OneToMany(mappedBy = "idDichVu")

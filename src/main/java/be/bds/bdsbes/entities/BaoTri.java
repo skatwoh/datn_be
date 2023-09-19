@@ -15,30 +15,31 @@ import java.util.UUID;
 @Setter
 @ToString
 @Entity
+@Table(name = "bao_tri")
 public class BaoTri {
     @Id
-    @Column(name = "Id", nullable = false)
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IdChiTietPhong")
+    @JoinColumn(name = "id_chi_tiet_phong")
     private ChiTietPhong idChiTietPhong;
 
-    @Column(name = "NgayBatDau")
+    @Column(name = "ngay_bat_dau")
     private LocalDate ngayBatDau;
 
-    @Column(name = "NgayKetThuc")
+    @Column(name = "ngay_ket_thuc")
     private LocalDate ngayKetThuc;
 
-    @Column(name = "ChiPhiBaoTri", precision = 18)
+    @Column(name = "chi_phi_bao_tri", precision = 18)
     private BigDecimal chiPhiBaoTri;
 
     @Nationalized
     @Lob
-    @Column(name = "GhiChu")
+    @Column(name = "ghi_chu")
     private String ghiChu;
 
-    @Column(name = "TrangThai")
+    @Column(name = "trang_thai")
     private Integer trangThai;
 
 }

@@ -14,28 +14,29 @@ import java.util.UUID;
 @Setter
 @ToString
 @Entity
+@Table(name = "chi_tiet_dich_vu")
 public class ChiTietDichVu {
     @Id
-    @Column(name = "Id", nullable = false)
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IdDichVu")
+    @JoinColumn(name = "id_dich_Vu")
     private DichVu idDichVu;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IdDatPhong")
+    @JoinColumn(name = "id_dat_phong")
     private DatPhong idDatPhong;
 
     @Nationalized
     @Lob
-    @Column(name = "GhiChu")
+    @Column(name = "ghi_chu")
     private String ghiChu;
 
-    @Column(name = "GiaDichVu", precision = 18)
+    @Column(name = "gia_dich_vu", precision = 18)
     private BigDecimal giaDichVu;
 
-    @Column(name = "TrangThai")
+    @Column(name = "trang_thai")
     private Integer trangThai;
 
 }

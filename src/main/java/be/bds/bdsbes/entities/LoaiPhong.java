@@ -16,23 +16,24 @@ import java.util.UUID;
 @Setter
 @ToString
 @Entity
+@Table(name = "loai_phong")
 public class LoaiPhong {
     @Id
-    @Column(name = "Id", nullable = false)
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     @Size(max = 20)
-    @Column(name = "MaLoaiPhong", length = 20)
+    @Column(name = "ma_loai_phong", length = 20)
     private String maLoaiPhong;
 
     @Size(max = 50)
     @Nationalized
-    @Column(name = "TenLoaiPhong", length = 50)
+    @Column(name = "ten_loai_phong", length = 50)
     private String tenLoaiPhong;
 
     @Nationalized
     @Lob
-    @Column(name = "GhiChu")
+    @Column(name = "ghi_chu")
     private String ghiChu;
 
     @OneToMany(mappedBy = "idLoaiPhong")
