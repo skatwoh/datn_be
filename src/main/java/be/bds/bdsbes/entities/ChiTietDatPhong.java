@@ -32,4 +32,8 @@ public class ChiTietDatPhong {
     @Column(name = "GhiChu", length = 100)
     private String ghiChu;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_dat_phong")
+    private DatPhong idDatPhong1;
+
 }

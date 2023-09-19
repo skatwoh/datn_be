@@ -50,4 +50,8 @@ public class HoaDon {
     @OneToMany(mappedBy = "idHoaDon")
     private Set<HoaDonChiTiet> hoaDonChiTiets = new LinkedHashSet<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_dat_phong")
+    private DatPhong idDatPhong1;
+
 }

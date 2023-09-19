@@ -38,4 +38,8 @@ public class ChiTietDichVu {
     @Column(name = "TrangThai")
     private Integer trangThai;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_dat_phong")
+    private DatPhong idDatPhong1;
+
 }
