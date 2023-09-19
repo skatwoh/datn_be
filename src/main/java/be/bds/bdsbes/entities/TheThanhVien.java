@@ -18,29 +18,30 @@ import java.util.UUID;
 @Setter
 @ToString
 @Entity
+@Table(name = "the_thanh_vien")
 public class TheThanhVien {
     @Id
-    @Column(name = "Id", nullable = false)
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     @Size(max = 20)
-    @Column(name = "Ma", length = 20)
+    @Column(name = "ma", length = 20)
     private String ma;
 
     @Size(max = 50)
     @Nationalized
-    @Column(name = "CapBac", length = 50)
+    @Column(name = "cap_bac", length = 50)
     private String capBac;
 
-    @Column(name = "NgayHetHan")
+    @Column(name = "ngay_het_han")
     private LocalDate ngayHetHan;
 
-    @Column(name = "GiamGia", precision = 18)
+    @Column(name = "giam_gia", precision = 18)
     private BigDecimal giamGia;
 
     @Nationalized
     @Lob
-    @Column(name = "GhiChu")
+    @Column(name = "ghi_chu")
     private String ghiChu;
 
     @OneToMany(mappedBy = "idTheThanhVien")

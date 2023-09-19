@@ -13,28 +13,29 @@ import java.util.UUID;
 @Setter
 @ToString
 @Entity
+@Table(name = "co_so_vat_chat")
 public class CoSoVatChat {
     @Id
-    @Column(name = "Id", nullable = false)
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IdTaiSan")
+    @JoinColumn(name = "id_tai_san")
     private TaiSan idTaiSan;
 
-    @Column(name = "SoLuong")
+    @Column(name = "so_luong")
     private Integer soLuong;
 
     @Nationalized
     @Lob
-    @Column(name = "GhiChu")
+    @Column(name = "ghi_chu")
     private String ghiChu;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IdChiTietPhong")
+    @JoinColumn(name = "id_chi_tiet_phong")
     private ChiTietPhong idChiTietPhong;
 
-    @Column(name = "TrangThai")
+    @Column(name = "trang_thai")
     private Integer trangThai;
 
 }

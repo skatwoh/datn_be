@@ -17,41 +17,38 @@ import java.util.UUID;
 @Setter
 @ToString
 @Entity
+@Table(name = "hoa_don")
 public class HoaDon {
     @Id
-    @Column(name = "Id", nullable = false)
+    @Column(name = "id", nullable = false)
     private UUID id;
 
-    @Column(name = "NgayTao")
+    @Column(name = "ngay_tao")
     private LocalDate ngayTao;
 
-    @Column(name = "NgayThanhToan")
+    @Column(name = "ngay_thanh_toan")
     private LocalDate ngayThanhToan;
 
-    @Column(name = "TongTien", precision = 18)
+    @Column(name = "tong_tien", precision = 18)
     private BigDecimal tongTien;
 
-    @Column(name = "TrangThai")
+    @Column(name = "trang_thai")
     private Integer trangThai;
 
     @Nationalized
     @Lob
-    @Column(name = "GhiChu")
+    @Column(name = "ghi_chu")
     private String ghiChu;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IdKhachHang")
+    @JoinColumn(name = "id_khach_hang")
     private KhachHang idKhachHang;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IdDatPhong")
+    @JoinColumn(name = "id_dat_phong")
     private DatPhong idDatPhong;
 
     @OneToMany(mappedBy = "idHoaDon")
     private Set<HoaDonChiTiet> hoaDonChiTiets = new LinkedHashSet<>();
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_dat_phong")
-    private DatPhong idDatPhong1;
 
 }

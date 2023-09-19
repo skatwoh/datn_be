@@ -6,8 +6,6 @@ import org.hibernate.annotations.Nationalized;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Builder
@@ -17,58 +15,47 @@ import java.util.UUID;
 @Setter
 @ToString
 @Entity
+@Table(name = "khach_hang")
 public class KhachHang {
     @Id
-    @Column(name = "Id", nullable = false)
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     @Size(max = 20)
-    @Column(name = "Ma", length = 20)
+    @Column(name = "ma", length = 20)
     private String ma;
 
     @Size(max = 50)
     @Nationalized
-    @Column(name = "HoTen", length = 50)
+    @Column(name = "ho_ten", length = 50)
     private String hoTen;
 
-    @Column(name = "NgaySinh")
+    @Column(name = "ngay_sinh")
     private LocalDate ngaySinh;
 
-    @Column(name = "GioiTinh")
+    @Column(name = "gioi_tinh")
     private Boolean gioiTinh;
 
     @Size(max = 100)
     @Nationalized
-    @Column(name = "DiaChi", length = 100)
+    @Column(name = "dia_chi", length = 100)
     private String diaChi;
 
     @Size(max = 11)
-    @Column(name = "SDT", length = 11)
+    @Column(name = "sdt", length = 11)
     private String sdt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IdTaiKhoan")
+    @JoinColumn(name = "id_tai_khoan")
     private TaiKhoan idTaiKhoan;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IdTheThanhVien")
+    @JoinColumn(name = "id_the_thanh_vien")
     private TheThanhVien idTheThanhVien;
 
     @Nationalized
     @Lob
-    @Column(name = "GhiChu")
+    @Column(name = "ghi_chu")
     private String ghiChu;
-
-    @OneToMany(mappedBy = "idKhachHang")
-    private Set<DatPhong> datPhongs = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "idKhachHang")
-    private Set<Feedback> feedbacks = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "idKhachHang")
-    private Set<HoaDon> hoaDons = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "idKhachHang")
-    private Set<LichSuDatPhong> lichSuDatPhongs = new LinkedHashSet<>();
 
 }

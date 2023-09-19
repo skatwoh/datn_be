@@ -12,7 +12,6 @@ import java.util.UUID;
  */
 @Value
 public class DatPhongDTO implements Serializable {
-    UUID id;
     @NotNull
     LocalDate ngayDat;
     @NotNull

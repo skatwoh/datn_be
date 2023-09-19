@@ -4,9 +4,11 @@ import be.bds.bdsbes.entities.DatPhong;
 import be.bds.bdsbes.repository.DatPhongRepository;
 import be.bds.bdsbes.service.IDatPhongService;
 import be.bds.bdsbes.service.dto.DatPhongDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class DatPhongServiceImpl implements IDatPhongService {
 

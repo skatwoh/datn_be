@@ -5,8 +5,6 @@ import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.LinkedHashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Builder
@@ -16,29 +14,27 @@ import java.util.UUID;
 @Setter
 @ToString
 @Entity
+@Table(name = "tai_san")
 public class TaiSan {
     @Id
-    @Column(name = "Id", nullable = false)
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     @Size(max = 20)
-    @Column(name = "Ma", length = 20)
+    @Column(name = "ma", length = 20)
     private String ma;
 
     @Size(max = 50)
     @Nationalized
-    @Column(name = "Ten", length = 50)
+    @Column(name = "ten", length = 50)
     private String ten;
 
     @Nationalized
     @Lob
-    @Column(name = "GhiChu")
+    @Column(name = "ghi_chu")
     private String ghiChu;
 
-    @Column(name = "TrangThai")
+    @Column(name = "trang_thai")
     private Integer trangThai;
-
-    @OneToMany(mappedBy = "idTaiSan")
-    private Set<CoSoVatChat> coSoVatChats = new LinkedHashSet<>();
 
 }

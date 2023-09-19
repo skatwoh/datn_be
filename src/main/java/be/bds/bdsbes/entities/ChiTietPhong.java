@@ -5,8 +5,6 @@ import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.LinkedHashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Builder
@@ -16,51 +14,37 @@ import java.util.UUID;
 @Setter
 @ToString
 @Entity
+@Table(name = "chi_tiet_phong")
 public class ChiTietPhong {
     @Id
-    @Column(name = "Id", nullable = false)
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IdLoaiPhong")
+    @JoinColumn(name = "id_loai_phong")
     private LoaiPhong idLoaiPhong;
 
     @Size(max = 20)
-    @Column(name = "Tang", length = 20)
+    @Column(name = "tang", length = 20)
     private String tang;
 
     @Size(max = 100)
     @Nationalized
-    @Column(name = "TienIch", length = 100)
+    @Column(name = "tien_ich", length = 100)
     private String tienIch;
 
     @Size(max = 100)
     @Nationalized
-    @Column(name = "DichVu", length = 100)
+    @Column(name = "dich_vu", length = 100)
     private String dichVu;
 
-    @Column(name = "SoLuongNguoi")
+    @Column(name = "so_luong_nguoi")
     private Integer soLuongNguoi;
 
-    @Column(name = "DienTich")
+    @Column(name = "dien_tich")
     private Double dienTich;
 
-    @Column(name = "TrangThai")
+    @Column(name = "trang_thai")
     private Integer trangThai;
-
-    @OneToMany(mappedBy = "idChiTietPhong")
-    private Set<BaoTri> baoTris = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "idChiTietPhong")
-    private Set<ChiTietDatPhong> chiTietDatPhongs = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "idChiTietPhong")
-    private Set<CoSoVatChat> coSoVatChats = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "idChiTietPhong")
-    private Set<Feedback> feedbacks = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "idChiTietPhong")
-    private Set<HoaDonChiTiet> hoaDonChiTiets = new LinkedHashSet<>();
 
 }

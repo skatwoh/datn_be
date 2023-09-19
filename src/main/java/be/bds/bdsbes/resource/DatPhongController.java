@@ -2,6 +2,7 @@ package be.bds.bdsbes.resource;
 
 import be.bds.bdsbes.service.IDatPhongService;
 import be.bds.bdsbes.service.dto.DatPhongDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -14,8 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 
+@Slf4j
 @RestController
-@RequestMapping("/rpc/dat-phong")
+@RequestMapping("/api/dat-phong")
 public class DatPhongController {
 
     @Autowired

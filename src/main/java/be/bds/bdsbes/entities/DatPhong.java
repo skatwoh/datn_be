@@ -32,6 +32,7 @@ public class DatPhong {
 
     @Id
     @Column(name = COLUMN_ID_NAME, nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
