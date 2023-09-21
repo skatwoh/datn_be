@@ -5,7 +5,6 @@ import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.UUID;
 
 @Builder
 @AllArgsConstructor
@@ -14,11 +13,19 @@ import java.util.UUID;
 @Setter
 @ToString
 @Entity
-@Table(name = "chi_tiet_dich_vu")
+@Table(name = ChiTietDichVu.TABLE_NAME)
 public class ChiTietDichVu {
+    public static final String TABLE_NAME = "chi_tiet_dich_vu";
+    public static final String COLUMN_ID_NAME = "id";
+    public static final String COLUMN_GHICHU_NAME = "ghi_chu";
+    public static final String COLUMN_GIADICHVU_NAME = "gia_dich_vu";
+    public static final String COLUMN_TRANGTHAI_NAME = "trang_thai";
+
+
     @Id
-    @Column(name = "id", nullable = false)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = COLUMN_ID_NAME, nullable = false)
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_dich_Vu")
@@ -30,13 +37,13 @@ public class ChiTietDichVu {
 
     @Nationalized
     @Lob
-    @Column(name = "ghi_chu")
+    @Column(name = COLUMN_GHICHU_NAME)
     private String ghiChu;
 
-    @Column(name = "gia_dich_vu", precision = 18)
+    @Column(name = COLUMN_GIADICHVU_NAME, precision = 18)
     private BigDecimal giaDichVu;
 
-    @Column(name = "trang_thai")
+    @Column(name = COLUMN_TRANGTHAI_NAME)
     private Integer trangThai;
 
 }

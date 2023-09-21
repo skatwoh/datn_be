@@ -5,7 +5,6 @@ import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.UUID;
 
 @Builder
 @AllArgsConstructor
@@ -14,37 +13,47 @@ import java.util.UUID;
 @Setter
 @ToString
 @Entity
-@Table(name = "chi_tiet_phong")
+@Table(name = ChiTietPhong.TABLE_NAME)
 public class ChiTietPhong {
+    public static final String TABLE_NAME = "chi_tiet_phong";
+    public static final String COLUMN_ID_NAME = "id";
+    public static final String COLUMN_TANG_NAME = "tang";
+    public static final String COLUMN_TIENICH_NAME = "tien_ich";
+    public static final String COLUMN_DICHVU_NAME = "dich_vu";
+    public static final String COLUMN_SOLUONGNGUOI_NAME = "so_luong_nguoi";
+    public static final String COLUMN_DIENTICH_NAME = "dien_tich";
+    public static final String COLUMN_TRANGTHAI_NAME = "trang_thai";
+
+
     @Id
-    @Column(name = "id", nullable = false)
-    private UUID id;
+    @Column(name = COLUMN_ID_NAME, nullable = false)
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_loai_phong")
     private LoaiPhong idLoaiPhong;
 
     @Size(max = 20)
-    @Column(name = "tang", length = 20)
+    @Column(name = COLUMN_TANG_NAME, length = 20)
     private String tang;
 
     @Size(max = 100)
     @Nationalized
-    @Column(name = "tien_ich", length = 100)
+    @Column(name = COLUMN_TIENICH_NAME, length = 100)
     private String tienIch;
 
     @Size(max = 100)
     @Nationalized
-    @Column(name = "dich_vu", length = 100)
+    @Column(name = COLUMN_DICHVU_NAME, length = 100)
     private String dichVu;
 
-    @Column(name = "so_luong_nguoi")
+    @Column(name = COLUMN_SOLUONGNGUOI_NAME)
     private Integer soLuongNguoi;
 
-    @Column(name = "dien_tich")
+    @Column(name = COLUMN_DIENTICH_NAME)
     private Double dienTich;
 
-    @Column(name = "trang_thai")
+    @Column(name = COLUMN_TRANGTHAI_NAME)
     private Integer trangThai;
 
 }

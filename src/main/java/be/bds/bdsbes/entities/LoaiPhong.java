@@ -7,7 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Builder
 @AllArgsConstructor
@@ -16,24 +15,32 @@ import java.util.UUID;
 @Setter
 @ToString
 @Entity
-@Table(name = "loai_phong")
+@Table(name = LoaiPhong.TABLE_NAME)
 public class LoaiPhong {
+    public static final String TABLE_NAME = "loai_phong";
+    public static final String COLUMN_ID_NAME = "id";
+    public static final String COLUMN_MALOAIPHONG_NAME = "ma_loai_phong";
+    public static final String COLUMN_TENLOAIPHONG_NAME = "ten_loai_phong";
+    public static final String COLUMN_GHICHU_NAME = "ghi_chu";
+
+
     @Id
-    @Column(name = "id", nullable = false)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = COLUMN_ID_NAME, nullable = false)
+    private Long id;
 
     @Size(max = 20)
-    @Column(name = "ma_loai_phong", length = 20)
+    @Column(name = COLUMN_MALOAIPHONG_NAME, length = 20)
     private String maLoaiPhong;
 
     @Size(max = 50)
     @Nationalized
-    @Column(name = "ten_loai_phong", length = 50)
+    @Column(name = COLUMN_TENLOAIPHONG_NAME, length = 50)
     private String tenLoaiPhong;
 
     @Nationalized
     @Lob
-    @Column(name = "ghi_chu")
+    @Column(name = COLUMN_GHICHU_NAME)
     private String ghiChu;
 
     @OneToMany(mappedBy = "idLoaiPhong")
