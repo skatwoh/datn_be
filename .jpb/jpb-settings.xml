@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="JpaPluginProjectSettings">
+  <component name="JpaPluginProjectSettings" commentSavingStrategy="@Comment annotation" reExcludeTablePrefixes="" reExcludeColumnPrefixes="" reExcludeTableSuffixes="" reExcludeColumnSuffixes="">
     <option name="entityNameTemplate" />
     <option name="useConstantsForEntities" value="true" />
+    <option name="constantsOnEntityName" value="false" />
     <option name="isLombokToString" value="true" />
     <option name="isLombokBuilder" value="true" />
     <option name="isLombokAllArgsConstructor" value="true" />

@@ -2,14 +2,9 @@ package be.bds.bdsbes.entities;
 
 import lombok.*;
 import org.hibernate.annotations.Nationalized;
-import org.hibernate.proxy.HibernateProxy;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
 
 @Builder
 @AllArgsConstructor
@@ -32,8 +27,7 @@ public class DatPhong {
 
     @Id
     @Column(name = COLUMN_ID_NAME, nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_khach_hang")
@@ -63,31 +57,4 @@ public class DatPhong {
     @Column(name = COLUMN_TRANGTHAI_NAME)
     private Integer trangThai;
 
-    @OneToMany(mappedBy = "idDatPhong")
-    private Set<ChiTietDatPhong> chiTietDatPhongs = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "idDatPhong")
-    private Set<ChiTietDichVu> chiTietDichVus = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "idDatPhong")
-    private Set<HoaDon> hoaDons = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "idDatPhong")
-    private Set<LichSuDatPhong> lichSuDatPhongs = new LinkedHashSet<>();
-
-    @Override
-    public final boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null) return false;
-        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
-        if (thisEffectiveClass != oEffectiveClass) return false;
-        DatPhong datPhong = (DatPhong) o;
-        return getId() != null && Objects.equals(getId(), datPhong.getId());
-    }
-
-    @Override
-    public final int hashCode() {
-        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
-    }
 }

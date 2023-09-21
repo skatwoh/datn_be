@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Builder
 @AllArgsConstructor
@@ -18,31 +17,42 @@ import java.util.UUID;
 @Setter
 @ToString
 @Entity
-@Table(name = "voucher")
+@Table(name = Voucher.TABLE_NAME)
 public class Voucher {
+    public static final String TABLE_NAME = "voucher";
+    public static final String COLUMN_ID_NAME = "id";
+    public static final String COLUMN_MA_NAME = "ma";
+    public static final String COLUMN_MOTA_NAME = "mo_ta";
+    public static final String COLUMN_GIAMGIA_NAME = "giam_gia";
+    public static final String COLUMN_NGAYBATDAU_NAME = "ngay_bat_dau";
+    public static final String COLUMN_NGAYKETTHUC_NAME = "ngay_ket_thuc";
+    public static final String COLUMN_TRANGTHAI_NAME = "trang_thai";
+
+
     @Id
-    @Column(name = "id", nullable = false)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = COLUMN_ID_NAME, nullable = false)
+    private Long id;
 
     @Size(max = 20)
-    @Column(name = "ma", length = 20)
+    @Column(name = COLUMN_MA_NAME, length = 20)
     private String ma;
 
     @Nationalized
     @Lob
-    @Column(name = "mo_ta")
+    @Column(name = COLUMN_MOTA_NAME)
     private String moTa;
 
-    @Column(name = "giam_gia", precision = 18)
+    @Column(name = COLUMN_GIAMGIA_NAME, precision = 18)
     private BigDecimal giamGia;
 
-    @Column(name = "ngay_bat_dau")
+    @Column(name = COLUMN_NGAYBATDAU_NAME)
     private LocalDate ngayBatDau;
 
-    @Column(name = "ngay_ket_thuc")
+    @Column(name = COLUMN_NGAYKETTHUC_NAME)
     private LocalDate ngayKetThuc;
 
-    @Column(name = "trang_thai")
+    @Column(name = COLUMN_TRANGTHAI_NAME)
     private Integer trangThai;
 
     @OneToMany(mappedBy = "idVoucher")

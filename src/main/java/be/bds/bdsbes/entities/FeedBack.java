@@ -4,7 +4,6 @@ import lombok.*;
 import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @Builder
 @AllArgsConstructor
@@ -13,11 +12,18 @@ import java.util.UUID;
 @Setter
 @ToString
 @Entity
-@Table(name = "feedback")
-public class Feedback {
+@Table(name = FeedBack.TABLE_NAME)
+public class FeedBack {
+    public static final String TABLE_NAME = "feed_back";
+    public static final String COLUMN_ID_NAME = "id";
+    public static final String COLUMN_MOTA_NAME = "mo_ta";
+    public static final String COLUMN_TRANGTHAI_NAME = "trang_thai";
+
+
     @Id
-    @Column(name = "id", nullable = false)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = COLUMN_ID_NAME, nullable = false)
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_chi_tiet_phong")
@@ -29,10 +35,10 @@ public class Feedback {
 
     @Nationalized
     @Lob
-    @Column(name = "mo_ta")
+    @Column(name = COLUMN_MOTA_NAME)
     private String moTa;
 
-    @Column(name = "trang_thai")
+    @Column(name = COLUMN_TRANGTHAI_NAME)
     private Integer trangThai;
 
 }

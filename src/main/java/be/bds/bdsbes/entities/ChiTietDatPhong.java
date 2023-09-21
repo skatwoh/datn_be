@@ -5,7 +5,6 @@ import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.UUID;
 
 @Builder
 @AllArgsConstructor
@@ -14,11 +13,16 @@ import java.util.UUID;
 @Setter
 @ToString
 @Entity
-@Table(name = "chi_tiet_dat_phong")
+@Table(name = ChiTietDatPhong.TABLE_NAME)
 public class ChiTietDatPhong {
+    public static final String TABLE_NAME = "chi_tiet_dat_phong";
+    public static final String COLUMN_ID_NAME = "id";
+    public static final String COLUMN_GHICHU_NAME = "ghi_chu";
+
     @Id
-    @Column(name = "id", nullable = false)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = COLUMN_ID_NAME, nullable = false)
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_dat_phong")
@@ -30,7 +34,7 @@ public class ChiTietDatPhong {
 
     @Size(max = 100)
     @Nationalized
-    @Column(name = "ghi_chu", length = 100)
+    @Column(name = COLUMN_GHICHU_NAME, length = 100)
     private String ghiChu;
 
 }

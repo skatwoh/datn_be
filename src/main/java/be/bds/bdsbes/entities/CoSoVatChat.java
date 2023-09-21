@@ -4,7 +4,6 @@ import lombok.*;
 import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @Builder
 @AllArgsConstructor
@@ -13,29 +12,37 @@ import java.util.UUID;
 @Setter
 @ToString
 @Entity
-@Table(name = "co_so_vat_chat")
+@Table(name = CoSoVatChat.TABLE_NAME)
 public class CoSoVatChat {
+    public static final String TABLE_NAME = "co_so_vat_chat";
+    public static final String COLUMN_ID_NAME = "id";
+    public static final String COLUMN_SOLUONG_NAME = "so_luong";
+    public static final String COLUMN_GHICHU_NAME = "ghi_chu";
+    public static final String COLUMN_TRANGTHAI_NAME = "trang_thai";
+
+
     @Id
-    @Column(name = "id", nullable = false)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = COLUMN_ID_NAME, nullable = false)
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_tai_san")
     private TaiSan idTaiSan;
 
-    @Column(name = "so_luong")
+    @Column(name = COLUMN_SOLUONG_NAME)
     private Integer soLuong;
 
     @Nationalized
     @Lob
-    @Column(name = "ghi_chu")
+    @Column(name = COLUMN_GHICHU_NAME)
     private String ghiChu;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_chi_tiet_phong")
     private ChiTietPhong idChiTietPhong;
 
-    @Column(name = "trang_thai")
+    @Column(name = COLUMN_TRANGTHAI_NAME)
     private Integer trangThai;
 
 }
