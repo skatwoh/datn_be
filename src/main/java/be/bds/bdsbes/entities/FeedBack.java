@@ -4,7 +4,6 @@ import lombok.*;
 import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 
 @Builder
 @AllArgsConstructor
@@ -13,11 +12,13 @@ import javax.validation.constraints.Size;
 @Setter
 @ToString
 @Entity
-@Table(name = ChiTietDatPhong.TABLE_NAME)
-public class ChiTietDatPhong {
-    public static final String TABLE_NAME = "chi_tiet_dat_phong";
+@Table(name = FeedBack.TABLE_NAME)
+public class FeedBack {
+    public static final String TABLE_NAME = "feed_back";
     public static final String COLUMN_ID_NAME = "id";
-    public static final String COLUMN_GHICHU_NAME = "ghi_chu";
+    public static final String COLUMN_MOTA_NAME = "mo_ta";
+    public static final String COLUMN_TRANGTHAI_NAME = "trang_thai";
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,16 +26,19 @@ public class ChiTietDatPhong {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_dat_phong")
-    private DatPhong idDatPhong;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_chi_tiet_phong")
     private ChiTietPhong idChiTietPhong;
 
-    @Size(max = 100)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_khach_hang")
+    private KhachHang idKhachHang;
+
     @Nationalized
-    @Column(name = COLUMN_GHICHU_NAME, length = 100)
-    private String ghiChu;
+    @Lob
+    @Column(name = COLUMN_MOTA_NAME)
+    private String moTa;
+
+    @Column(name = COLUMN_TRANGTHAI_NAME)
+    private Integer trangThai;
 
 }

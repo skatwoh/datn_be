@@ -5,9 +5,6 @@ import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.UUID;
 
 @Builder
 @AllArgsConstructor
@@ -16,49 +13,48 @@ import java.util.UUID;
 @Setter
 @ToString
 @Entity
+@Table(name = DatPhong.TABLE_NAME)
 public class DatPhong {
+    public static final String TABLE_NAME = "dat_phong";
+    public static final String COLUMN_ID_NAME = "id";
+    public static final String COLUMN_NGAYDAT_NAME = "ngay_dat";
+    public static final String COLUMN_CHECKIN_NAME = "check_in";
+    public static final String COLUMN_CHECKOUT_NAME = "check_out";
+    public static final String COLUMN_SONGUOI_NAME = "so_nguoi";
+    public static final String COLUMN_GHICHU_NAME = "ghi_chu";
+    public static final String COLUMN_TRANGTHAI_NAME = "trang_thai";
+
+
     @Id
-    @Column(name = "Id", nullable = false)
-    private UUID id;
+    @Column(name = COLUMN_ID_NAME, nullable = false)
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IdKhachHang")
+    @JoinColumn(name = "id_khach_hang")
     private KhachHang idKhachHang;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IdVoucher")
+    @JoinColumn(name = "id_voucher")
     private Voucher idVoucher;
 
-    @Column(name = "NgayDat")
+    @Column(name = COLUMN_NGAYDAT_NAME)
     private LocalDate ngayDat;
 
-    @Column(name = "CheckIn")
+    @Column(name = COLUMN_CHECKIN_NAME)
     private LocalDate checkIn;
 
-    @Column(name = "CheckOut")
+    @Column(name = COLUMN_CHECKOUT_NAME)
     private LocalDate checkOut;
 
-    @Column(name = "SoNguoi")
+    @Column(name = COLUMN_SONGUOI_NAME)
     private Integer soNguoi;
 
     @Nationalized
     @Lob
-    @Column(name = "GhiChu")
+    @Column(name = COLUMN_GHICHU_NAME)
     private String ghiChu;
 
-    @Column(name = "TrangThai")
+    @Column(name = COLUMN_TRANGTHAI_NAME)
     private Integer trangThai;
-
-    @OneToMany(mappedBy = "idDatPhong")
-    private Set<ChiTietDatPhong> chiTietDatPhongs = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "idDatPhong")
-    private Set<ChiTietDichVu> chiTietDichVus = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "idDatPhong")
-    private Set<HoaDon> hoaDons = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "idDatPhong")
-    private Set<LichSuDatPhong> lichSuDatPhongs = new LinkedHashSet<>();
 
 }

@@ -62,6 +62,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public PagedResponse<UserProfileResponse> getUsers(int page, int size) throws ServiceException {
         if (page <= 0) {
             throw ServiceExceptionBuilderUtil.newBuilder()

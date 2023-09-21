@@ -8,7 +8,6 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Builder
 @AllArgsConstructor
@@ -17,53 +16,66 @@ import java.util.UUID;
 @Setter
 @ToString
 @Entity
+@Table(name = KhachHang.TABLE_NAME)
 public class KhachHang {
+    public static final String TABLE_NAME = "khach_hang";
+    public static final String COLUMN_ID_NAME = "id";
+    public static final String COLUMN_MA_NAME = "ma";
+    public static final String COLUMN_HOTEN_NAME = "ho_ten";
+    public static final String COLUMN_NGAYSINH_NAME = "ngay_sinh";
+    public static final String COLUMN_GIOITINH_NAME = "gioi_tinh";
+    public static final String COLUMN_DIACHI_NAME = "dia_chi";
+    public static final String COLUMN_SDT_NAME = "sdt";
+    public static final String COLUMN_GHICHU_NAME = "ghi_chu";
+
+
     @Id
-    @Column(name = "Id", nullable = false)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = COLUMN_ID_NAME, nullable = false)
+    private Long id;
 
     @Size(max = 20)
-    @Column(name = "Ma", length = 20)
+    @Column(name = COLUMN_MA_NAME, length = 20)
     private String ma;
 
     @Size(max = 50)
     @Nationalized
-    @Column(name = "HoTen", length = 50)
+    @Column(name = COLUMN_HOTEN_NAME, length = 50)
     private String hoTen;
 
-    @Column(name = "NgaySinh")
+    @Column(name = COLUMN_NGAYSINH_NAME)
     private LocalDate ngaySinh;
 
-    @Column(name = "GioiTinh")
+    @Column(name = COLUMN_GIOITINH_NAME)
     private Boolean gioiTinh;
 
     @Size(max = 100)
     @Nationalized
-    @Column(name = "DiaChi", length = 100)
+    @Column(name = COLUMN_DIACHI_NAME, length = 100)
     private String diaChi;
 
     @Size(max = 11)
-    @Column(name = "SDT", length = 11)
+    @Column(name = COLUMN_SDT_NAME, length = 11)
     private String sdt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IdTaiKhoan")
+    @JoinColumn(name = "id_tai_khoan")
     private TaiKhoan idTaiKhoan;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IdTheThanhVien")
+    @JoinColumn(name = "id_the_thanh_vien")
     private TheThanhVien idTheThanhVien;
 
     @Nationalized
     @Lob
-    @Column(name = "GhiChu")
+    @Column(name = COLUMN_GHICHU_NAME)
     private String ghiChu;
 
     @OneToMany(mappedBy = "idKhachHang")
     private Set<DatPhong> datPhongs = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idKhachHang")
-    private Set<Feedback> feedbacks = new LinkedHashSet<>();
+    private Set<FeedBack> feedBacks = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idKhachHang")
     private Set<HoaDon> hoaDons = new LinkedHashSet<>();

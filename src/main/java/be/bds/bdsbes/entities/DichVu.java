@@ -6,9 +6,6 @@ import org.hibernate.annotations.Nationalized;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.UUID;
 
 @Builder
 @AllArgsConstructor
@@ -17,32 +14,39 @@ import java.util.UUID;
 @Setter
 @ToString
 @Entity
+@Table(name = DichVu.TABLE_NAME)
 public class DichVu {
+    public static final String TABLE_NAME = "dich_vu";
+    public static final String COLUMN_ID_NAME = "id";
+    public static final String COLUMN_MA_NAME = "ma";
+    public static final String COLUMN_TENDICHVU_NAME = "ten_dich_vu";
+    public static final String COLUMN_GHICHU_NAME = "ghi_chu";
+    public static final String COLUMN_GIADICHVU_NAME = "gia_dich_vu";
+    public static final String COLUMN_TRANGTHAI_NAME = "trang_thai";
+
+
     @Id
-    @Column(name = "Id", nullable = false)
-    private UUID id;
+    @Column(name = COLUMN_ID_NAME, nullable = false)
+    private Long id;
 
     @Size(max = 20)
-    @Column(name = "Ma", length = 20)
+    @Column(name = COLUMN_MA_NAME, length = 20)
     private String ma;
 
     @Size(max = 50)
     @Nationalized
-    @Column(name = "TenDichVu", length = 50)
+    @Column(name = COLUMN_TENDICHVU_NAME, length = 50)
     private String tenDichVu;
 
     @Nationalized
     @Lob
-    @Column(name = "GhiChu")
+    @Column(name = COLUMN_GHICHU_NAME)
     private String ghiChu;
 
-    @Column(name = "GiaDichVu", precision = 18)
+    @Column(name = COLUMN_GIADICHVU_NAME, precision = 18)
     private BigDecimal giaDichVu;
 
-    @Column(name = "TrangThai")
+    @Column(name = COLUMN_TRANGTHAI_NAME)
     private Integer trangThai;
-
-    @OneToMany(mappedBy = "idDichVu")
-    private Set<ChiTietDichVu> chiTietDichVus = new LinkedHashSet<>();
 
 }
