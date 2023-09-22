@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface TheThanhVienRepository extends JpaRepository<TheThanhVien, UUID> {
+public interface TheThanhVienRepository extends JpaRepository<TheThanhVien, Long> {
 }

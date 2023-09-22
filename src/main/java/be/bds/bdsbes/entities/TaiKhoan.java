@@ -22,6 +22,7 @@ public class TaiKhoan {
     public static final String COLUMN_EMAIL_NAME = "email";
     public static final String COLUMN_MATKHAU_NAME = "mat_khau";
     public static final String COLUMN_TRANGTHAI_NAME = "trang_thai";
+    public static final String COLUMN_TEN_NAME = "ten";
 
 
     @Id
@@ -40,6 +41,15 @@ public class TaiKhoan {
 
     @Column(name = COLUMN_TRANGTHAI_NAME)
     private Integer trangThai;
+
+    @Size(max = 50)
+    @Nationalized
+    @Column(name = COLUMN_TEN_NAME, length = 50)
+    private String ten;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_khach_hang")
+    private KhachHang idKhachHang;
 
     @OneToMany(mappedBy = "idTaiKhoan")
     private Set<KhachHang> khachHangs = new LinkedHashSet<>();

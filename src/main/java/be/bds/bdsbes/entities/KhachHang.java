@@ -21,7 +21,6 @@ public class KhachHang {
     public static final String TABLE_NAME = "khach_hang";
     public static final String COLUMN_ID_NAME = "id";
     public static final String COLUMN_MA_NAME = "ma";
-    public static final String COLUMN_HOTEN_NAME = "ho_ten";
     public static final String COLUMN_NGAYSINH_NAME = "ngay_sinh";
     public static final String COLUMN_GIOITINH_NAME = "gioi_tinh";
     public static final String COLUMN_DIACHI_NAME = "dia_chi";
@@ -34,14 +33,8 @@ public class KhachHang {
     @Column(name = COLUMN_ID_NAME, nullable = false)
     private Long id;
 
-    @Size(max = 20)
-    @Column(name = COLUMN_MA_NAME, length = 20)
+    @Column(name = COLUMN_MA_NAME)
     private String ma;
-
-    @Size(max = 50)
-    @Nationalized
-    @Column(name = COLUMN_HOTEN_NAME, length = 50)
-    private String hoTen;
 
     @Column(name = COLUMN_NGAYSINH_NAME)
     private LocalDate ngaySinh;
@@ -82,5 +75,8 @@ public class KhachHang {
 
     @OneToMany(mappedBy = "idKhachHang")
     private Set<LichSuDatPhong> lichSuDatPhongs = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idKhachHang")
+    private Set<TaiKhoan> taiKhoans = new LinkedHashSet<>();
 
 }
