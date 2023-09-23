@@ -5,8 +5,6 @@ import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Builder
 @AllArgsConstructor
@@ -42,16 +40,13 @@ public class TaiKhoan {
     @Column(name = COLUMN_TRANGTHAI_NAME)
     private Integer trangThai;
 
-    @Size(max = 50)
-    @Nationalized
-    @Column(name = COLUMN_TEN_NAME, length = 50)
-    private String ten;
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_khach_hang")
     private KhachHang idKhachHang;
 
-    @OneToMany(mappedBy = "idTaiKhoan")
-    private Set<KhachHang> khachHangs = new LinkedHashSet<>();
+    @Size(max = 50)
+    @Nationalized
+    @Column(name = COLUMN_TEN_NAME, length = 50)
+    private String ten;
 
 }

@@ -7,11 +7,13 @@
 //import springfox.documentation.builders.ApiInfoBuilder;
 //import springfox.documentation.builders.PathSelectors;
 //import springfox.documentation.builders.RequestHandlerSelectors;
-//import springfox.documentation.service.ApiInfo;
-//import springfox.documentation.service.Contact;
+//import springfox.documentation.service.*;
 //import springfox.documentation.spi.DocumentationType;
+//import springfox.documentation.spi.service.contexts.SecurityContext;
 //import springfox.documentation.spring.web.plugins.Docket;
 //import springfox.documentation.swagger2.annotations.EnableSwagger2;
+//
+//import java.util.Collections;
 //
 //@Configuration
 //@EnableSwagger2
@@ -24,8 +26,17 @@
 //                .apis(RequestHandlerSelectors.basePackage("be.bds.bdsbes.resource"))
 //                .paths(PathSelectors.any())
 //                .build()
-//                .apiInfo(metaData());
+//                .apiInfo(metaData())
+//                .securitySchemes(Collections.singletonList(new ApiKey("Bearer Token", "Authorization", "header")))
+//                .securityContexts(Collections.singletonList(
+//                        SecurityContext.builder()
+//                                .securityReferences(Collections.singletonList(
+//                                        new SecurityReference("Bearer Token", new AuthorizationScope[0])
+//                                ))
+//                                .build()
+//                ));
 //    }
+//
 //
 //    private ApiInfo metaData() {
 //        return new ApiInfoBuilder()
@@ -44,7 +55,3 @@
 //                .addResourceLocations("classpath:/META-INF/resources/webjars/");
 //    }
 //}
-//
-//
-//
-//
