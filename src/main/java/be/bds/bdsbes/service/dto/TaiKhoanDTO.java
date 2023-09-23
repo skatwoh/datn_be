@@ -2,6 +2,7 @@ package be.bds.bdsbes.service.dto;
 
 import be.bds.bdsbes.entities.KhachHang;
 import be.bds.bdsbes.entities.TaiKhoan;
+import be.bds.bdsbes.entities.TheThanhVien;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +19,7 @@ public class TaiKhoanDTO {
     Random random = new Random();
     int min = 1;
     int max = Integer.MAX_VALUE;
-    int ma = random.nextInt(max - min +1) + min;
+    int ma = random.nextInt(max - min + 1) + min;
     @NotBlank(message = "Not blank")
     private String email;
 
@@ -30,15 +31,15 @@ public class TaiKhoanDTO {
 
     private Long idKhachHang;
 
-    @NotNull(message = "Not blank")
-    private Integer trangThai;
+    private Integer trangThai = 1;
 
     public TaiKhoan dto(TaiKhoan taiKhoan) {
         taiKhoan.setEmail(this.getEmail());
         taiKhoan.setMatKhau(this.getMatKhau());
         taiKhoan.setTrangThai(this.getTrangThai());
         taiKhoan.setTen(this.getTen());
-        taiKhoan.setIdKhachHang(KhachHang.builder().id(this.getIdKhachHang()).ma("KH" + ma).build());
+        taiKhoan.setIdKhachHang(KhachHang.builder().id(this.getIdKhachHang()).ma("KH" + ma).hoTen(this.getTen())
+                .idTheThanhVien(TheThanhVien.builder().id(1L).build()).build());
         return taiKhoan;
     }
 }

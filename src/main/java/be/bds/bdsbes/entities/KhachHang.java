@@ -21,6 +21,7 @@ public class KhachHang {
     public static final String TABLE_NAME = "khach_hang";
     public static final String COLUMN_ID_NAME = "id";
     public static final String COLUMN_MA_NAME = "ma";
+    public static final String COLUMN_HOTEN_NAME = "ho_ten";
     public static final String COLUMN_NGAYSINH_NAME = "ngay_sinh";
     public static final String COLUMN_GIOITINH_NAME = "gioi_tinh";
     public static final String COLUMN_DIACHI_NAME = "dia_chi";
@@ -33,8 +34,14 @@ public class KhachHang {
     @Column(name = COLUMN_ID_NAME, nullable = false)
     private Long id;
 
-    @Column(name = COLUMN_MA_NAME)
+    @Size(max = 20)
+    @Column(name = COLUMN_MA_NAME, length = 20)
     private String ma;
+
+    @Size(max = 50)
+    @Nationalized
+    @Column(name = COLUMN_HOTEN_NAME, length = 50)
+    private String hoTen;
 
     @Column(name = COLUMN_NGAYSINH_NAME)
     private LocalDate ngaySinh;
@@ -50,10 +57,6 @@ public class KhachHang {
     @Size(max = 11)
     @Column(name = COLUMN_SDT_NAME, length = 11)
     private String sdt;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_tai_khoan")
-    private TaiKhoan idTaiKhoan;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_the_thanh_vien")
