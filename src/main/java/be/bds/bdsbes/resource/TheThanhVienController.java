@@ -1,9 +1,9 @@
 package be.bds.bdsbes.resource;
 
 
-import be.bds.bdsbes.service.TheThanhVienService;
+import be.bds.bdsbes.service.ITheThanhVienService;
 import be.bds.bdsbes.service.dto.TheThanhVienDTO;
-import be.bds.bdsbes.service.impl.TheThanhVienServiceImpl;
+import be.bds.bdsbes.service.impl.ITheThanhVienServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -18,24 +18,24 @@ import java.util.List;
 public class TheThanhVienController {
 
     @Autowired
-    private TheThanhVienService theThanhVienService = new TheThanhVienServiceImpl();
+    private ITheThanhVienService ITheThanhVienService = new ITheThanhVienServiceImpl();
 
     @GetMapping
     public ResponseEntity<?> getAll(){
-        return ResponseEntity.ok(theThanhVienService.getList());
+        return ResponseEntity.ok(ITheThanhVienService.getList());
     }
 
     @GetMapping("get-page")
     public ResponseEntity<?> getPage(@RequestParam(defaultValue = "0", name = "page") Integer page){
-        return ResponseEntity.ok(theThanhVienService.getPage(page));
+        return ResponseEntity.ok(ITheThanhVienService.getPage(page));
     }
 
     @GetMapping("{id}")
     public ResponseEntity<?> getOne(@PathVariable("id") Long id){
-        if(theThanhVienService.getOne(id) == null){
+        if(ITheThanhVienService.getOne(id) == null){
             return ResponseEntity.ok("Not found");
         }
-        return ResponseEntity.ok(theThanhVienService.getOne(id));
+        return ResponseEntity.ok(ITheThanhVienService.getOne(id));
     }
 
     @PostMapping("add")
@@ -44,7 +44,7 @@ public class TheThanhVienController {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             return ResponseEntity.ok(errorList);
         }
-        return ResponseEntity.ok(theThanhVienService.add(theThanhVienDTO));
+        return ResponseEntity.ok(ITheThanhVienService.add(theThanhVienDTO));
     }
 
     @PutMapping("update/{id}")
@@ -53,9 +53,9 @@ public class TheThanhVienController {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             return ResponseEntity.ok(errorList);
         }
-        if(theThanhVienService.update(theThanhVienDTO, id) == null){
+        if(ITheThanhVienService.update(theThanhVienDTO, id) == null){
             return ResponseEntity.ok("Update failed");
         }
-        return ResponseEntity.ok(theThanhVienService.update(theThanhVienDTO, id));
+        return ResponseEntity.ok(ITheThanhVienService.update(theThanhVienDTO, id));
     }
 }
