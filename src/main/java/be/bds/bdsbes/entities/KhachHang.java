@@ -59,10 +59,6 @@ public class KhachHang {
     private String sdt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_tai_khoan")
-    private TaiKhoan idTaiKhoan;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_the_thanh_vien")
     private TheThanhVien idTheThanhVien;
 
@@ -82,5 +78,8 @@ public class KhachHang {
 
     @OneToMany(mappedBy = "idKhachHang")
     private Set<LichSuDatPhong> lichSuDatPhongs = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idKhachHang")
+    private Set<TaiKhoan> taiKhoans = new LinkedHashSet<>();
 
 }
