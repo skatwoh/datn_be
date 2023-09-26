@@ -5,6 +5,7 @@ import be.bds.bdsbes.entities.TaiKhoan;
 import be.bds.bdsbes.entities.TheThanhVien;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -24,6 +25,8 @@ public class TaiKhoanDTO {
     private String email;
 
     @NotBlank(message = "Not blank")
+    @Length(min = 8, message = "Mật khẩu tối thiếu 8 ký tự")
+    @Length(max = 30, message = "Mật khẩu không được vượt quá 30 ký tự")
     private String matKhau;
 
     @NotBlank(message = "Not blank")

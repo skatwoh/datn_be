@@ -2,13 +2,14 @@ package be.bds.bdsbes.service;
 
 import be.bds.bdsbes.entities.TheThanhVien;
 import be.bds.bdsbes.service.dto.TheThanhVienDTO;
+import be.bds.bdsbes.service.dto.response.TheThanhVienResponse;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-public interface TheThanhVienService {
+public interface ITheThanhVienService {
 
-    List<TheThanhVien> getList();
+    List<TheThanhVienResponse> getList();
 
     Page<TheThanhVien> getPage(Integer page);
 

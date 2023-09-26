@@ -4,6 +4,7 @@ import be.bds.bdsbes.entities.TaiKhoan;
 import be.bds.bdsbes.repository.TaiKhoanRepository;
 import be.bds.bdsbes.service.ITaiKhoanService;
 import be.bds.bdsbes.service.dto.TaiKhoanDTO;
+import be.bds.bdsbes.service.dto.response.TaiKhoanResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +23,11 @@ public class TaiKhoanServiceImpl implements ITaiKhoanService {
     @Override
     public List<TaiKhoan> getList() {
         return taiKhoanRepository.findAll();
+    }
+
+    @Override
+    public List<TaiKhoanResponse> getAllTaiKhoan() {
+        return taiKhoanRepository.getAllTaiKhoan();
     }
 
     @Override

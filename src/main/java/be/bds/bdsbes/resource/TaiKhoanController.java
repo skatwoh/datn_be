@@ -24,7 +24,7 @@ public class TaiKhoanController {
 
     @GetMapping("list")
     public ResponseEntity<?> getAll(){
-        return ResponseEntity.ok(ITaiKhoanService.getList());
+        return ResponseEntity.ok(ITaiKhoanService.getAllTaiKhoan());
     }
 
     @GetMapping("get-page")

@@ -2,8 +2,9 @@ package be.bds.bdsbes.service.impl;
 
 import be.bds.bdsbes.entities.TheThanhVien;
 import be.bds.bdsbes.repository.TheThanhVienRepository;
-import be.bds.bdsbes.service.TheThanhVienService;
+import be.bds.bdsbes.service.ITheThanhVienService;
 import be.bds.bdsbes.service.dto.TheThanhVienDTO;
+import be.bds.bdsbes.service.dto.response.TheThanhVienResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,17 +13,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service("theThanhVienServiceImpl")
-public class TheThanhVienServiceImpl implements TheThanhVienService {
+public class ITheThanhVienServiceImpl implements ITheThanhVienService {
 
     @Autowired
     private TheThanhVienRepository theThanhVienRepository;
 
     @Override
-    public List<TheThanhVien> getList() {
-        return theThanhVienRepository.findAll();
+    public List<TheThanhVienResponse> getList() {
+        return theThanhVienRepository.getAllTTV();
     }
 
     @Override
