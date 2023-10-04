@@ -1,17 +1,13 @@
 package be.bds.bdsbes.service.impl;
 
-import be.bds.bdsbes.entities.KhachHang;
-import be.bds.bdsbes.entities.TaiKhoan;
-import be.bds.bdsbes.entities.TheThanhVien;
+import be.bds.bdsbes.entities.ChiTietPhong;
+import be.bds.bdsbes.entities.Phong;
 import be.bds.bdsbes.exception.ServiceException;
-import be.bds.bdsbes.payload.KhachHangResponse1;
-import be.bds.bdsbes.payload.TaiKhoanResponse1;
-import be.bds.bdsbes.repository.KhachHangRepository;
-import be.bds.bdsbes.repository.TaiKhoanRepository;
-import be.bds.bdsbes.service.IKhachHangService;
-import be.bds.bdsbes.service.dto.KhachHangDTO;
-import be.bds.bdsbes.service.dto.TheThanhVienDTO;
-import be.bds.bdsbes.service.mapper.KhachHangMapper;
+import be.bds.bdsbes.payload.ChiTietPhongResponse1;
+import be.bds.bdsbes.repository.ChiTietPhongRepository;
+import be.bds.bdsbes.service.IChiTietPhongService;
+import be.bds.bdsbes.service.dto.ChiTietPhongDTO;
+import be.bds.bdsbes.service.mapper.ChiTietPhongMapper;
 import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ServiceExceptionBuilderUtil;
 import be.bds.bdsbes.utils.ValidationErrorUtil;
@@ -30,57 +26,56 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
 @Slf4j
-@Service("khachHangServiceImpl")
-public class KhachHangServiceImpl implements IKhachHangService {
+@Service
+public class ChiTietPhongServiceImpl implements IChiTietPhongService {
 
     @Autowired
-    KhachHangRepository khachHangRepository;
-    @Autowired
-    private KhachHangMapper khachHangMapper;
+    private ChiTietPhongRepository chiTietPhongRepository;
 
-    TheThanhVienDTO theThanhVienDTO;
+    @Autowired
+    private ChiTietPhongMapper chiTietPhongMapper;
 
     @Override
-    public List<KhachHang> getList() {
-        return khachHangRepository.findAll();
+    public List<ChiTietPhong> getList() {
+        return chiTietPhongRepository.findAll();
     }
 
     @Override
-    public Page<KhachHang> getPage(Integer page) {
+    public Page<ChiTietPhong> getPage(Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return khachHangRepository.findAll(pageable);
+        return chiTietPhongRepository.findAll(pageable);
     }
 
     @Override
-    public KhachHang getOne(Long id) {
-        Optional<KhachHang> khachHangOptional = khachHangRepository.findById(id);
-        if(khachHangOptional.isPresent()){
-            KhachHang khachHang = khachHangOptional.get();
-            return khachHang;
+    public ChiTietPhong getOne(Long id) {
+        Optional<ChiTietPhong> optionalChiTietPhong = chiTietPhongRepository.findById(id);
+        if(optionalChiTietPhong.isPresent()){
+            ChiTietPhong chiTietPhong = optionalChiTietPhong.get();
+            return chiTietPhong;
         }
         return null;
     }
 
     @Override
-    public KhachHang create(KhachHangDTO khachHangDTO) {
-        KhachHang khachHang = khachHangDTO.dto(new KhachHang());
-        khachHang.setIdTheThanhVien(TheThanhVien.builder().id(Long.parseLong("1")).build());
-        return khachHangRepository.save(khachHang);
+    public ChiTietPhong create(ChiTietPhongDTO chiTietPhongDTO) {
+        ChiTietPhong chiTietPhong = chiTietPhongDTO.dto(new ChiTietPhong());
+        return chiTietPhongRepository.save(chiTietPhong);
     }
 
     @Override
-    public KhachHang update(KhachHangDTO khachHangDTO, Long id) {
-        Optional<KhachHang> khachHangOptional = khachHangRepository.findById(id);
-        if(khachHangOptional.isPresent()){
-            KhachHang khachHang = khachHangDTO.dto(khachHangOptional.get());
-            return khachHangRepository.save(khachHang);
+    public ChiTietPhong update(ChiTietPhongDTO chiTietPhongDTO, Long id) {
+        Optional<ChiTietPhong> optionalChiTietPhong = chiTietPhongRepository.findById(id);
+        if(optionalChiTietPhong.isPresent()){
+            ChiTietPhong chiTietPhong = chiTietPhongDTO.dto(optionalChiTietPhong.get());
+            return chiTietPhongRepository.save(chiTietPhong);
         }
         return null;
     }
 
     @Override
-    public PagedResponse<KhachHangResponse1> getKhachHang(int page, int size) throws ServiceException {
+    public PagedResponse<ChiTietPhongResponse1> getChiTietPhong(int page, int size) throws ServiceException {
         if (page <= 0) {
             throw ServiceExceptionBuilderUtil.newBuilder()
                     .addError(new ValidationErrorResponse("page", ValidationErrorUtil.Invalid))
@@ -98,10 +93,10 @@ public class KhachHangServiceImpl implements IKhachHangService {
 
         // Retrieve all entities
         Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
-        Page<KhachHang> entities = khachHangRepository.findAll(pageable);
+        Page<ChiTietPhong> entities = chiTietPhongRepository.findAll(pageable);
 
         return new PagedResponse<>(
-                this.khachHangMapper.toDtoList(entities.getContent()),
+                this.chiTietPhongMapper.toDtoList(entities.getContent()),
                 page,
                 size,
                 entities.getTotalElements(),
