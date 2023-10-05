@@ -1,8 +1,8 @@
 package be.bds.bdsbes.resource;
 
 import be.bds.bdsbes.exception.ServiceException;
-import be.bds.bdsbes.service.IKhachHangService;
-import be.bds.bdsbes.service.dto.KhachHangDTO;
+import be.bds.bdsbes.service.IChiTietPhongService;
+import be.bds.bdsbes.service.dto.ChiTietPhongDTO;
 import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -15,20 +15,21 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+
 @Slf4j
 @RestController
-@RequestMapping("/rpc/bds/khach-hang")
-public class KhachHangController {
+@RequestMapping("/rpc/bds/chi-tiet-phong")
+public class ChiTietPhongController {
 
     @Autowired
-    IKhachHangService khachHangService;
+    IChiTietPhongService iChiTietPhongService;
 
     @GetMapping("list")
     public ResponseEntity<?> getList(
             @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
             @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size) {
         try {
-            return ResponseUtil.wrap(this.khachHangService.getKhachHang(page, size));
+            return ResponseUtil.wrap(this.iChiTietPhongService.getChiTietPhong(page, size));
         } catch (Exception ex) {
             log.error(this.getClass().getName(), ex);
             return ResponseUtil.generateErrorResponse(ex);
@@ -37,29 +38,32 @@ public class KhachHangController {
         }
     }
 
-    @GetMapping("detail/{id}")
+    @GetMapping("/detail/{id}")
     public ResponseEntity<?> getOne(@PathVariable("id") Long id){
-        if(khachHangService.getOne(id) == null){
+        if(iChiTietPhongService.getOne(id) == null){
             return ResponseEntity.badRequest().body("Không tìm thấy");
         }
-        return ResponseEntity.ok(khachHangService.getOne(id));
+        return ResponseEntity.ok(iChiTietPhongService.getOne(id));
     }
 
-    @PostMapping("create")
-    public ResponseEntity<?> create(@RequestBody @Valid KhachHangDTO khachHangDTO, BindingResult result){
+    @PostMapping("/create")
+    public ResponseEntity<?> create(@RequestBody @Valid ChiTietPhongDTO chiTietPhongDTO, BindingResult result){
         if(result.hasErrors()){
             List<ObjectError> errorList = result.getAllErrors();
             return ResponseEntity.badRequest().body(errorList);
         }
-        return ResponseEntity.ok(khachHangService.create(khachHangDTO));
+        return ResponseEntity.ok(iChiTietPhongService.create(chiTietPhongDTO));
     }
 
-    @PutMapping("update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody @Valid KhachHangDTO khachHangDTO, BindingResult result){
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> create(@PathVariable("id") Long id, @RequestBody @Valid ChiTietPhongDTO chiTietPhongDTO, BindingResult result){
+        if(iChiTietPhongService.update(chiTietPhongDTO, id) == null){
+            return ResponseEntity.badRequest().body("Cập nhật thất bại");
+        }
         if(result.hasErrors()){
             List<ObjectError> errorList = result.getAllErrors();
             return ResponseEntity.badRequest().body(errorList);
         }
-        return ResponseEntity.ok(khachHangService.update(khachHangDTO, id));
+        return ResponseEntity.ok(iChiTietPhongService.update(chiTietPhongDTO, id));
     }
 }

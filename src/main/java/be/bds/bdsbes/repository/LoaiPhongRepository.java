@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface LoaiPhongRepository extends JpaRepository<LoaiPhong, UUID> {
+public interface LoaiPhongRepository extends JpaRepository<LoaiPhong, Long> {
 }
