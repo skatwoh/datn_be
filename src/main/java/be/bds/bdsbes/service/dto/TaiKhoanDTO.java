@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Random;
@@ -27,6 +28,7 @@ public class TaiKhoanDTO {
     @NotBlank(message = "Not blank")
     @Length(min = 8, message = "Mật khẩu tối thiếu 8 ký tự")
     @Length(max = 30, message = "Mật khẩu không được vượt quá 30 ký tự")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]){8,20}$")
     private String matKhau;
 
     @NotBlank(message = "Not blank")

@@ -1,8 +1,13 @@
 package be.bds.bdsbes.service;
 
 import be.bds.bdsbes.entities.TaiKhoan;
+import be.bds.bdsbes.exception.ServiceException;
+import be.bds.bdsbes.payload.TaiKhoanResponse1;
+import be.bds.bdsbes.payload.UserProfileResponse;
+import be.bds.bdsbes.service.dto.LoginDTO;
 import be.bds.bdsbes.service.dto.TaiKhoanDTO;
 import be.bds.bdsbes.service.dto.response.TaiKhoanResponse;
+import be.bds.bdsbes.utils.dto.PagedResponse;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -20,4 +25,7 @@ public interface ITaiKhoanService {
     TaiKhoan add(TaiKhoanDTO taiKhoanDTO);
 
     TaiKhoan update(TaiKhoanDTO taiKhoanDTO, Long id);
+    String login(LoginDTO loginDTO);
+
+    public PagedResponse<TaiKhoanResponse1> getAccounts(int page, int size) throws ServiceException;
 }

@@ -25,4 +25,6 @@ public class UserProfileResponse {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    private String role;
 }
