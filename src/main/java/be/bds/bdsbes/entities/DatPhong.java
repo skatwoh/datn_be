@@ -27,6 +27,7 @@ public class DatPhong {
 
     @Id
     @Column(name = COLUMN_ID_NAME, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

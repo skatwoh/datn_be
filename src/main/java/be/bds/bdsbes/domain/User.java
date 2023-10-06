@@ -52,6 +52,8 @@ public class User extends DateAudit {
 
     private String providerId;
 
+    private String cv;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),

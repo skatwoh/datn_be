@@ -3,6 +3,7 @@ package be.bds.bdsbes.service.dto;
 import lombok.Value;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.UUID;
@@ -12,14 +13,24 @@ import java.util.UUID;
  */
 @Value
 public class DatPhongDTO implements Serializable {
-    @NotNull
+
+    @NotNull(message = "Bạn cần chọn ngày đặt")
     LocalDate ngayDat;
-    @NotNull
+
+    @NotNull(message = "Bạn cần chọn ngày check-in")
     LocalDate checkIn;
-    @NotNull
+
+    @NotNull(message = "Bạn cần chọn ngày check-out")
     LocalDate checkOut;
-    @NotNull
+
+    @NotNull(message = "Vui lòng điền số người")
     Integer soNguoi;
+
+    Long idKhachHang;
+
+    Long idVoucher;
+
     String ghiChu;
+
     Integer trangThai;
 }
