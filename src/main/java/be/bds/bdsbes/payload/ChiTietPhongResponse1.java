@@ -26,5 +26,5 @@ public class ChiTietPhongResponse1 {
 
     private Integer trangThai;
 
-    private LoaiPhong loaiPhong;
+    private String tenLoaiPhong;
 }

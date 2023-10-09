@@ -7,13 +7,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class TaiKhoanResponse1 {
+@NoArgsConstructor
+public class TaiSanResponse1 {
     private Long id;
-    private String email;
-    private String matKhau;
-    private Integer trangThai;
+    private String ma;
     private String ten;
-    private String maKhachHang;
+    private String ghiChu;
+    private Integer trangThai;
 }

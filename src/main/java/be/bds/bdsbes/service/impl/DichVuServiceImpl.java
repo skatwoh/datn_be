@@ -1,13 +1,13 @@
 package be.bds.bdsbes.service.impl;
 
-import be.bds.bdsbes.entities.ChiTietPhong;
-import be.bds.bdsbes.entities.Phong;
+import be.bds.bdsbes.entities.DichVu;
 import be.bds.bdsbes.exception.ServiceException;
-import be.bds.bdsbes.payload.ChiTietPhongResponse1;
-import be.bds.bdsbes.repository.ChiTietPhongRepository;
-import be.bds.bdsbes.service.IChiTietPhongService;
-import be.bds.bdsbes.service.dto.ChiTietPhongDTO;
-import be.bds.bdsbes.service.mapper.ChiTietPhongMapper;
+import be.bds.bdsbes.payload.DichVuResponse1;
+import be.bds.bdsbes.repository.DichVuRepository;
+import be.bds.bdsbes.service.IDichVuService;
+import be.bds.bdsbes.service.dto.DichVuDTO;
+import be.bds.bdsbes.service.dto.response.DichVuResponse;
+import be.bds.bdsbes.service.mapper.DichVuMapper;
 import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ServiceExceptionBuilderUtil;
 import be.bds.bdsbes.utils.ValidationErrorUtil;
@@ -25,57 +25,58 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-
 @Slf4j
-@Service
-public class ChiTietPhongServiceImpl implements IChiTietPhongService {
-
+@Service("DichVuServiceImpl")
+public class DichVuServiceImpl implements IDichVuService {
     @Autowired
-    private ChiTietPhongRepository chiTietPhongRepository;
-
+    private  DichVuRepository dichVuRepository;
     @Autowired
-    private ChiTietPhongMapper chiTietPhongMapper;
+    private DichVuMapper dichVuMapper;
 
     @Override
-    public List<ChiTietPhong> getList() {
-        return chiTietPhongRepository.findAll();
+    public List<DichVuResponse> getList() {
+        return dichVuRepository.getAllDv();
     }
 
     @Override
-    public Page<ChiTietPhong> getPage(Integer page) {
+    public Page<DichVu> getPage(Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return chiTietPhongRepository.findAll(pageable);
+        return dichVuRepository.findAll(pageable);
     }
 
     @Override
-    public ChiTietPhong getOne(Long id) {
-        Optional<ChiTietPhong> optionalChiTietPhong = chiTietPhongRepository.findById(id);
-        if(optionalChiTietPhong.isPresent()){
-            ChiTietPhong chiTietPhong = optionalChiTietPhong.get();
-            return chiTietPhong;
+    public DichVu getOne(Long id) {
+        Optional<DichVu> dichVuOptional = dichVuRepository.findById(id);
+        if(dichVuOptional.isPresent()){
+            DichVu dichVu = dichVuOptional.get();
+            return dichVu;
         }
         return null;
     }
 
     @Override
-    public ChiTietPhong create(ChiTietPhongDTO chiTietPhongDTO) {
-        ChiTietPhong chiTietPhong = chiTietPhongDTO.dto(new ChiTietPhong());
-        return chiTietPhongRepository.save(chiTietPhong);
+    public DichVu create(DichVuDTO dichVuDTO) {
+        DichVu dichVu = dichVuDTO.dto(new DichVu());
+        return dichVuRepository.save(dichVu);
     }
 
     @Override
-    public ChiTietPhong update(ChiTietPhongDTO chiTietPhongDTO, Long id) {
-        Optional<ChiTietPhong> optionalChiTietPhong = chiTietPhongRepository.findById(id);
-        if(optionalChiTietPhong.isPresent()){
-            ChiTietPhong chiTietPhong = chiTietPhongDTO.dto(optionalChiTietPhong.get());
-            return chiTietPhongRepository.save(chiTietPhong);
+    public DichVu update(DichVuDTO dichVuDTO, Long id) {
+        Optional<DichVu> dichVuOptional = dichVuRepository.findById(id);
+        if(dichVuOptional.isPresent()){
+            DichVu dichVu = dichVuDTO.dto(dichVuOptional.get());
+            return dichVuRepository.save(dichVu);
         }
         return null;
     }
-
+    /**
+     * @param page
+     * @param size
+     * @return
+     * @throws ServiceException
+     */
     @Override
-    public PagedResponse<ChiTietPhongResponse1> getChiTietPhong(int page, int size) throws ServiceException {
+    public PagedResponse<DichVuResponse1> getAccounts(int page, int size) throws ServiceException {
         if (page <= 0) {
             throw ServiceExceptionBuilderUtil.newBuilder()
                     .addError(new ValidationErrorResponse("page", ValidationErrorUtil.Invalid))
@@ -93,11 +94,10 @@ public class ChiTietPhongServiceImpl implements IChiTietPhongService {
 
         // Retrieve all entities
         Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
-        Page<ChiTietPhong> entities = chiTietPhongRepository.findAll(pageable);
+        Page<DichVu> entities = dichVuRepository.findAll(pageable);
 
-        List<ChiTietPhongResponse1> dtos = this.chiTietPhongMapper.toDtoList(entities.getContent());
         return new PagedResponse<>(
-                dtos,
+                this.dichVuMapper.toDtoList(entities.getContent()),
                 page,
                 size,
                 entities.getTotalElements(),
