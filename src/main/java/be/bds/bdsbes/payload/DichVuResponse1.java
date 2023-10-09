@@ -4,16 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TaiKhoanResponse1 {
+public class DichVuResponse1 {
     private Long id;
-    private String email;
-    private String matKhau;
+    private String ma;
+    private String tenDichVu;
+    private String ghiChu;
+    private BigDecimal giaDichVu;
     private Integer trangThai;
-    private String ten;
-    private String maKhachHang;
+
 }

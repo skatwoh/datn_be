@@ -4,22 +4,21 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class PhongResponse1 {
-
+@AllArgsConstructor
+public class DuAnResponse1 {
     private Long id;
-
     private String ma;
-
-    private BigDecimal giaPhong;
-
+    private String ten;
+    private Double tienDo;
+    private BigDecimal chiPhi;
+    private LocalDate ngayBatDau;
+    private LocalDate ngayKetThuc;
+    private String ghiChu;
     private Integer trangThai;
-
-    private LoaiPhongResponse1 loaiPhongResponse1;
 }

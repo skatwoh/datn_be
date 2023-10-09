@@ -28,27 +28,40 @@ public class TaiKhoanController {
     @Autowired
     private TaiKhoanRepository taiKhoanRepository;
 
-//    @GetMapping("list")
-//    public ResponseEntity<?> getAll(){
-//        return ResponseEntity.ok(ITaiKhoanService.getAllTaiKhoan());
-//    }
+    @GetMapping("list1")
+    public ResponseEntity<?> getAll(){
+        return ResponseEntity.ok(iTaiKhoanService.getAllTaiKhoan());
+    }
 
     @GetMapping("get-page")
     public ResponseEntity<?> getPage(@RequestParam(defaultValue = "0", name = "page") Integer page){
         return ResponseEntity.ok(iTaiKhoanService.getPage(page).toList());
     }
 
-    @GetMapping("detail/{id}")
-    public ResponseEntity<?> getOne(@PathVariable("id") String id){
-        try {
-            if(iTaiKhoanService.getOne(Long.parseLong(id)) == null){
-                return ResponseEntity.badRequest().body("Không tìm thấy");
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            return ResponseEntity.ok("id must be a number");
-        }
-        return ResponseEntity.ok(iTaiKhoanService.getOne(Long.parseLong(id)));
+//    @GetMapping("detail/{id}")
+//    public ResponseEntity<?> getOne(@PathVariable("id") String id){
+//        try {
+//            if(iTaiKhoanService.getOne(Long.parseLong(id)) == null){
+//                return ResponseEntity.badRequest().body("Không tìm thấy");
+//            }
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            return ResponseEntity.ok("id must be a number");
+//        }
+//        return ResponseEntity.ok(iTaiKhoanService.getOne(Long.parseLong(id)));
+//    }
+
+    @GetMapping("detail")
+    public ResponseEntity<?> get(@RequestParam(value = "id") Long id){
+//        try {
+//            if(iTaiKhoanService.get(id) == null){
+//                return ResponseEntity.badRequest().body("Không tìm thấy");
+//            }
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            return ResponseEntity.ok("id must be a number");
+//        }
+        return ResponseUtil.wrap(this.iTaiKhoanService.get(id));
     }
 
     @PostMapping("create")

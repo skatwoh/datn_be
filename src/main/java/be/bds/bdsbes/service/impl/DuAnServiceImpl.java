@@ -1,13 +1,15 @@
 package be.bds.bdsbes.service.impl;
 
-import be.bds.bdsbes.entities.ChiTietPhong;
-import be.bds.bdsbes.entities.Phong;
+import be.bds.bdsbes.entities.DuAn;
+import be.bds.bdsbes.entities.TaiKhoan;
 import be.bds.bdsbes.exception.ServiceException;
-import be.bds.bdsbes.payload.ChiTietPhongResponse1;
-import be.bds.bdsbes.repository.ChiTietPhongRepository;
-import be.bds.bdsbes.service.IChiTietPhongService;
-import be.bds.bdsbes.service.dto.ChiTietPhongDTO;
-import be.bds.bdsbes.service.mapper.ChiTietPhongMapper;
+import be.bds.bdsbes.payload.DuAnResponse1;
+import be.bds.bdsbes.payload.TaiKhoanResponse1;
+import be.bds.bdsbes.repository.DuAnRepository;
+import be.bds.bdsbes.service.IDuAnService;
+import be.bds.bdsbes.service.dto.DuAnDTO;
+import be.bds.bdsbes.service.mapper.DuAnMapper;
+import be.bds.bdsbes.service.mapper.TaiKhoanMapper;
 import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ServiceExceptionBuilderUtil;
 import be.bds.bdsbes.utils.ValidationErrorUtil;
@@ -25,57 +27,58 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-
 @Slf4j
-@Service
-public class ChiTietPhongServiceImpl implements IChiTietPhongService {
-
+@Service("DuAnServiceImpl")
+public class DuAnServiceImpl implements IDuAnService {
     @Autowired
-    private ChiTietPhongRepository chiTietPhongRepository;
-
+    DuAnRepository duAnRepository;
     @Autowired
-    private ChiTietPhongMapper chiTietPhongMapper;
+    private DuAnMapper duAnMapper;
 
     @Override
-    public List<ChiTietPhong> getList() {
-        return chiTietPhongRepository.findAll();
+    public List<DuAn> getList() {
+        return duAnRepository.findAll();
     }
 
     @Override
-    public Page<ChiTietPhong> getPage(Integer page) {
+    public Page<DuAn> getPage(Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return chiTietPhongRepository.findAll(pageable);
+        return duAnRepository.findAll(pageable);
     }
 
     @Override
-    public ChiTietPhong getOne(Long id) {
-        Optional<ChiTietPhong> optionalChiTietPhong = chiTietPhongRepository.findById(id);
-        if(optionalChiTietPhong.isPresent()){
-            ChiTietPhong chiTietPhong = optionalChiTietPhong.get();
-            return chiTietPhong;
+    public DuAn getOne(Long id) {
+        Optional<DuAn> duAnOptional = duAnRepository.findById(id);
+        if(duAnOptional.isPresent()){
+            DuAn duAn = duAnOptional.get();
+            return duAn;
         }
         return null;
     }
 
     @Override
-    public ChiTietPhong create(ChiTietPhongDTO chiTietPhongDTO) {
-        ChiTietPhong chiTietPhong = chiTietPhongDTO.dto(new ChiTietPhong());
-        return chiTietPhongRepository.save(chiTietPhong);
+    public DuAn create(DuAnDTO duAnDTO) {
+        DuAn duAn = duAnDTO.dto(new DuAn());
+        return duAnRepository.save(duAn);
     }
 
     @Override
-    public ChiTietPhong update(ChiTietPhongDTO chiTietPhongDTO, Long id) {
-        Optional<ChiTietPhong> optionalChiTietPhong = chiTietPhongRepository.findById(id);
-        if(optionalChiTietPhong.isPresent()){
-            ChiTietPhong chiTietPhong = chiTietPhongDTO.dto(optionalChiTietPhong.get());
-            return chiTietPhongRepository.save(chiTietPhong);
+    public DuAn update(DuAnDTO duAnDTO, Long id) {
+        Optional<DuAn> duAnOptional = duAnRepository.findById(id);
+        if(duAnOptional.isPresent()){
+           DuAn duAn = duAnDTO.dto(duAnOptional.get());
+            return duAnRepository.save(duAn);
         }
         return null;
     }
-
+    /**
+     * @param page
+     * @param size
+     * @return
+     * @throws ServiceException
+     */
     @Override
-    public PagedResponse<ChiTietPhongResponse1> getChiTietPhong(int page, int size) throws ServiceException {
+    public PagedResponse<DuAnResponse1> getAccounts(int page, int size) throws ServiceException {
         if (page <= 0) {
             throw ServiceExceptionBuilderUtil.newBuilder()
                     .addError(new ValidationErrorResponse("page", ValidationErrorUtil.Invalid))
@@ -93,11 +96,10 @@ public class ChiTietPhongServiceImpl implements IChiTietPhongService {
 
         // Retrieve all entities
         Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
-        Page<ChiTietPhong> entities = chiTietPhongRepository.findAll(pageable);
+        Page<DuAn> entities = duAnRepository.findAll(pageable);
 
-        List<ChiTietPhongResponse1> dtos = this.chiTietPhongMapper.toDtoList(entities.getContent());
         return new PagedResponse<>(
-                dtos,
+                this.duAnMapper.toDtoList(entities.getContent()),
                 page,
                 size,
                 entities.getTotalElements(),
