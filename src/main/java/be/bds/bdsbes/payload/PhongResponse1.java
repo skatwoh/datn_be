@@ -20,4 +20,6 @@ public class PhongResponse1 {
     private BigDecimal giaPhong;
 
     private Integer trangThai;
+
+    private LoaiPhongResponse1 loaiPhongResponse1;
 }

@@ -7,9 +7,10 @@ import be.bds.bdsbes.payload.KhachHangResponse1;
 import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
-public interface ChiTietPhongMapper extends EntityMapper<ChiTietPhongResponse1, ChiTietPhong>{
+public interface ChiTietPhongMapper extends EntityMapper<ChiTietPhongResponse1, ChiTietPhong> {
 
+    @Mapping(target = "tenLoaiPhong", source = "idLoaiPhong.tenLoaiPhong")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    ChiTietPhong partialUpdate(ChiTietPhongResponse1 chiTietPhongResponse1, @MappingTarget ChiTietPhong chiTietPhong);
-
+    ChiTietPhongResponse1 toDto(ChiTietPhong chiTietPhong);
 }
+

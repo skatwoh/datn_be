@@ -5,6 +5,7 @@ import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Builder
 @AllArgsConstructor
@@ -14,7 +15,7 @@ import javax.validation.constraints.Size;
 @ToString
 @Entity
 @Table(name = TaiKhoan.TABLE_NAME)
-public class TaiKhoan {
+public class TaiKhoan implements Serializable {
     public static final String TABLE_NAME = "tai_khoan";
     public static final String COLUMN_ID_NAME = "id";
     public static final String COLUMN_EMAIL_NAME = "email";

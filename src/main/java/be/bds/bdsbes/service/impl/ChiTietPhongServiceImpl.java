@@ -95,8 +95,9 @@ public class ChiTietPhongServiceImpl implements IChiTietPhongService {
         Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
         Page<ChiTietPhong> entities = chiTietPhongRepository.findAll(pageable);
 
+        List<ChiTietPhongResponse1> dtos = this.chiTietPhongMapper.toDtoList(entities.getContent());
         return new PagedResponse<>(
-                this.chiTietPhongMapper.toDtoList(entities.getContent()),
+                dtos,
                 page,
                 size,
                 entities.getTotalElements(),

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TaiKhoanRepository extends JpaRepository<TaiKhoan, Long> {
@@ -16,4 +17,10 @@ public interface TaiKhoanRepository extends JpaRepository<TaiKhoan, Long> {
     List<TaiKhoanResponse> getAllTaiKhoan();
 
     TaiKhoan findByEmail(String email);
+
+    @Query("select t.email, t.ten, t.matKhau, t.trangThai from TaiKhoan t " +
+            "where t.id = ?1")
+    Optional<TaiKhoan> get(Long id);
+
+
 }

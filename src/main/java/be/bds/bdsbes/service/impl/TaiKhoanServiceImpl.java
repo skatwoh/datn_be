@@ -2,6 +2,7 @@ package be.bds.bdsbes.service.impl;
 
 import be.bds.bdsbes.entities.TaiKhoan;
 import be.bds.bdsbes.exception.ServiceException;
+import be.bds.bdsbes.payload.ChiTietPhongResponse1;
 import be.bds.bdsbes.payload.TaiKhoanResponse1;
 import be.bds.bdsbes.repository.TaiKhoanRepository;
 import be.bds.bdsbes.service.ITaiKhoanService;
@@ -63,6 +64,20 @@ public class TaiKhoanServiceImpl implements ITaiKhoanService {
         return null;
     }
 
+    /**
+     * @param id
+     * @return
+     */
+    @Override
+    public TaiKhoan get(Long id) {
+        Optional<TaiKhoan> taiKhoanOptional = taiKhoanRepository.get(id);
+        if(taiKhoanOptional.isPresent()){
+            TaiKhoan taiKhoan = taiKhoanOptional.get();
+            return taiKhoan;
+        }
+        return null;
+    }
+
     @Override
     public TaiKhoan add(TaiKhoanDTO taiKhoanDTO) {
         TaiKhoan taiKhoan = taiKhoanDTO.dto(new TaiKhoan());
@@ -116,8 +131,10 @@ public class TaiKhoanServiceImpl implements ITaiKhoanService {
         Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
         Page<TaiKhoan> entities = taiKhoanRepository.findAll(pageable);
 
+        List<TaiKhoanResponse1> dtos = this.taiKhoanMapper.toDtoList(entities.getContent());
+
         return new PagedResponse<>(
-                this.taiKhoanMapper.toDtoList(entities.getContent()),
+                dtos,
                 page,
                 size,
                 entities.getTotalElements(),
