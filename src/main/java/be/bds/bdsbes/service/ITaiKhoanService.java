@@ -22,6 +22,8 @@ public interface ITaiKhoanService {
 
     TaiKhoan getOne(Long id);
 
+    TaiKhoan get(Long id);
+
     TaiKhoan add(TaiKhoanDTO taiKhoanDTO);
 
     TaiKhoan update(TaiKhoanDTO taiKhoanDTO, Long id);

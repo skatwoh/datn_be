@@ -1,5 +1,6 @@
 package be.bds.bdsbes.service.mapper;
 
+import be.bds.bdsbes.entities.LoaiPhong;
 import be.bds.bdsbes.entities.Phong;
 import be.bds.bdsbes.payload.PhongResponse1;
 import org.mapstruct.*;

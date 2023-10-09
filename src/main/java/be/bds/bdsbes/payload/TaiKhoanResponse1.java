@@ -15,4 +15,5 @@ public class TaiKhoanResponse1 {
     private String matKhau;
     private Integer trangThai;
     private String ten;
+    private String maKhachHang;
 }
