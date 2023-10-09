@@ -27,6 +27,7 @@ public class Voucher {
     public static final String COLUMN_NGAYBATDAU_NAME = "ngay_bat_dau";
     public static final String COLUMN_NGAYKETTHUC_NAME = "ngay_ket_thuc";
     public static final String COLUMN_TRANGTHAI_NAME = "trang_thai";
+    public static final String COLUMN_SOLUONG_NAME = "so_luong";
 
 
     @Id
@@ -54,6 +55,9 @@ public class Voucher {
 
     @Column(name = COLUMN_TRANGTHAI_NAME)
     private Integer trangThai;
+
+    @Column(name = COLUMN_SOLUONG_NAME)
+    private Integer soLuong;
 
     @OneToMany(mappedBy = "idVoucher")
     private Set<DatPhong> datPhongs = new LinkedHashSet<>();
