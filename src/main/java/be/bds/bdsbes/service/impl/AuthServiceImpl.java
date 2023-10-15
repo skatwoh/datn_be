@@ -61,7 +61,7 @@ public class AuthServiceImpl implements IAuthService {
 
         User user = this.signUpMapper.toEntity(signUpRequest);
 
-        Optional<Role> userRole = roleRepository.findByName(RoleName.ROLE_USER);
+        Optional<Role> userRole = roleRepository.findByName(RoleName.ROLE_GUEST);
         if (userRole.isPresent()) {
             user.setRoles(Collections.singleton(userRole.get()));
         } else {
