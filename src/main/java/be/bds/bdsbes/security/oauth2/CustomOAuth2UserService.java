@@ -87,7 +87,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         user.setEmail(oAuth2UserInfo.getEmail());
         user.setImageUrl(oAuth2UserInfo.getImageUrl());
 
-        Optional<Role> userRole = roleRepository.findByName(RoleName.ROLE_USER);
+        Optional<Role> userRole = roleRepository.findByName(RoleName.ROLE_GUEST);
         if (userRole.isPresent()) {
             user.setRoles(Collections.singleton(userRole.get()));
         } else {
