@@ -38,12 +38,9 @@ public class PhongController {
         }
     }
 
-    @GetMapping("/detail/{id}")
-    public ResponseEntity<?> getOne(Long id){
-        if(iPhongService.getOne(id) == null){
-            return ResponseEntity.badRequest().body("Không tìm thấy");
-        }
-        return ResponseEntity.ok(iPhongService.getOne(id));
+    @GetMapping("detail")
+    public ResponseEntity<?> getOne(@RequestParam(value = "id") Long id){
+        return ResponseEntity.ok(iPhongService.get(id));
     }
 
     @PostMapping("/create")

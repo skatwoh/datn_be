@@ -52,13 +52,8 @@ public class PhongServiceImpl implements IPhongService {
     }
 
     @Override
-    public Phong getOne(Long id) {
-        Optional<Phong> phongOptional = phongRepository.findById(id);
-        if(phongOptional.isPresent()){
-            Phong phong = phongOptional.get();
-            return phong;
-        }
-        return null;
+    public List<PhongResponse> get(Long id) {
+        return phongRepository.get(id);
     }
 
     @Override
