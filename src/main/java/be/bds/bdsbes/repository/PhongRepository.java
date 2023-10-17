@@ -17,5 +17,5 @@ public interface PhongRepository extends JpaRepository<Phong, Long> {
     List<PhongResponse> getAllPhong();
 
     @Query(value = "select p.id, p.ma, p.gia_phong, p.trang_thai from Phong p where p.id = ?1", nativeQuery = true)
-    List<PhongResponse> get(Long id);
+    PhongResponse get(Long id);
 }

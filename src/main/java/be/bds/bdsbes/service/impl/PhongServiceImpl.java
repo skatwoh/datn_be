@@ -2,6 +2,7 @@ package be.bds.bdsbes.service.impl;
 
 import be.bds.bdsbes.entities.Phong;
 import be.bds.bdsbes.exception.ServiceException;
+import be.bds.bdsbes.payload.ChiTietPhongResponse1;
 import be.bds.bdsbes.payload.PhongResponse1;
 import be.bds.bdsbes.repository.PhongRepository;
 import be.bds.bdsbes.service.IPhongService;
@@ -52,7 +53,7 @@ public class PhongServiceImpl implements IPhongService {
     }
 
     @Override
-    public List<PhongResponse> get(Long id) {
+    public PhongResponse get(Long id) {
         return phongRepository.get(id);
     }
 
@@ -93,8 +94,9 @@ public class PhongServiceImpl implements IPhongService {
         Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
         Page<Phong> entities = phongRepository.findAll(pageable);
 
+        List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());
         return new PagedResponse<>(
-                this.phongMapper.toDtoList(entities.getContent()),
+                dtos,
                 page,
                 size,
                 entities.getTotalElements(),
