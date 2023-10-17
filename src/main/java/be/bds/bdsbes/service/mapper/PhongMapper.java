@@ -9,6 +9,8 @@ import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface PhongMapper extends EntityMapper<PhongResponse1, Phong>{
+
+    @Mapping(target = "tenLoaiPhong", source = "idLoaiPhong.tenLoaiPhong")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     PhongResponse1 toDto(Phong phong);
 }

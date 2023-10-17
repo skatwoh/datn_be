@@ -6,6 +6,7 @@ import be.bds.bdsbes.payload.LoaiPhongResponse1;
 import be.bds.bdsbes.repository.LoaiPhongRepository;
 import be.bds.bdsbes.service.ILoaiPhongService;
 import be.bds.bdsbes.service.dto.LoaiPhongDTO;
+import be.bds.bdsbes.service.dto.response.LoaiPhongResponse;
 import be.bds.bdsbes.service.mapper.LoaiPhongMapper;
 import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ServiceExceptionBuilderUtil;
@@ -39,6 +40,11 @@ public class LoaiPhongServiceImpl implements ILoaiPhongService {
     @Override
     public List<LoaiPhong> getList() {
         return loaiPhongRepository.findAll();
+    }
+
+    @Override
+    public List<LoaiPhongResponse> singleListRoomType() {
+        return loaiPhongRepository.singleListRoomType();
     }
 
     @Override
