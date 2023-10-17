@@ -18,7 +18,7 @@ public interface IPhongService {
 
     Page<Phong> getPage(Integer page);
 
-    List<PhongResponse> get(Long id);
+    PhongResponse get(Long id);
 
     Phong create(PhongDTO phongDTO);
 
