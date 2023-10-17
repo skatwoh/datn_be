@@ -38,7 +38,7 @@ public class ChiTietPhongController {
         }
     }
 
-    @GetMapping("/detail/{id}")
+    @GetMapping("detail")
     public ResponseEntity<?> getOne(@PathVariable("id") Long id){
         if(iChiTietPhongService.getOne(id) == null){
             return ResponseEntity.badRequest().body("Không tìm thấy");

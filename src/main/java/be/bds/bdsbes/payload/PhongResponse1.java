@@ -21,5 +21,5 @@ public class PhongResponse1 {
 
     private Integer trangThai;
 
-    private LoaiPhongResponse1 loaiPhongResponse1;
+    private String tenLoaiPhong;
 }

@@ -2,6 +2,7 @@ package be.bds.bdsbes.resource;
 
 import be.bds.bdsbes.entities.Phong;
 import be.bds.bdsbes.exception.ServiceException;
+import be.bds.bdsbes.service.ILoaiPhongService;
 import be.bds.bdsbes.service.IPhongService;
 import be.bds.bdsbes.service.dto.PhongDTO;
 import be.bds.bdsbes.utils.AppConstantsUtil;
@@ -24,6 +25,9 @@ public class PhongController {
     @Autowired
     IPhongService iPhongService;
 
+    @Autowired
+    ILoaiPhongService iLoaiPhongService;
+
     @GetMapping("list")
     public ResponseEntity<?> getList(
             @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
@@ -36,6 +40,11 @@ public class PhongController {
         } catch (ServiceException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @GetMapping("single-list-room-type")
+    public ResponseEntity<?> singleListRoomType(){
+        return ResponseEntity.ok(iLoaiPhongService.singleListRoomType());
     }
 
     @GetMapping("detail")
@@ -58,8 +67,8 @@ public class PhongController {
         return ResponseEntity.ok(iPhongService.create(phongDTO));
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody @Valid PhongDTO phongDTO, BindingResult result){
+    @PutMapping("update")
+    public ResponseEntity<?> update(@RequestParam(value = "id") Long id, @RequestBody @Valid PhongDTO phongDTO, BindingResult result){
         if(result.hasErrors()){
             List<ObjectError> errorList = result.getAllErrors();
             return ResponseEntity.badRequest().body(errorList);
