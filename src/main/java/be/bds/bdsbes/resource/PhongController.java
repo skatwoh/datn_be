@@ -49,7 +49,7 @@ public class PhongController {
 
     @GetMapping("detail")
     public ResponseEntity<?> getOne(@RequestParam(value = "id") Long id){
-        return ResponseEntity.ok(iPhongService.get(id));
+        return ResponseEntity.ok(iPhongService.getPhong(id));
     }
 
     @PostMapping("/create")
@@ -72,9 +72,6 @@ public class PhongController {
         if(result.hasErrors()){
             List<ObjectError> errorList = result.getAllErrors();
             return ResponseEntity.badRequest().body(errorList);
-        }
-        if(iPhongService.update(phongDTO, id) == null){
-            return ResponseEntity.badRequest().body("Không tìm thấy");
         }
         List<Phong> list = iPhongService.getList();
         for(Phong phong : list){

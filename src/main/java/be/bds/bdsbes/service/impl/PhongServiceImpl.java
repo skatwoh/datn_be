@@ -58,6 +58,11 @@ public class PhongServiceImpl implements IPhongService {
     }
 
     @Override
+    public PhongResponse1 getPhong(Long id) {
+        return phongRepository.getPhong(id);
+    }
+
+    @Override
     public Phong create(PhongDTO phongDTO) {
         Phong phong = phongDTO.dto(new Phong());
         return phongRepository.save(phong);

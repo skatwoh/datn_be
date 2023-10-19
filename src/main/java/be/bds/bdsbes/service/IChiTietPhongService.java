@@ -17,6 +17,8 @@ public interface IChiTietPhongService {
 
     ChiTietPhong getOne(Long id);
 
+    ChiTietPhongResponse1 get(Long id);
+
     ChiTietPhong create(ChiTietPhongDTO chiTietPhongDTO);
 
     ChiTietPhong update(ChiTietPhongDTO chiTietPhongDTO, Long id);
