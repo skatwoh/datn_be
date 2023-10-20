@@ -33,7 +33,7 @@ public class Phong {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_loai_phong")
-    private LoaiPhong idLoaiPhong;
+    private LoaiPhong loaiPhong;
 
     @Column(name = COLUMN_GIAPHONG_NAME, precision = 18)
     private BigDecimal giaPhong;

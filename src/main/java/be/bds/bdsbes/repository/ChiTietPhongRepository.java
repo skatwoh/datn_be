@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface ChiTietPhongRepository extends JpaRepository<ChiTietPhong, Long> {
 
-    @Query("select new be.bds.bdsbes.payload.ChiTietPhongResponse1(c.id, c.tang, c.tienIch, c.dichVu, c.soLuongNguoi, c.dienTich, c.trangThai, l.id, l.tenLoaiPhong) from ChiTietPhong c left join c.idLoaiPhong l where c.id = ?1")
+    @Query("select new be.bds.bdsbes.payload.ChiTietPhongResponse1(c.id, c.tang, c.tienIch, c.dichVu, c.soLuongNguoi, c.dienTich, c.trangThai, l.id, l.tenLoaiPhong) from ChiTietPhong c left join c.loaiPhong l where c.id = ?1")
     ChiTietPhongResponse1 get(Long id);
 
 }

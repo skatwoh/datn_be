@@ -43,10 +43,10 @@ public class LoaiPhong {
     @Column(name = COLUMN_GHICHU_NAME)
     private String ghiChu;
 
-    @OneToMany(mappedBy = "idLoaiPhong")
+    @OneToMany(mappedBy = "loaiPhong")
     private Set<ChiTietPhong> chiTietPhongs = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "idLoaiPhong")
+    @OneToMany(mappedBy = "loaiPhong")
     private Set<Phong> phongs = new LinkedHashSet<>();
 
 }

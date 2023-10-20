@@ -42,7 +42,7 @@ public class ChiTietPhongDTO {
         chiTietPhong.setSoLuongNguoi(this.getSoLuongNguoi());
         chiTietPhong.setDienTich(this.getDienTich());
         chiTietPhong.setTrangThai(this.getTrangThai());
-        chiTietPhong.setIdLoaiPhong(LoaiPhong.builder().id(this.getIdLoaiPhong()).build());
+        chiTietPhong.setLoaiPhong(LoaiPhong.builder().id(this.getIdLoaiPhong()).build());
         return chiTietPhong;
     }
 }
