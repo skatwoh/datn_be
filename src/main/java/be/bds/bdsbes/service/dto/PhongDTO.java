@@ -30,7 +30,7 @@ public class PhongDTO {
         phong.setMa(this.getMa());
         phong.setGiaPhong(this.getGiaPhong());
         phong.setTrangThai(this.getTrangThai());
-        phong.setIdLoaiPhong(LoaiPhong.builder().id(this.getIdLoaiPhong()).build());
+        phong.setLoaiPhong(LoaiPhong.builder().id(this.getIdLoaiPhong()).build());
         return phong;
     }
 }
