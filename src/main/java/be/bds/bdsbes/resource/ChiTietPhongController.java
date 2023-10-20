@@ -38,12 +38,12 @@ public class ChiTietPhongController {
         }
     }
 
-    @GetMapping("/detail/{id}")
-    public ResponseEntity<?> getOne(@PathVariable("id") Long id){
-        if(iChiTietPhongService.getOne(id) == null){
-            return ResponseEntity.badRequest().body("Không tìm thấy");
-        }
-        return ResponseEntity.ok(iChiTietPhongService.getOne(id));
+    @GetMapping("detail")
+    public ResponseEntity<?> getOne(@RequestParam(value = "id") Long id){
+//        if(iChiTietPhongService.getOne(id) == null){
+//            return ResponseEntity.badRequest().body("Không tìm thấy");
+//        }
+        return ResponseEntity.ok(iChiTietPhongService.get(id));
     }
 
     @PostMapping("/create")
@@ -55,11 +55,8 @@ public class ChiTietPhongController {
         return ResponseEntity.ok(iChiTietPhongService.create(chiTietPhongDTO));
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> create(@PathVariable("id") Long id, @RequestBody @Valid ChiTietPhongDTO chiTietPhongDTO, BindingResult result){
-        if(iChiTietPhongService.update(chiTietPhongDTO, id) == null){
-            return ResponseEntity.badRequest().body("Cập nhật thất bại");
-        }
+    @PutMapping("/update")
+    public ResponseEntity<?> create(@RequestParam(value = "id") Long id, @RequestBody @Valid ChiTietPhongDTO chiTietPhongDTO, BindingResult result){
         if(result.hasErrors()){
             List<ObjectError> errorList = result.getAllErrors();
             return ResponseEntity.badRequest().body(errorList);

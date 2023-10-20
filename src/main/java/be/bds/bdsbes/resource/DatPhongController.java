@@ -38,9 +38,12 @@ public class DatPhongController {
         if(result.hasErrors()){
             List<ObjectError> errors = result.getAllErrors();
             return ResponseEntity.ok(errors);
-        } else {
-            return ResponseEntity.ok().body(iDatPhongService.create(datPhongDTO));
         }
+        if(datPhongDTO.getCheckIn().isAfter(datPhongDTO.getCheckOut())){
+            return ResponseEntity.badRequest().body("Ngày check-in phải trước ngày check-out");
+        }
+            return ResponseEntity.ok().body(iDatPhongService.create(datPhongDTO));
+
     }
 
     @PutMapping("update/{id}")

@@ -1,5 +1,6 @@
 package be.bds.bdsbes.payload;
 
+import be.bds.bdsbes.entities.LoaiPhong;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,5 +22,7 @@ public class PhongResponse1 {
 
     private Integer trangThai;
 
-    private LoaiPhongResponse1 loaiPhongResponse1;
+    private Long idloaiPhong;
+
+    private String tenLoaiPhong;
 }
