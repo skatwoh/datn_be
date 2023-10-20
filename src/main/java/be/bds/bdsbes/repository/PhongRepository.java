@@ -16,6 +16,10 @@ public interface PhongRepository extends JpaRepository<Phong, Long> {
     @Query(value = "select p.id, p.ma, p.id_loai_phong, l.ma_loai_phong, l.ten_loai_phong, p.gia_phong, p.trang_thai from phong p inner join loai_phong l on p.id_loai_phong = l.id", nativeQuery = true)
     List<PhongResponse> getAllPhong();
 
-    @Query(value = "select p.id, p.ma, p.gia_phong, p.trang_thai from Phong p where p.id = ?1", nativeQuery = true)
+    @Query(value = "select p.id, p.ma, p.gia_phong, p.trang_thai, p.id_loai_phong, l.ten_loai_phong from phong p inner join loai_phong l on p.id_loai_phong = l.id where p.id = ?1", nativeQuery = true)
     PhongResponse get(Long id);
+
+    @Query("select new be.bds.bdsbes.payload.PhongResponse1(p.id, p.ma, p.giaPhong, p.trangThai, l.id, l.tenLoaiPhong) from Phong p inner join p.idLoaiPhong l where p.id = ?1")
+    PhongResponse1 getPhong(Long id);
+
 }

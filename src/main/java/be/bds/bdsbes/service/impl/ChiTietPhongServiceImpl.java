@@ -59,6 +59,11 @@ public class ChiTietPhongServiceImpl implements IChiTietPhongService {
     }
 
     @Override
+    public ChiTietPhongResponse1 get(Long id) {
+        return chiTietPhongRepository.get(id);
+    }
+
+    @Override
     public ChiTietPhong create(ChiTietPhongDTO chiTietPhongDTO) {
         ChiTietPhong chiTietPhong = chiTietPhongDTO.dto(new ChiTietPhong());
         return chiTietPhongRepository.save(chiTietPhong);

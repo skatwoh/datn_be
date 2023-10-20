@@ -20,6 +20,8 @@ public interface IPhongService {
 
     PhongResponse get(Long id);
 
+    PhongResponse1 getPhong(Long id);
+
     Phong create(PhongDTO phongDTO);
 
     Phong update(PhongDTO phongDTO, Long id);
