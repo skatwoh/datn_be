@@ -5,4 +5,15 @@ spring:
   web:
     resources:
       add-mappings: true
+  mail:
+    host: smtp.gmail.com            # Địa chỉ máy chủ SMTP
+    port: 587                        # Cổng SMTP
+    username: intercontinental999.ceo@gmail.com # Địa chỉ email người gửi
+    password: ykzopwhmtjedsdhy          # Mật khẩu email người gửi
+    properties:
+      mail:
+        smtp:
+          auth: true                  # Sử dụng xác thực SMTP
+          starttls:
+            enable: true              # Sử dụng TLS
 
