@@ -13,8 +13,6 @@ import java.math.BigDecimal;
 @Setter
 public class PhongDTO {
 
-    @NotBlank(message = "Không được để trống")
-    @NotNull(message = "Not allow null")
     private String ma;
 
     @NotNull(message = "Not allow null")
@@ -27,7 +25,6 @@ public class PhongDTO {
     private Integer trangThai;
 
     public Phong dto(Phong phong){
-        phong.setMa(this.getMa());
         phong.setGiaPhong(this.getGiaPhong());
         phong.setTrangThai(this.getTrangThai());
         phong.setLoaiPhong(LoaiPhong.builder().id(this.getIdLoaiPhong()).build());

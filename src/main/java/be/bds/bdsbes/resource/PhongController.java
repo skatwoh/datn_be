@@ -42,25 +42,54 @@ public class PhongController {
         }
     }
 
+    @GetMapping("sort-by-id-desc")
+    public ResponseEntity<?> sortById(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size) {
+        try {
+            return ResponseUtil.wrap(this.iPhongService.getPhongSortbyId(page, size));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("search")
+    public ResponseEntity<?> getListbySearch(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "input", defaultValue = "") String searchInput) {
+        try {
+            return ResponseUtil.wrap(this.iPhongService.searchRoom(page, size, searchInput));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @GetMapping("single-list-room-type")
-    public ResponseEntity<?> singleListRoomType(){
+    public ResponseEntity<?> singleListRoomType() {
         return ResponseEntity.ok(iLoaiPhongService.singleListRoomType());
     }
 
     @GetMapping("detail")
-    public ResponseEntity<?> getOne(@RequestParam(value = "id") Long id){
-        return ResponseEntity.ok(iPhongService.getPhong(id));
+    public ResponseEntity<?> getOne(@RequestParam(value = "id") Long id) {
+        return ResponseEntity.ok(iPhongService.get(id));
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody @Valid PhongDTO phongDTO, BindingResult result){
-        if(result.hasErrors()){
+    public ResponseEntity<?> create(@RequestBody @Valid PhongDTO phongDTO, BindingResult result) {
+        if (result.hasErrors()) {
             List<ObjectError> errorList = result.getAllErrors();
             return ResponseEntity.badRequest().body(errorList);
         }
         List<Phong> list = iPhongService.getList();
-        for(Phong phong : list){
-            if(phong.getMa().equalsIgnoreCase(phongDTO.getMa())){
+        for (Phong phong : list) {
+            if (phong.getMa().equalsIgnoreCase(phongDTO.getMa())) {
                 return ResponseEntity.badRequest().body("Mã phòng " + phong.getMa() + " đã tồn tại");
             }
         }
@@ -68,17 +97,22 @@ public class PhongController {
     }
 
     @PutMapping("update")
-    public ResponseEntity<?> update(@RequestParam(value = "id") Long id, @RequestBody @Valid PhongDTO phongDTO, BindingResult result){
-        if(result.hasErrors()){
+    public ResponseEntity<?> update(@RequestParam(value = "id") Long id, @RequestBody @Valid PhongDTO phongDTO, BindingResult result) {
+        if (result.hasErrors()) {
             List<ObjectError> errorList = result.getAllErrors();
             return ResponseEntity.badRequest().body(errorList);
         }
         List<Phong> list = iPhongService.getList();
-        for(Phong phong : list){
-            if(phong.getMa().equalsIgnoreCase(phongDTO.getMa()) && !phong.getId().equals(id)){
+        for (Phong phong : list) {
+            if (phong.getMa().equalsIgnoreCase(phongDTO.getMa()) && !phong.getId().equals(id)) {
                 return ResponseEntity.badRequest().body("Mã phòng " + phong.getMa() + " trùng với một phòng khác đang tồn tại");
             }
         }
         return ResponseEntity.ok(iPhongService.update(phongDTO, id));
+    }
+
+    @PutMapping("delete")
+    public ResponseEntity<?> delete(@RequestParam(value = "id") Long id) {
+        return ResponseEntity.ok(this.iPhongService.updateTrangThai(id));
     }
 }

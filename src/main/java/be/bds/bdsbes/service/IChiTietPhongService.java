@@ -23,5 +23,7 @@ public interface IChiTietPhongService {
 
     ChiTietPhong update(ChiTietPhongDTO chiTietPhongDTO, Long id);
 
+    Integer updateTrangThai(Long id);
+
     PagedResponse<ChiTietPhongResponse1> getChiTietPhong(int page, int size) throws ServiceException;
 }
