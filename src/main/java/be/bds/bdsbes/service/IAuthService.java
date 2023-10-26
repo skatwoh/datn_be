@@ -1,9 +1,12 @@
 package be.bds.bdsbes.service;
 
+import be.bds.bdsbes.domain.User;
 import be.bds.bdsbes.exception.ServiceException;
-import be.bds.bdsbes.payload.SignUpRequest;
 import be.bds.bdsbes.payload.LoginRequest;
 import be.bds.bdsbes.payload.LoginResponse;
+import be.bds.bdsbes.payload.SignUpRequest;
+
+import java.util.Optional;
 
 public interface IAuthService {
     /**
@@ -19,4 +22,8 @@ public interface IAuthService {
      * @return a token with model {@link LoginResponse}
      */
     public LoginResponse authenticate(LoginRequest loginRequest);
+
+    public Optional<User> findUserByEmail(String email);
+
+    public void updatePassword(User user, String newPassword);
 }

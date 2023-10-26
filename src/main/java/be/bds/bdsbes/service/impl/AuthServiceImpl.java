@@ -2,6 +2,7 @@ package be.bds.bdsbes.service.impl;
 
 import be.bds.bdsbes.domain.User;
 import be.bds.bdsbes.exception.ServiceException;
+import be.bds.bdsbes.payload.ForgotPasswordRequest;
 import be.bds.bdsbes.payload.SignUpRequest;
 import be.bds.bdsbes.repository.RoleRepository;
 import be.bds.bdsbes.repository.UserRepository;
@@ -27,8 +28,10 @@ import be.bds.bdsbes.service.IAuthService;
 import be.bds.bdsbes.utils.ServiceExceptionBuilderUtil;
 import be.bds.bdsbes.utils.dto.ValidationErrorResponse;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Optional;
+import java.util.Random;
 
 @Slf4j
 @Service("authServiceImpl")
@@ -60,6 +63,8 @@ public class AuthServiceImpl implements IAuthService {
         }
 
         User user = this.signUpMapper.toEntity(signUpRequest);
+        Random random = new Random();
+        int randomId = random.nextInt(1000000);
 
         Optional<Role> userRole = roleRepository.findByName(RoleName.ROLE_GUEST);
         if (userRole.isPresent()) {
@@ -70,9 +75,10 @@ public class AuthServiceImpl implements IAuthService {
                     .build();
         }
 
-        user.setId(new SequenceGeneratorUtil().nextId());
+        user.setId((long) randomId);
         user.setProvider(AuthProvider.local);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setEmailVerified(true);
 
         this.userRepository.save(user);
         return true;
@@ -90,5 +96,17 @@ public class AuthServiceImpl implements IAuthService {
         }
 
         return null;
+    }
+
+    @Override
+    public Optional<User> findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public void updatePassword(User user, String newPassword) {
+        user.setPassword(newPassword);
+        user.setUpdatedAt(LocalDateTime.now());
+        userRepository.save(user);
     }
 }
