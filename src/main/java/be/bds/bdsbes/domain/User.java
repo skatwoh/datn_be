@@ -1,5 +1,6 @@
 package be.bds.bdsbes.domain;
 
+import be.bds.bdsbes.entities.KhachHang;
 import be.bds.bdsbes.utils.ValidationErrorUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -53,6 +54,11 @@ public class User extends DateAudit {
     private String providerId;
 
     private String cv;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_khach_hang")
+    private KhachHang khachHang;
+
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",

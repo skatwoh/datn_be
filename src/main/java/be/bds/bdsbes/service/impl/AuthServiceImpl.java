@@ -1,6 +1,8 @@
 package be.bds.bdsbes.service.impl;
 
 import be.bds.bdsbes.domain.User;
+import be.bds.bdsbes.entities.KhachHang;
+import be.bds.bdsbes.entities.TheThanhVien;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.ForgotPasswordRequest;
 import be.bds.bdsbes.payload.SignUpRequest;
@@ -75,10 +77,16 @@ public class AuthServiceImpl implements IAuthService {
                     .build();
         }
 
+        int min = 1;
+        int max = Integer.MAX_VALUE;
+        int ma = random.nextInt(max - min + 1) + min;
+
         user.setId((long) randomId);
         user.setProvider(AuthProvider.local);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setEmailVerified(true);
+        user.setKhachHang(KhachHang.builder().id(user.getId()).ma("KH" + ma).hoTen(user.getName())
+                .idTheThanhVien(TheThanhVien.builder().id(1L).build()).build());
 
         this.userRepository.save(user);
         return true;
