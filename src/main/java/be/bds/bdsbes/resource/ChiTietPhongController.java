@@ -63,4 +63,9 @@ public class ChiTietPhongController {
         }
         return ResponseEntity.ok(iChiTietPhongService.update(chiTietPhongDTO, id));
     }
+
+    @PutMapping("/delete")
+    public ResponseEntity<?> create(@RequestParam(value = "id") Long id){
+        return ResponseEntity.ok(iChiTietPhongService.updateTrangThai(id));
+    }
 }

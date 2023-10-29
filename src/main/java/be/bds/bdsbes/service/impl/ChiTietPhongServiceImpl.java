@@ -80,6 +80,18 @@ public class ChiTietPhongServiceImpl implements IChiTietPhongService {
     }
 
     @Override
+    public Integer updateTrangThai(Long id) {
+        ChiTietPhong phong = chiTietPhongRepository.findById(id).get();
+        if(phong.getTrangThai() == 0){
+            return chiTietPhongRepository.updateTrangThaiById(1, id);
+        }
+        if(phong.getTrangThai() == 1){
+            return chiTietPhongRepository.updateTrangThaiById(0, id);
+        }
+        return null;
+    }
+
+    @Override
     public PagedResponse<ChiTietPhongResponse1> getChiTietPhong(int page, int size) throws ServiceException {
         if (page <= 0) {
             throw ServiceExceptionBuilderUtil.newBuilder()

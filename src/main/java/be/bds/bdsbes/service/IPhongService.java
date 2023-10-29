@@ -14,17 +14,16 @@ public interface IPhongService {
 
     List<Phong> getList();
 
-    List<PhongResponse> getAllPhong();
-
-    Page<Phong> getPage(Integer page);
-
-    PhongResponse get(Long id);
-
-    PhongResponse1 getPhong(Long id);
+    PagedResponse<PhongResponse1> searchRoom(int page, int size, String searchInput) throws ServiceException;
+    PhongResponse1 get(Long id);
 
     Phong create(PhongDTO phongDTO);
 
     Phong update(PhongDTO phongDTO, Long id);
 
+    Integer updateTrangThai(Long id);
+
     PagedResponse<PhongResponse1> getPhong(int page, int size) throws ServiceException;
+
+    PagedResponse<PhongResponse1> getPhongSortbyId(int page, int size) throws ServiceException;
 }

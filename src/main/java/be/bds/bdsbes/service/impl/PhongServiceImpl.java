@@ -42,38 +42,61 @@ public class PhongServiceImpl implements IPhongService {
     }
 
     @Override
-    public List<PhongResponse> getAllPhong() {
-        return phongRepository.getAllPhong();
+    public PagedResponse<PhongResponse1> searchRoom(int page, int size, String searchInput) throws ServiceException {
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
+        Page<Phong> entities = phongRepository.searchRoom(pageable, searchInput);
+
+        List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());
+        return new PagedResponse<>(
+                dtos,
+                page,
+                size,
+                entities.getTotalElements(),
+                entities.getTotalPages(),
+                entities.isLast(),
+                entities.getSort().toString()
+        );
     }
 
     @Override
-    public Page<Phong> getPage(Integer page) {
-        Pageable pageable = PageRequest.of(page, 5);
-        return phongRepository.findAll(pageable);
-    }
-
-    @Override
-    public PhongResponse get(Long id) {
+    public PhongResponse1 get(Long id) {
         return phongRepository.get(id);
-    }
-
-    @Override
-    public PhongResponse1 getPhong(Long id) {
-        return phongRepository.getPhong(id);
     }
 
     @Override
     public Phong create(PhongDTO phongDTO) {
         Phong phong = phongDTO.dto(new Phong());
+        List<Phong> listP = phongRepository.findAll(Sort.by(Sort.Direction.ASC, "ma"));
+        if (listP.size() == 0) {
+            phong.setMa(String.valueOf(101));
+            return phongRepository.save(phong);
+        }
+        if (Integer.valueOf(listP.get(listP.size() - 1).getMa()) % 10 == 0) {
+            phong.setMa(String.valueOf(Integer.valueOf(listP.get(listP.size() - 1).getMa()) + 91));
+            return phongRepository.save(phong);
+        }
+        phong.setMa(String.valueOf(Integer.valueOf(listP.get(listP.size() - 1).getMa()) + 1));
         return phongRepository.save(phong);
     }
 
     @Override
     public Phong update(PhongDTO phongDTO, Long id) {
         Optional<Phong> phongOptional = phongRepository.findById(id);
-        if(phongOptional.isPresent()){
+        if (phongOptional.isPresent()) {
             Phong phong = phongDTO.dto(phongOptional.get());
             return phongRepository.save(phong);
+        }
+        return null;
+    }
+
+    @Override
+    public Integer updateTrangThai(Long id) {
+        Phong phong = phongRepository.findById(id).get();
+        if (phong.getTrangThai() == 0) {
+            return phongRepository.updateTrangThaiById(1, id);
+        }
+        if (phong.getTrangThai() == 1) {
+            return phongRepository.updateTrangThaiById(0, id);
         }
         return null;
     }
@@ -97,6 +120,23 @@ public class PhongServiceImpl implements IPhongService {
 
         // Retrieve all entities
         Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
+        Page<Phong> entities = phongRepository.findAll(pageable);
+
+        List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());
+        return new PagedResponse<>(
+                dtos,
+                page,
+                size,
+                entities.getTotalElements(),
+                entities.getTotalPages(),
+                entities.isLast(),
+                entities.getSort().toString()
+        );
+    }
+
+    @Override
+    public PagedResponse<PhongResponse1> getPhongSortbyId(int page, int size) throws ServiceException {
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
         Page<Phong> entities = phongRepository.findAll(pageable);
 
         List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());

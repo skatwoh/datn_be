@@ -1,5 +1,6 @@
 package be.bds.bdsbes.entities;
 
+import be.bds.bdsbes.domain.User;
 import lombok.*;
 import org.hibernate.annotations.Nationalized;
 
@@ -79,7 +80,7 @@ public class KhachHang {
     @OneToMany(mappedBy = "idKhachHang")
     private Set<LichSuDatPhong> lichSuDatPhongs = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "idKhachHang")
-    private Set<TaiKhoan> taiKhoans = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "khachHang")
+    private Set<User> users = new LinkedHashSet<>();
 
 }
