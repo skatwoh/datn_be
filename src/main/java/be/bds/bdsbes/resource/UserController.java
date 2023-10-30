@@ -65,4 +65,34 @@ public class UserController {
             throw new RuntimeException(e);
         }
     }
+
+    @PutMapping("/{email}/set-permission-user")
+    public ResponseEntity<?> setUser(@PathVariable String email) {
+        try {
+            return ResponseUtil.wrap(this.iUserService.setPermissionUser(email));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        }
+    }
+
+    @PutMapping("/{email}/set-permission-admin")
+    public ResponseEntity<?> setAdmin(@PathVariable String email) {
+        try {
+            return ResponseUtil.wrap(this.iUserService.setPermissionAdmin(email));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        }
+    }
+
+    @PutMapping("/{email}/set-permission-guest")
+    public ResponseEntity<?> setGuest(@PathVariable String email) {
+        try {
+            return ResponseUtil.wrap(this.iUserService.setPermissionGuest(email));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        }
+    }
 }
