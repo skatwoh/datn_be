@@ -3,6 +3,7 @@ package be.bds.bdsbes.service.impl;
 import be.bds.bdsbes.domain.User;
 import be.bds.bdsbes.exception.ResourceNotFoundException;
 import be.bds.bdsbes.exception.ServiceException;
+import be.bds.bdsbes.payload.PermissionResponse;
 import be.bds.bdsbes.repository.UserRepository;
 import be.bds.bdsbes.security.UserPrincipal;
 import be.bds.bdsbes.service.mapper.UserMapper;
@@ -43,7 +44,7 @@ public class UserServiceImpl implements IUserService {
     public UserProfileResponse getCurrentUser(UserPrincipal userPrincipal) {
         User user = this.userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
         if (null != user) {
-            return new UserProfileResponse(user.getId(), user.getName(), user.getEmail(), user.getImageUrl(), user.getEmailVerified(), user.getCreatedAt(), user.getUpdatedAt(), user.getCv());
+            return new UserProfileResponse(user.getId(), user.getName(), user.getEmail(), user.getImageUrl(), user.getEmailVerified(), user.getCreatedAt(), user.getUpdatedAt(), user.getRole());
         }
         return null;
     }
@@ -110,5 +111,39 @@ public class UserServiceImpl implements IUserService {
         }
     }
 
+    @Override
+    public PermissionResponse setPermissionUser(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isPresent()) {
+            user.get().setRole("user");
+            userRepository.save(user.get());
 
+            return new PermissionResponse(user.get().getId(), user.get().getRole());
+        }
+        return null;
+    }
+
+    @Override
+    public PermissionResponse setPermissionAdmin(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isPresent()) {
+            user.get().setRole("admin");
+            userRepository.save(user.get());
+
+            return new PermissionResponse(user.get().getId(), user.get().getRole());
+        }
+        return null;
+    }
+
+    @Override
+    public PermissionResponse setPermissionGuest(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isPresent()) {
+            user.get().setRole("");
+            userRepository.save(user.get());
+
+            return new PermissionResponse(user.get().getId(), user.get().getRole());
+        }
+        return null;
+    }
 }

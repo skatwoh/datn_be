@@ -18,18 +18,18 @@ public class UserPrincipal implements OAuth2User, UserDetails {
     private String password;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private String cv;
+    private String role;
     private Collection<? extends GrantedAuthority> authorities;
     private Map<String, Object> attributes;
 
-    public UserPrincipal(Long id, String email, String password, LocalDateTime createdAt, LocalDateTime updatedAt, String cv, Collection<? extends GrantedAuthority> authorities) {
+    public UserPrincipal(Long id, String email, String password, LocalDateTime createdAt, LocalDateTime updatedAt, String role, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.authorities = authorities;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.cv = cv;
+        this.role = role;
     }
 
     public static UserPrincipal create(User user) {
@@ -43,7 +43,7 @@ public class UserPrincipal implements OAuth2User, UserDetails {
                 user.getPassword(),
                 user.getCreatedAt(),
                 user.getUpdatedAt(),
-                user.getCv(),
+                user.getRole(),
                 authorities
         );
     }
@@ -72,8 +72,8 @@ public class UserPrincipal implements OAuth2User, UserDetails {
         return email;
     }
 
-    public String getCv() {
-        return cv;
+    public String getRole() {
+        return role;
     }
 
     public LocalDateTime getCreatedAt() {

@@ -53,7 +53,7 @@ public class User extends DateAudit {
 
     private String providerId;
 
-    private String cv;
+    private String role;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_khach_hang")
