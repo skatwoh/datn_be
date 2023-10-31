@@ -32,7 +32,7 @@ public class ChiTietPhong {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_phong")
-    private LoaiPhong loaiPhong;
+    private Phong phong;
 
     @Size(max = 20)
     @Column(name = COLUMN_TANG_NAME, length = 20)

@@ -2,6 +2,7 @@ package be.bds.bdsbes.service.dto;
 
 import be.bds.bdsbes.entities.ChiTietPhong;
 import be.bds.bdsbes.entities.LoaiPhong;
+import be.bds.bdsbes.entities.Phong;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,7 +34,7 @@ public class ChiTietPhongDTO {
     @NotNull(message = "Not allow null")
     private Integer trangThai;
 
-    private Long idLoaiPhong;
+    private Long idPhong;
 
     public ChiTietPhong dto(ChiTietPhong chiTietPhong){
         chiTietPhong.setTang(this.getTang());
@@ -42,7 +43,7 @@ public class ChiTietPhongDTO {
         chiTietPhong.setSoLuongNguoi(this.getSoLuongNguoi());
         chiTietPhong.setDienTich(this.getDienTich());
         chiTietPhong.setTrangThai(this.getTrangThai());
-        chiTietPhong.setLoaiPhong(LoaiPhong.builder().id(this.getIdLoaiPhong()).build());
+        chiTietPhong.setPhong(Phong.builder().id(this.getIdPhong()).build());
         return chiTietPhong;
     }
 }

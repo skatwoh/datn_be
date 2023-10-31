@@ -1,7 +1,6 @@
 package be.bds.bdsbes.service.impl;
 
 import be.bds.bdsbes.entities.ChiTietPhong;
-import be.bds.bdsbes.entities.Phong;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.ChiTietPhongResponse1;
 import be.bds.bdsbes.repository.ChiTietPhongRepository;
@@ -43,19 +42,20 @@ public class ChiTietPhongServiceImpl implements IChiTietPhongService {
     }
 
     @Override
-    public Page<ChiTietPhong> getPage(Integer page) {
-        Pageable pageable = PageRequest.of(page, 5);
-        return chiTietPhongRepository.findAll(pageable);
-    }
+    public PagedResponse<ChiTietPhongResponse1> searchRoom(int page, int size, String searchInput) throws ServiceException {
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
+        Page<ChiTietPhong> entities = chiTietPhongRepository.searchRoomInformation(pageable, searchInput);
 
-    @Override
-    public ChiTietPhong getOne(Long id) {
-        Optional<ChiTietPhong> optionalChiTietPhong = chiTietPhongRepository.findById(id);
-        if(optionalChiTietPhong.isPresent()){
-            ChiTietPhong chiTietPhong = optionalChiTietPhong.get();
-            return chiTietPhong;
-        }
-        return null;
+        List<ChiTietPhongResponse1> dtos = this.chiTietPhongMapper.toDtoList(entities.getContent());
+        return new PagedResponse<>(
+                dtos,
+                page,
+                size,
+                entities.getTotalElements(),
+                entities.getTotalPages(),
+                entities.isLast(),
+                entities.getSort().toString()
+        );
     }
 
     @Override
@@ -110,6 +110,24 @@ public class ChiTietPhongServiceImpl implements IChiTietPhongService {
 
         // Retrieve all entities
         Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
+        Page<ChiTietPhong> entities = chiTietPhongRepository.findAll(pageable);
+
+        List<ChiTietPhongResponse1> dtos = this.chiTietPhongMapper.toDtoList(entities.getContent());
+        return new PagedResponse<>(
+                dtos,
+                page,
+                size,
+                entities.getTotalElements(),
+                entities.getTotalPages(),
+                entities.isLast(),
+                entities.getSort().toString()
+        );
+    }
+
+    @Override
+    public PagedResponse<ChiTietPhongResponse1> getChiTietPhongSortbyId(int page, int size) throws ServiceException {
+
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
         Page<ChiTietPhong> entities = chiTietPhongRepository.findAll(pageable);
 
         List<ChiTietPhongResponse1> dtos = this.chiTietPhongMapper.toDtoList(entities.getContent());

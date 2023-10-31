@@ -26,4 +26,6 @@ public interface IPhongService {
     PagedResponse<PhongResponse1> getPhong(int page, int size) throws ServiceException;
 
     PagedResponse<PhongResponse1> getPhongSortbyId(int page, int size) throws ServiceException;
+
+    List<PhongResponse1> singleListRoom();
 }

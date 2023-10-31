@@ -2,6 +2,7 @@ package be.bds.bdsbes.resource;
 
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.service.IChiTietPhongService;
+import be.bds.bdsbes.service.IPhongService;
 import be.bds.bdsbes.service.dto.ChiTietPhongDTO;
 import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ResponseUtil;
@@ -24,6 +25,9 @@ public class ChiTietPhongController {
     @Autowired
     IChiTietPhongService iChiTietPhongService;
 
+    @Autowired
+    IPhongService iPhongService;
+
     @GetMapping("list")
     public ResponseEntity<?> getList(
             @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
@@ -36,6 +40,40 @@ public class ChiTietPhongController {
         } catch (ServiceException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @GetMapping("sort-by-id-desc")
+    public ResponseEntity<?> sortById(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size) {
+        try {
+            return ResponseUtil.wrap(this.iChiTietPhongService.getChiTietPhongSortbyId(page, size));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("search")
+    public ResponseEntity<?> getListbySearch(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "input", defaultValue = "") String searchInput) {
+        try {
+            return ResponseUtil.wrap(this.iChiTietPhongService.searchRoom(page, size, searchInput));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("single-list-room")
+    public ResponseEntity<?> singleListRoom() {
+        return ResponseEntity.ok(iPhongService.singleListRoom());
     }
 
     @GetMapping("detail")
