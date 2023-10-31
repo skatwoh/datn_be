@@ -40,6 +40,10 @@ public class TaiSanServiceImpl implements ITaiSanService {
     public List<TaiSanResponse> getList() {
         return taiSanRepository.getAllTaiSan();
     }
+    @Override
+    public TaiSanResponse1 getTaiSan(Long id) {
+        return taiSanRepository.getTaiSan(id);
+    }
 
     @Override
     public Page<TaiSan> getPage(Integer page) {
@@ -47,15 +51,6 @@ public class TaiSanServiceImpl implements ITaiSanService {
         return taiSanRepository.findAll(pageable);
     }
 
-    @Override
-    public TaiSan getOne(Long id) {
-        Optional<TaiSan> taiSanOptional = taiSanRepository.findById(id);
-        if(taiSanOptional.isPresent()){
-            TaiSan taiSan = taiSanOptional.get();
-            return taiSan;
-        }
-        return null;
-    }
 
     @Override
     public TaiSan create(TaiSanDTO taiSanDTO) {

@@ -28,7 +28,7 @@ public class CoSoVatChat {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_tai_san")
-    private TaiSan idTaiSan;
+    private TaiSan taiSan;
 
     @Column(name = COLUMN_SOLUONG_NAME)
     private Integer soLuong;
@@ -40,7 +40,7 @@ public class CoSoVatChat {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_chi_tiet_phong")
-    private ChiTietPhong idChiTietPhong;
+    private ChiTietPhong chiTietPhong;
 
     @Column(name = COLUMN_TRANGTHAI_NAME)
     private Integer trangThai;

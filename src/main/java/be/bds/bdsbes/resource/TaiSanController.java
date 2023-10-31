@@ -41,12 +41,12 @@ public class TaiSanController {
         return ResponseEntity.ok(ITaiSanService.getPage(page));
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<?> getOne(@PathVariable("id") Long id){
-        if(ITaiSanService.getOne(id) == null){
+    @GetMapping("detail")
+    public ResponseEntity<?> getTaiSan(@RequestParam( value = "id") Long id){
+        if(ITaiSanService.getTaiSan(id) == null){
             return ResponseEntity.ok("Not found");
         }
-        return ResponseEntity.ok(ITaiSanService.getOne(id));
+        return ResponseEntity.ok(ITaiSanService.getTaiSan(id));
     }
 
     @PostMapping("create")
@@ -58,8 +58,8 @@ public class TaiSanController {
         return ResponseEntity.ok(ITaiSanService.create(taiSanDTO));
     }
 
-    @PutMapping("update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody @Valid TaiSanDTO taiSanDTO, BindingResult bindingResult){
+    @PutMapping("update")
+    public ResponseEntity<?> update(@RequestParam(value = "id") Long id, @RequestBody @Valid TaiSanDTO taiSanDTO, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             List<ObjectError> errorList = bindingResult.getAllErrors();
             return ResponseEntity.ok(errorList);

@@ -59,7 +59,7 @@ public class Voucher {
     @Column(name = COLUMN_SOLUONG_NAME)
     private Integer soLuong;
 
-    @OneToMany(mappedBy = "idVoucher")
+    @OneToMany(mappedBy = "voucher")
     private Set<DatPhong> datPhongs = new LinkedHashSet<>();
 
 }
