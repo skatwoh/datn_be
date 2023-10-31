@@ -35,12 +35,9 @@ public class DuAnController {
         }
     }
 
-    @GetMapping("detail/{id}")
-    public ResponseEntity<?> getOne(@PathVariable("id") Long id){
-        if(iDuAnService.getOne(id) == null){
-            return ResponseEntity.badRequest().body("Không tìm thấy");
-        }
-        return ResponseEntity.ok(iDuAnService.getOne(id));
+    @GetMapping("detail")
+    public ResponseEntity<?> getOne(@RequestParam(value = "id") Long id){
+        return ResponseEntity.ok(iDuAnService.getDuAn(id));
     }
 
     @PostMapping("create")
@@ -52,12 +49,30 @@ public class DuAnController {
         return ResponseEntity.ok(iDuAnService.create(duAnDTO));
     }
 
-    @PutMapping("update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody @Valid DuAnDTO duAnDTO, BindingResult result){
+    @PutMapping("update")
+    public ResponseEntity<?> update(@RequestParam (value = "id") Long id, @RequestBody @Valid DuAnDTO duAnDTO, BindingResult result){
         if(result.hasErrors()){
             List<ObjectError> errorList = result.getAllErrors();
             return ResponseEntity.badRequest().body(errorList);
         }
         return ResponseEntity.ok(iDuAnService.update(duAnDTO, id));
+    }
+    @PutMapping("delete")
+    public ResponseEntity<?> delete(@RequestParam(value = "id") Long id) {
+        return ResponseEntity.ok(this.iDuAnService.updateTrangThai(id));
+    }
+    @GetMapping("search")
+    public ResponseEntity<?> getListbySearch(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "input", defaultValue = "") String searchInput) {
+        try {
+            return ResponseUtil.wrap(this.iDuAnService.searchProjetc(page, size, searchInput));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -15,7 +15,7 @@ public interface ITaiSanService {
 
     Page<TaiSan> getPage(Integer page);
 
-    TaiSan getOne(Long id);
+    TaiSanResponse1 getTaiSan(Long id);
 
     TaiSan create(TaiSanDTO taiSanDTO);
 
