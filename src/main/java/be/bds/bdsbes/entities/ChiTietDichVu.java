@@ -29,11 +29,11 @@ public class ChiTietDichVu {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_dich_Vu")
-    private DichVu idDichVu;
+    private DichVu dichVu;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_dat_phong")
-    private DatPhong idDatPhong;
+    private DatPhong datPhong;
 
     @Nationalized
     @Lob

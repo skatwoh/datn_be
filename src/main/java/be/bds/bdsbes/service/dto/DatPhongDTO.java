@@ -26,7 +26,7 @@ public class DatPhongDTO implements Serializable {
     @NotNull(message = "Vui lòng điền số người")
     Integer soNguoi;
 
-    Long idKhachHang;
+    Long userId;
 
     Long idVoucher;
 

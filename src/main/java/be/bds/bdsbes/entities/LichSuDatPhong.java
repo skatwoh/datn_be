@@ -41,7 +41,11 @@ public class LichSuDatPhong {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_khach_hang")
-    private KhachHang idKhachHang;
+    private KhachHang khachHang;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_dat_phong")
+    private DatPhong datPhong;
 
     @Column(name = COLUMN_GIA_NAME, precision = 18)
     private BigDecimal gia;

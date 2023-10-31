@@ -43,7 +43,7 @@ public class TaiKhoan implements Serializable {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_khach_hang")
-    private KhachHang idKhachHang;
+    private KhachHang khachHang;
 
     @Size(max = 50)
     @Nationalized

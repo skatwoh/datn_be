@@ -31,7 +31,7 @@ public class ChiTietPhong {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_loai_phong")
+    @JoinColumn(name = "id_phong")
     private LoaiPhong loaiPhong;
 
     @Size(max = 20)

@@ -32,7 +32,7 @@ public class BaoTri {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_chi_tiet_phong")
-    private ChiTietPhong idChiTietPhong;
+    private ChiTietPhong chiTietPhong;
 
     @Column(name = COLUMN_NGAYBATDAU_NAME)
     private LocalDate ngayBatDau;
