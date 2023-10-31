@@ -1,16 +1,14 @@
 package be.bds.bdsbes.service.impl;
 
+import be.bds.bdsbes.entities.ChiTietDichVu;
 import be.bds.bdsbes.entities.DichVu;
-import be.bds.bdsbes.entities.TaiSan;
 import be.bds.bdsbes.exception.ServiceException;
+import be.bds.bdsbes.payload.ChiTietDichVuResponse1;
 import be.bds.bdsbes.payload.DichVuResponse1;
-import be.bds.bdsbes.payload.TaiSanResponse1;
-import be.bds.bdsbes.repository.TaiSanRepository;
-import be.bds.bdsbes.service.ITaiSanService;
-import be.bds.bdsbes.service.dto.TaiSanDTO;
-import be.bds.bdsbes.service.dto.TheThanhVienDTO;
-import be.bds.bdsbes.service.dto.response.TaiSanResponse;
-import be.bds.bdsbes.service.mapper.TaiSanMapper;
+import be.bds.bdsbes.repository.ChiTietDichVuRepository;
+import be.bds.bdsbes.service.IChiTietDichVuService;
+import be.bds.bdsbes.service.dto.ChiTietDichVuDTO;
+import be.bds.bdsbes.service.mapper.ChiTietDichVuMapper;
 import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ServiceExceptionBuilderUtil;
 import be.bds.bdsbes.utils.ValidationErrorUtil;
@@ -29,41 +27,46 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @Slf4j
-@Service("taiSanServiceImpl")
-public class TaiSanServiceImpl implements ITaiSanService {
+@Service("ChiTietDichVuServiceImpl")
+public class ChiTietDichVuServiceImpl implements IChiTietDichVuService {
     @Autowired
-    private TaiSanRepository taiSanRepository;
+    ChiTietDichVuRepository chiTietDichVuRepository;
     @Autowired
-    private TaiSanMapper taiSanMapper;
+    private ChiTietDichVuMapper chiTietDichVuMapper;
 
     @Override
-    public List<TaiSanResponse> getList() {
-        return taiSanRepository.getAllTaiSan();
-    }
-    @Override
-    public TaiSanResponse1 getTaiSan(Long id) {
-        return taiSanRepository.getTaiSan(id);
+    public List<ChiTietDichVu> getList() {
+        return chiTietDichVuRepository.findAll();
     }
 
     @Override
-    public Page<TaiSan> getPage(Integer page) {
+    public Page<ChiTietDichVu> getPage(Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return taiSanRepository.findAll(pageable);
-    }
-
-
-    @Override
-    public TaiSan create(TaiSanDTO taiSanDTO) {
-        TaiSan taiSan = taiSanDTO.dto(new TaiSan());
-        return taiSanRepository.save(taiSan);
+        return chiTietDichVuRepository.findAll(pageable);
     }
 
     @Override
-    public TaiSan update(TaiSanDTO taiSanDTO, Long id) {
-        Optional<TaiSan> taiSanOptional = taiSanRepository.findById(id);
-        if(taiSanOptional.isPresent()){
-            TaiSan taiSan = taiSanDTO.dto(taiSanOptional.get());
-            return taiSanRepository.save(taiSan);
+    public ChiTietDichVu getOne(Long id) {
+        Optional<ChiTietDichVu> chitietdichVuOptional = chiTietDichVuRepository.findById(id);
+        if(chitietdichVuOptional.isPresent()){
+            ChiTietDichVu chiTietDichVu = chitietdichVuOptional.get();
+            return chiTietDichVu;
+        }
+        return null;
+    }
+
+    @Override
+    public ChiTietDichVu create(ChiTietDichVuDTO chiTietDichVuDTO) {
+       ChiTietDichVu chiTietDichVu = chiTietDichVuDTO.dto(new ChiTietDichVu());
+        return chiTietDichVuRepository.save(chiTietDichVu);
+    }
+
+    @Override
+    public ChiTietDichVu update(ChiTietDichVuDTO chiTietDichVuDTO, Long id) {
+        Optional<ChiTietDichVu> chitietdichVuOptional = chiTietDichVuRepository.findById(id);
+        if(chitietdichVuOptional.isPresent()){
+            ChiTietDichVu chiTietDichVu = chiTietDichVuDTO.dto(chitietdichVuOptional.get());
+            return chiTietDichVuRepository.save(chiTietDichVu);
         }
         return null;
     }
@@ -74,7 +77,7 @@ public class TaiSanServiceImpl implements ITaiSanService {
      * @throws ServiceException
      */
     @Override
-    public PagedResponse<TaiSanResponse1> getAccounts(int page, int size) throws ServiceException {
+    public PagedResponse<ChiTietDichVuResponse1> getAccounts(int page, int size) throws ServiceException {
         if (page <= 0) {
             throw ServiceExceptionBuilderUtil.newBuilder()
                     .addError(new ValidationErrorResponse("page", ValidationErrorUtil.Invalid))
@@ -92,10 +95,10 @@ public class TaiSanServiceImpl implements ITaiSanService {
 
         // Retrieve all entities
         Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
-        Page<TaiSan> entities = taiSanRepository.findAll(pageable);
+        Page<ChiTietDichVu> entities = chiTietDichVuRepository.findAll(pageable);
 
         return new PagedResponse<>(
-                this.taiSanMapper.toDtoList(entities.getContent()),
+                this.chiTietDichVuMapper.toDtoList(entities.getContent()),
                 page,
                 size,
                 entities.getTotalElements(),

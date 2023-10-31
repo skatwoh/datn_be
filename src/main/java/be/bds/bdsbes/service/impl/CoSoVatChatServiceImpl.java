@@ -1,16 +1,12 @@
 package be.bds.bdsbes.service.impl;
 
-import be.bds.bdsbes.entities.DichVu;
-import be.bds.bdsbes.entities.TaiSan;
+import be.bds.bdsbes.entities.CoSoVatChat;
 import be.bds.bdsbes.exception.ServiceException;
-import be.bds.bdsbes.payload.DichVuResponse1;
-import be.bds.bdsbes.payload.TaiSanResponse1;
-import be.bds.bdsbes.repository.TaiSanRepository;
-import be.bds.bdsbes.service.ITaiSanService;
-import be.bds.bdsbes.service.dto.TaiSanDTO;
-import be.bds.bdsbes.service.dto.TheThanhVienDTO;
-import be.bds.bdsbes.service.dto.response.TaiSanResponse;
-import be.bds.bdsbes.service.mapper.TaiSanMapper;
+import be.bds.bdsbes.payload.CoSoVatChatResponse1;
+import be.bds.bdsbes.repository.CoSoVatChatRepository;
+import be.bds.bdsbes.service.ICoSoVatChatService;
+import be.bds.bdsbes.service.dto.CoSoVatChatDTO;
+import be.bds.bdsbes.service.mapper.CoSoVatChatMapper;
 import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ServiceExceptionBuilderUtil;
 import be.bds.bdsbes.utils.ValidationErrorUtil;
@@ -28,45 +24,53 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 @Slf4j
-@Service("taiSanServiceImpl")
-public class TaiSanServiceImpl implements ITaiSanService {
+@Service("CoSoVatChatServiceImpl")
+public class CoSoVatChatServiceImpl implements ICoSoVatChatService {
     @Autowired
-    private TaiSanRepository taiSanRepository;
+    CoSoVatChatRepository coSoVatChatRepository;
     @Autowired
-    private TaiSanMapper taiSanMapper;
+    private CoSoVatChatMapper coSoVatChatMapper;
 
     @Override
-    public List<TaiSanResponse> getList() {
-        return taiSanRepository.getAllTaiSan();
-    }
-    @Override
-    public TaiSanResponse1 getTaiSan(Long id) {
-        return taiSanRepository.getTaiSan(id);
+    public List<CoSoVatChat> getList() {
+        return coSoVatChatRepository.findAll();
     }
 
     @Override
-    public Page<TaiSan> getPage(Integer page) {
+    public Page<CoSoVatChat> getPage(Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return taiSanRepository.findAll(pageable);
-    }
-
-
-    @Override
-    public TaiSan create(TaiSanDTO taiSanDTO) {
-        TaiSan taiSan = taiSanDTO.dto(new TaiSan());
-        return taiSanRepository.save(taiSan);
+        return coSoVatChatRepository.findAll(pageable);
     }
 
     @Override
-    public TaiSan update(TaiSanDTO taiSanDTO, Long id) {
-        Optional<TaiSan> taiSanOptional = taiSanRepository.findById(id);
-        if(taiSanOptional.isPresent()){
-            TaiSan taiSan = taiSanDTO.dto(taiSanOptional.get());
-            return taiSanRepository.save(taiSan);
+    public CoSoVatChat getOne(Long id) {
+        Optional<CoSoVatChat> coSoVatChatOptional = coSoVatChatRepository.findById(id);
+        if(coSoVatChatOptional.isPresent()){
+           CoSoVatChat coSoVatChat = coSoVatChatOptional.get();
+            return coSoVatChat;
         }
         return null;
     }
+
+    @Override
+    public CoSoVatChat create(CoSoVatChatDTO coSoVatChatDTO) {
+        CoSoVatChat coSoVatChat = coSoVatChatDTO.dto(new CoSoVatChat());
+        return coSoVatChatRepository.save(coSoVatChat);
+    }
+
+    @Override
+    public CoSoVatChat update(CoSoVatChatDTO coSoVatChatDTO, Long id) {
+        Optional<CoSoVatChat> coSoVatChatOptional = coSoVatChatRepository.findById(id);
+        if(coSoVatChatOptional.isPresent()){
+            CoSoVatChat coSoVatChat = coSoVatChatDTO.dto(coSoVatChatOptional.get());
+            return coSoVatChatRepository.save(coSoVatChat);
+        }
+        return null;
+    }
+
+
     /**
      * @param page
      * @param size
@@ -74,7 +78,7 @@ public class TaiSanServiceImpl implements ITaiSanService {
      * @throws ServiceException
      */
     @Override
-    public PagedResponse<TaiSanResponse1> getAccounts(int page, int size) throws ServiceException {
+    public PagedResponse<CoSoVatChatResponse1> getAccounts(int page, int size) throws ServiceException {
         if (page <= 0) {
             throw ServiceExceptionBuilderUtil.newBuilder()
                     .addError(new ValidationErrorResponse("page", ValidationErrorUtil.Invalid))
@@ -92,10 +96,10 @@ public class TaiSanServiceImpl implements ITaiSanService {
 
         // Retrieve all entities
         Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
-        Page<TaiSan> entities = taiSanRepository.findAll(pageable);
+        Page<CoSoVatChat> entities = coSoVatChatRepository.findAll(pageable);
 
         return new PagedResponse<>(
-                this.taiSanMapper.toDtoList(entities.getContent()),
+                this.coSoVatChatMapper.toDtoList(entities.getContent()),
                 page,
                 size,
                 entities.getTotalElements(),

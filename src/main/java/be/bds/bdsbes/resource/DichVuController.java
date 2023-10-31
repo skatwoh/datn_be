@@ -37,12 +37,12 @@ public class DichVuController {
     }
 
 
-    @GetMapping("detail/{id}")
-    public ResponseEntity<?> getOne(@PathVariable("id") Long id){
-        if(IDichVuService.getOne(id) == null){
+    @GetMapping("detail")
+    public ResponseEntity<?> getOne(@RequestParam(value = "id") Long id){
+        if(IDichVuService.getDichVu(id) == null){
             return ResponseEntity.badRequest().body("Không tìm thấy");
         }
-        return ResponseEntity.ok(IDichVuService.getOne(id));
+        return ResponseEntity.ok(IDichVuService.getDichVu(id));
     }
 
     @PostMapping("create")
@@ -54,8 +54,8 @@ public class DichVuController {
         return ResponseEntity.ok(IDichVuService.create(dichVuDTO));
     }
 
-    @PutMapping("update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody @Valid DichVuDTO dichVuDTO, BindingResult bindingResult){
+    @PutMapping("update")
+    public ResponseEntity<?> update(@RequestParam (value = "id") Long id, @RequestBody @Valid DichVuDTO dichVuDTO, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             List<ObjectError> errorList = bindingResult.getAllErrors();
             return ResponseEntity.ok(errorList);
@@ -64,5 +64,23 @@ public class DichVuController {
             return ResponseEntity.ok("Update failed");
         }
         return ResponseEntity.ok(IDichVuService.update(dichVuDTO, id));
+    }
+    @PutMapping("delete")
+    public ResponseEntity<?> delete(@RequestParam(value = "id") Long id) {
+        return ResponseEntity.ok(this.IDichVuService.updateTrangThai(id));
+    }
+    @GetMapping("search")
+    public ResponseEntity<?> getListbySearch(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "input", defaultValue = "") String searchInput) {
+        try {
+            return ResponseUtil.wrap(this.IDichVuService.searchRoomService(page, size, searchInput));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
