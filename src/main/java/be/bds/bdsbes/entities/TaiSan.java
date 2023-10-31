@@ -47,7 +47,7 @@ public class TaiSan {
     @Column(name = COLUMN_TRANGTHAI_NAME)
     private Integer trangThai;
 
-    @OneToMany(mappedBy = "idTaiSan")
+    @OneToMany(mappedBy = "taiSan")
     private Set<CoSoVatChat> coSoVatChats = new LinkedHashSet<>();
 
 }

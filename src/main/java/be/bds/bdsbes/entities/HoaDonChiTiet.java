@@ -30,11 +30,11 @@ public class HoaDonChiTiet {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_hoa_don")
-    private HoaDon idHoaDon;
+    private HoaDon hoaDon;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_chi_tiet_phong")
-    private ChiTietPhong idChiTietPhong;
+    private ChiTietPhong chiTietPhong;
 
     @Column(name = COLUMN_GIA_NAME, precision = 18)
     private BigDecimal gia;

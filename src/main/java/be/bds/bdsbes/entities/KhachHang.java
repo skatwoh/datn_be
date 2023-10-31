@@ -61,23 +61,23 @@ public class KhachHang {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_the_thanh_vien")
-    private TheThanhVien idTheThanhVien;
+    private TheThanhVien theThanhVien;
 
     @Nationalized
     @Lob
     @Column(name = COLUMN_GHICHU_NAME)
     private String ghiChu;
 
-    @OneToMany(mappedBy = "idKhachHang")
+    @OneToMany(mappedBy = "user")
     private Set<DatPhong> datPhongs = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "idKhachHang")
+    @OneToMany(mappedBy = "khachHang")
     private Set<FeedBack> feedBacks = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "idKhachHang")
+    @OneToMany(mappedBy = "khachHang")
     private Set<HoaDon> hoaDons = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "idKhachHang")
+    @OneToMany(mappedBy = "khachHang")
     private Set<LichSuDatPhong> lichSuDatPhongs = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "khachHang")

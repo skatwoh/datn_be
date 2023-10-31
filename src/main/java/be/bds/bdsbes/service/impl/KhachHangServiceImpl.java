@@ -65,7 +65,7 @@ public class KhachHangServiceImpl implements IKhachHangService {
     @Override
     public KhachHang create(KhachHangDTO khachHangDTO) {
         KhachHang khachHang = khachHangDTO.dto(new KhachHang());
-        khachHang.setIdTheThanhVien(TheThanhVien.builder().id(Long.parseLong("1")).build());
+        khachHang.setTheThanhVien(TheThanhVien.builder().id(Long.parseLong("1")).build());
         return khachHangRepository.save(khachHang);
     }
 

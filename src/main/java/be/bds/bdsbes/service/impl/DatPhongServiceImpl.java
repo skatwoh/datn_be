@@ -1,5 +1,6 @@
 package be.bds.bdsbes.service.impl;
 
+import be.bds.bdsbes.domain.User;
 import be.bds.bdsbes.entities.DatPhong;
 import be.bds.bdsbes.entities.KhachHang;
 import be.bds.bdsbes.entities.Voucher;
@@ -56,8 +57,8 @@ public class DatPhongServiceImpl implements IDatPhongService {
         datPhong.setSoNguoi(datPhongDTO.getSoNguoi());
         datPhong.setGhiChu(datPhongDTO.getGhiChu());
         datPhong.setTrangThai(datPhongDTO.getTrangThai());
-        datPhong.setIdVoucher(Voucher.builder().id(datPhongDTO.getIdVoucher()).build());
-        datPhong.setIdKhachHang(KhachHang.builder().id(datPhongDTO.getIdKhachHang()).build());
+        datPhong.setVoucher(Voucher.builder().id(datPhongDTO.getIdVoucher()).build());
+        datPhong.setUser(User.builder().id(datPhongDTO.getUserId()).build());
         return datPhongRepository.save(datPhong);
     }
 
@@ -72,8 +73,8 @@ public class DatPhongServiceImpl implements IDatPhongService {
             datPhong.setSoNguoi(datPhongDTO.getSoNguoi());
             datPhong.setGhiChu(datPhongDTO.getGhiChu());
             datPhong.setTrangThai(datPhongDTO.getTrangThai());
-            datPhong.setIdVoucher(Voucher.builder().id(datPhongDTO.getIdVoucher()).build());
-            datPhong.setIdKhachHang(KhachHang.builder().id(datPhongDTO.getIdKhachHang()).build());
+            datPhong.setVoucher(Voucher.builder().id(datPhongDTO.getIdVoucher()).build());
+            datPhong.setUser(User.builder().id(datPhongDTO.getUserId()).build());
             return datPhongRepository.save(datPhong);
         }
         return null;
