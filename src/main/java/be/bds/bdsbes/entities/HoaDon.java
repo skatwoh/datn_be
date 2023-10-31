@@ -57,7 +57,7 @@ public class HoaDon {
     @JoinColumn(name = "id_dat_phong")
     private DatPhong datPhong;
 
-    @OneToMany(mappedBy = "idHoaDon")
+    @OneToMany(mappedBy = "hoaDon")
     private Set<HoaDonChiTiet> hoaDonChiTiets = new LinkedHashSet<>();
 
 }
