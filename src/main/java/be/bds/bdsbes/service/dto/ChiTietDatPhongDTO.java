@@ -23,8 +23,8 @@ public class ChiTietDatPhongDTO {
     private String ghiChu;
 
     public ChiTietDatPhong dto(ChiTietDatPhong chiTietDatPhong){
-        chiTietDatPhong.setIdChiTietPhong(ChiTietPhong.builder().id(this.getIdChiTietPhong()).build());
-        chiTietDatPhong.setIdDatPhong(DatPhong.builder().id(this.getIdDatPhong()).build());
+        chiTietDatPhong.setChiTietPhong(ChiTietPhong.builder().id(this.getIdChiTietPhong()).build());
+        chiTietDatPhong.setDatPhong(DatPhong.builder().id(this.getIdDatPhong()).build());
         chiTietDatPhong.setGhiChu(this.getGhiChu());
         return chiTietDatPhong;
     }

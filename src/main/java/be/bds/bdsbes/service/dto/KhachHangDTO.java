@@ -25,7 +25,7 @@ public class KhachHangDTO {
         khachHang.setSdt(this.getSdt());
         khachHang.setDiaChi(this.getDiaChi());
         khachHang.setNgaySinh(this.getNgaySinh());
-        khachHang.setIdTheThanhVien(TheThanhVien.builder().id(this.getIdTheThanhVien()).build());
+        khachHang.setTheThanhVien(TheThanhVien.builder().id(this.getIdTheThanhVien()).build());
         return khachHang;
     }
 }

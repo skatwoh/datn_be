@@ -21,6 +21,9 @@ import java.util.Set;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@Builder
+@AllArgsConstructor
+
 @Table(
         name = "users",
         uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
