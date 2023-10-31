@@ -23,10 +23,10 @@ public class CoSoVatChatDTO {
     private Integer trangthai;
 
     public CoSoVatChat dto(CoSoVatChat coSoVatChat) {
-        coSoVatChat.setIdTaiSan(TaiSan.builder().id(this.getIdTaiSan()).build());
+        coSoVatChat.setTaiSan(TaiSan.builder().id(this.getIdTaiSan()).build());
         coSoVatChat.setSoLuong(this.getSoLuong());
         coSoVatChat.setGhiChu(this.getGhiChu());
-        coSoVatChat.setIdChiTietPhong(ChiTietPhong.builder().id(this.getIdChiTietPhong()).build());
+        coSoVatChat.setChiTietPhong(ChiTietPhong.builder().id(this.getIdChiTietPhong()).build());
         coSoVatChat.setTrangThai(this.getTrangthai());
         return coSoVatChat;
     }

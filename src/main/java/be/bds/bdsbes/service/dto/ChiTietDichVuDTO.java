@@ -19,8 +19,8 @@ public class ChiTietDichVuDTO {
     private  Integer trangThai = 1;
 
     public ChiTietDichVu dto(ChiTietDichVu chiTietDichVu){
-        chiTietDichVu.setIdDichVu(DichVu.builder().id(this.getIdDichVu()).build());
-        chiTietDichVu.setIdDatPhong(DatPhong.builder().id(this.getIdDatPhong()).build());
+        chiTietDichVu.setDichVu(DichVu.builder().id(this.getIdDichVu()).build());
+        chiTietDichVu.setDatPhong(DatPhong.builder().id(this.getIdDatPhong()).build());
         chiTietDichVu.setGhiChu(this.getGhiChu());
         chiTietDichVu.setGiaDichVu(this.getGiaDichVu());
         chiTietDichVu.setTrangThai(this.getTrangThai());
