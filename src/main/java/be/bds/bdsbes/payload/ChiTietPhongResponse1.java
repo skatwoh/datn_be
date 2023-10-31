@@ -24,7 +24,7 @@ public class ChiTietPhongResponse1 {
 
     private Integer trangThai;
 
-    private Long idLoaiPhong;
+    private Long idPhong;
 
-    private String tenLoaiPhong;
+    private String maPhong;
 }

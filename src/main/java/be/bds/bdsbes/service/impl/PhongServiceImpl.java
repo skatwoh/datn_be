@@ -150,4 +150,9 @@ public class PhongServiceImpl implements IPhongService {
                 entities.getSort().toString()
         );
     }
+
+    @Override
+    public List<PhongResponse1> singleListRoom() {
+        return phongRepository.singleListRoom();
+    }
 }
