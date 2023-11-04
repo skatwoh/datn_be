@@ -1,6 +1,7 @@
 package be.bds.bdsbes.service.dto;
 
 import be.bds.bdsbes.entities.BaoTri;
+import be.bds.bdsbes.entities.ChiTietPhong;
 import be.bds.bdsbes.entities.QuanLyDoiTac;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +19,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class BaoTriDto {
+
     @NotNull
     LocalDate ngayBatDau;
     @NotNull
@@ -27,12 +29,17 @@ public class BaoTriDto {
     String ghiChu;
     @NotNull
     Integer trangThai;
+
+    @NotNull
+    Long idChiTietPhong;
+
     public BaoTri dto(BaoTri baoTri) {
         baoTri.setNgayBatDau(this.getNgayBatDau());
         baoTri.setNgayKetThuc(this.getNgayKetThuc());
         baoTri.setChiPhiBaoTri(this.getChiPhiBaoTri());
         baoTri.setGhiChu(this.getGhiChu());
         baoTri.setTrangThai(this.getTrangThai());
+        baoTri.setChiTietPhong(ChiTietPhong.builder().id(this.getIdChiTietPhong()).build());
         return baoTri;
     }
 }

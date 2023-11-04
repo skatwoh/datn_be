@@ -20,7 +20,7 @@ import java.util.UUID;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/bao-tri")
+@RequestMapping("/rpc/bds/bao-tri")
 public class BaoTriController {
     @Autowired
     IBaoTriService baoTriService;
@@ -39,14 +39,16 @@ public class BaoTriController {
         }
     }
 
-    @GetMapping("detail/{id}")
-    public ResponseEntity<?> getOne(@PathVariable("id") Long id) {
-        if (baoTriService.getOne(id) == null) {
-            return ResponseEntity.badRequest().body("Không tìm thấy");
-        }
+    @GetMapping("detail")
+    public ResponseEntity<?> getOne(@RequestParam(value = "id") Long id) {
+
         return ResponseEntity.ok(baoTriService.getOne(id));
     }
+    @GetMapping("list-room-infor")
+    public ResponseEntity<?> getSingleListRoomInfor() {
 
+        return ResponseEntity.ok(baoTriService.getListCTP());
+    }
     @PostMapping("create")
     public ResponseEntity<?> create(@RequestBody @Valid BaoTriDto baoTriDto, BindingResult result) {
         if (result.hasErrors()) {
@@ -59,13 +61,30 @@ public class BaoTriController {
         return ResponseEntity.ok(baoTriService.create(baoTriDto));
     }
 
-    @PutMapping("update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody @Valid BaoTriDto baoTriDto, BindingResult result) {
+    @PutMapping("update")
+    public ResponseEntity<?> update(@RequestParam(value = "id") Long id, @RequestBody @Valid BaoTriDto baoTriDto, BindingResult result) {
         if (result.hasErrors()) {
             List<ObjectError> errorList = result.getAllErrors();
             return ResponseEntity.badRequest().body(errorList);
         }
         return ResponseEntity.ok(baoTriService.update(baoTriDto, id));
     }
-
+    @PutMapping("delete")
+    public ResponseEntity<?> delete(@RequestParam(value = "id") Long id) {
+        return ResponseEntity.ok(this.baoTriService.updateTrangThaiById(id));
+    }
+    @GetMapping("search")
+    public ResponseEntity<?> getListbySearch(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "input", defaultValue = "") String searchInput) {
+        try {
+            return ResponseUtil.wrap(this.baoTriService.searchMaintenance(page, size, searchInput));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
