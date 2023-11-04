@@ -12,6 +12,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QuanLyDoiTacResponse1 {
+    Long id;
     private String ma;
     private String tenCongTy;
     private String ghiChu;

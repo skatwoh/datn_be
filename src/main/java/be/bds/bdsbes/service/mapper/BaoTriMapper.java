@@ -9,7 +9,7 @@ import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface BaoTriMapper extends EntityMapper<BaoTriResponse1, BaoTri>{
+    @Mapping(target = "idChiTietPhong", source = "chiTietPhong.id")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-
-    BaoTri partialUpdate(BaoTriResponse1 baoTriResponse1, @MappingTarget BaoTri baoTri);
+    BaoTriResponse1 toDto(BaoTri baoTri);
 }

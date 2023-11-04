@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 @Slf4j
 @RestController
-@RequestMapping("/api/quan-ly-doi-tac")
+@RequestMapping("/rpc/bds/quan-ly-doi-tac")
 public class QuanLyDoiTacController {
     @Autowired
     IQuanLyDoiTacService quanLyDoiTacService;
@@ -37,11 +37,9 @@ public class QuanLyDoiTacController {
         }
     }
 
-    @GetMapping("detail/{id}")
-    public ResponseEntity<?> getOne(@PathVariable("id") Long id){
-        if(quanLyDoiTacService.getOne(id) == null){
-            return ResponseEntity.badRequest().body("Không tìm thấy");
-        }
+    @GetMapping("detail")
+    public ResponseEntity<?> getOne(@RequestParam(value = "id") Long id){
+
         return ResponseEntity.ok(quanLyDoiTacService.getOne(id));
     }
 
@@ -54,14 +52,31 @@ public class QuanLyDoiTacController {
         return ResponseEntity.ok(quanLyDoiTacService.create(quanLyDoiTacDTO));
     }
 
-    @PutMapping("update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody @Valid QuanLyDoiTacDTO quanLyDoiTacDTO, BindingResult result){
+    @PutMapping("update")
+    public ResponseEntity<?> update(@RequestParam(value = "id") Long id, @RequestBody @Valid QuanLyDoiTacDTO quanLyDoiTacDTO, BindingResult result){
         if(result.hasErrors()){
             List<ObjectError> errorList = result.getAllErrors();
             return ResponseEntity.badRequest().body(errorList);
         }
         return ResponseEntity.ok(quanLyDoiTacService.update(quanLyDoiTacDTO, id));
     }
-
+    @PutMapping("delete")
+    public ResponseEntity<?> delete(@RequestParam(value = "id") Long id) {
+        return ResponseEntity.ok(this.quanLyDoiTacService.updateTrangThaiById(id));
+    }
+    @GetMapping("search")
+    public ResponseEntity<?> getListbySearch(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "input", defaultValue = "") String searchInput) {
+        try {
+            return ResponseUtil.wrap(this.quanLyDoiTacService.searchPartner(page, size, searchInput));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

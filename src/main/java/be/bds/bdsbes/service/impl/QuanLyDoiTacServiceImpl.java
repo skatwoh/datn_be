@@ -1,9 +1,11 @@
 package be.bds.bdsbes.service.impl;
 
+import be.bds.bdsbes.entities.BaoTri;
 import be.bds.bdsbes.entities.KhachHang;
 import be.bds.bdsbes.entities.QuanLyDoiTac;
 import be.bds.bdsbes.entities.TheThanhVien;
 import be.bds.bdsbes.exception.ServiceException;
+import be.bds.bdsbes.payload.BaoTriResponse1;
 import be.bds.bdsbes.payload.KhachHangResponse1;
 import be.bds.bdsbes.payload.QuanLyDoiTacResponse1;
 import be.bds.bdsbes.repository.QuanLyDoiTacRepository;
@@ -75,6 +77,36 @@ public class QuanLyDoiTacServiceImpl implements IQuanLyDoiTacService {
             return quanLyDoiTacRepository.save(quanLyDoiTac);
         }
         return null;
+    }
+
+    @Override
+    public Integer updateTrangThaiById(Long id) {
+
+        QuanLyDoiTac quanLyDoiTac = quanLyDoiTacRepository.findById(id).get();
+        if (quanLyDoiTac.getTrangThai() == 0) {
+            return quanLyDoiTacRepository.updateTrangThaiById(1, id);
+        }
+        if (quanLyDoiTac.getTrangThai() == 1) {
+            return quanLyDoiTacRepository.updateTrangThaiById(0, id);
+        }
+        return null;
+    }
+
+    @Override
+    public PagedResponse<QuanLyDoiTacResponse1> searchPartner(int page, int size, String searchInput) throws ServiceException {
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
+        Page<QuanLyDoiTac> entities = quanLyDoiTacRepository.searchPartner(pageable, searchInput);
+
+        List<QuanLyDoiTacResponse1> dtos = this.quanLyDoiTacMapper.toDtoList(entities.getContent());
+        return new PagedResponse<>(
+                dtos,
+                page,
+                size,
+                entities.getTotalElements(),
+                entities.getTotalPages(),
+                entities.isLast(),
+                entities.getSort().toString()
+        );
     }
 
     @Override
