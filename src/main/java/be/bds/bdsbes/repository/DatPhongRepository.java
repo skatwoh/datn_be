@@ -11,7 +11,8 @@ import java.util.List;
 @Repository("datPhongRepository")
 public interface DatPhongRepository extends JpaRepository<DatPhong, Long> {
 
-    @Query("select new be.bds.bdsbes.service.dto.response.DatPhongResponse(d.id, k.id, k.ma, k.sdt, v.id, v.ma, v.giamGia, d.ngayDat, d.checkIn, d.checkOut, d.soNguoi, d.ghiChu, d.trangThai) " +
+    @Query("select new be.bds.bdsbes.service.dto.response.DatPhongResponse(d.id, k.id, k.ma, k.sdt, u.name, v.id, v.ma," +
+            " v.giamGia, d.ngayDat, d.checkIn, d.checkOut, d.soNguoi, d.ghiChu, d.trangThai) " +
             "from DatPhong d join d.user u join u.khachHang k left join d.voucher v")
     List<DatPhongResponse> getAllDatPhong();
 }

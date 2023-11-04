@@ -2,6 +2,7 @@ package be.bds.bdsbes.entities;
 
 import be.bds.bdsbes.domain.User;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
@@ -42,6 +43,10 @@ public class DatPhong {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_phong")
+    private Phong phong;
+
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_voucher")
     private Voucher voucher;
 

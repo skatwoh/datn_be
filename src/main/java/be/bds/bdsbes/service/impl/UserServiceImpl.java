@@ -3,12 +3,19 @@ package be.bds.bdsbes.service.impl;
 import be.bds.bdsbes.domain.User;
 import be.bds.bdsbes.exception.ResourceNotFoundException;
 import be.bds.bdsbes.exception.ServiceException;
+import be.bds.bdsbes.payload.ManualActiveUserResponse;
 import be.bds.bdsbes.payload.PermissionResponse;
+import be.bds.bdsbes.payload.UserProfileResponse;
 import be.bds.bdsbes.repository.UserRepository;
 import be.bds.bdsbes.security.UserPrincipal;
+import be.bds.bdsbes.service.IUserService;
 import be.bds.bdsbes.service.mapper.UserMapper;
 import be.bds.bdsbes.utils.AppConstantsUtil;
+import be.bds.bdsbes.utils.ServiceExceptionBuilderUtil;
 import be.bds.bdsbes.utils.ValidationErrorUtil;
+import be.bds.bdsbes.utils.dto.KeyValue;
+import be.bds.bdsbes.utils.dto.PagedResponse;
+import be.bds.bdsbes.utils.dto.ValidationErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,15 +24,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-
-import be.bds.bdsbes.payload.ManualActiveUserResponse;
-import be.bds.bdsbes.payload.UserProfileResponse;
-import be.bds.bdsbes.service.IUserService;
-import be.bds.bdsbes.utils.ServiceExceptionBuilderUtil;
-import be.bds.bdsbes.utils.dto.KeyValue;
-import be.bds.bdsbes.utils.dto.PagedResponse;
-import be.bds.bdsbes.utils.dto.ValidationErrorResponse;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,7 +127,6 @@ public class UserServiceImpl implements IUserService {
         if (user.isPresent()) {
             user.get().setRole("admin");
             userRepository.save(user.get());
-
             return new PermissionResponse(user.get().getId(), user.get().getRole());
         }
         return null;

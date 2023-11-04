@@ -12,6 +12,9 @@ public class SignUpRequest {
     private String email;
 
     @NotBlank
+    private String sdt;
+
+    @NotBlank
     private String password;
 
     public String getName() {
@@ -36,5 +39,13 @@ public class SignUpRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getSdt() {
+        return sdt;
+    }
+
+    public void setSdt(String sdt) {
+        this.sdt = sdt;
     }
 }

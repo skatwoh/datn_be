@@ -19,10 +19,11 @@ public class UserPrincipal implements OAuth2User, UserDetails {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String role;
+    private String sdt;
     private Collection<? extends GrantedAuthority> authorities;
     private Map<String, Object> attributes;
 
-    public UserPrincipal(Long id, String email, String password, LocalDateTime createdAt, LocalDateTime updatedAt, String role, Collection<? extends GrantedAuthority> authorities) {
+    public UserPrincipal(Long id, String email, String password, LocalDateTime createdAt, LocalDateTime updatedAt, String role, String sdt,Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -30,6 +31,7 @@ public class UserPrincipal implements OAuth2User, UserDetails {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.role = role;
+        this.sdt = sdt;
     }
 
     public static UserPrincipal create(User user) {
@@ -44,6 +46,7 @@ public class UserPrincipal implements OAuth2User, UserDetails {
                 user.getCreatedAt(),
                 user.getUpdatedAt(),
                 user.getRole(),
+                user.getSdt(),
                 authorities
         );
     }
@@ -74,6 +77,9 @@ public class UserPrincipal implements OAuth2User, UserDetails {
 
     public String getRole() {
         return role;
+    }
+    public String getSdt() {
+        return sdt;
     }
 
     public LocalDateTime getCreatedAt() {

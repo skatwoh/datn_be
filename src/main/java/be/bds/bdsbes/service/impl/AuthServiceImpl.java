@@ -82,6 +82,7 @@ public class AuthServiceImpl implements IAuthService {
         int ma = random.nextInt(max - min + 1) + min;
 
         user.setId((long) randomId);
+        user.setSdt(user.getSdt());
         user.setProvider(AuthProvider.local);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setEmailVerified(true);
