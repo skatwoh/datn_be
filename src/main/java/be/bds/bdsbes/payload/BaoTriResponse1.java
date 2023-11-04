@@ -8,17 +8,24 @@ import lombok.Setter;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class BaoTriResponse1 {
+
+    Long id;
+
     LocalDate ngayBatDau;
 
     LocalDate ngayKetThuc;
 
     BigDecimal chiPhiBaoTri;
+
     String ghiChu;
 
     Integer trangThai;
+
+    Long idChiTietPhong;
 }
