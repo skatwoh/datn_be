@@ -111,7 +111,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.css",
                         "/**/*.js")
                 .permitAll()
-                .antMatchers("/rpc/bds/auth/**", "/rpc/bds/oauth2/**", "/rpc/bds/phong/**")
+                .antMatchers("/rpc/bds/auth/**", "/rpc/bds/oauth2/**", "/rpc/bds/phong/**", "rpc/bds/dat-phong/**")
                 .permitAll()
                 .antMatchers("/swagger-ui.html", "/swagger-resources/**", "/v2/api-docs", "/webjars/**")
                 .permitAll()

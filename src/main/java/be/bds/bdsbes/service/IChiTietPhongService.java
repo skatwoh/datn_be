@@ -27,4 +27,6 @@ public interface IChiTietPhongService {
     PagedResponse<ChiTietPhongResponse1> getChiTietPhong(int page, int size) throws ServiceException;
 
     PagedResponse<ChiTietPhongResponse1> getChiTietPhongSortbyId(int page, int size) throws ServiceException;
+
+    ChiTietPhongResponse1 getCTP(Long idPhong);
 }

@@ -14,7 +14,6 @@ import java.util.UUID;
 @Value
 public class DatPhongDTO implements Serializable {
 
-    @NotNull(message = "Bạn cần chọn ngày đặt")
     LocalDate ngayDat;
 
     @NotNull(message = "Bạn cần chọn ngày check-in")
@@ -27,6 +26,8 @@ public class DatPhongDTO implements Serializable {
     Integer soNguoi;
 
     Long userId;
+
+    Long idPhong;
 
     Long idVoucher;
 

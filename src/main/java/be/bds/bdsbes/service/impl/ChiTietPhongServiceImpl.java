@@ -141,4 +141,9 @@ public class ChiTietPhongServiceImpl implements IChiTietPhongService {
                 entities.getSort().toString()
         );
     }
+
+    @Override
+    public ChiTietPhongResponse1 getCTP(Long idPhong) {
+        return chiTietPhongRepository.getCTP(idPhong);
+    }
 }

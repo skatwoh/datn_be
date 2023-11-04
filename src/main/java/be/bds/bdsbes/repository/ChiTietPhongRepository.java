@@ -26,4 +26,7 @@ public interface ChiTietPhongRepository extends JpaRepository<ChiTietPhong, Long
     @Query("UPDATE ChiTietPhong p SET p.trangThai = :trangThai WHERE p.id = :id")
     Integer updateTrangThaiById(int trangThai, Long id);
 
+    @Query("select new be.bds.bdsbes.payload.ChiTietPhongResponse1(c.id, c.tang, c.tienIch, c.dichVu, c.soLuongNguoi, c.dienTich, c.trangThai, l.id, l.ma) from ChiTietPhong c left join c.phong l where l.id = ?1")
+    ChiTietPhongResponse1 getCTP(Long idPhong);
+
 }

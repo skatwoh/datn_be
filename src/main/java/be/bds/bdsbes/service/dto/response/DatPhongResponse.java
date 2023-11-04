@@ -17,7 +17,9 @@ public class DatPhongResponse {
 
     private String maKhachHang;
 
-    private String soDienThoai;
+    private String name;
+
+    private String sdt;
 
     private Long idVoucher;
 

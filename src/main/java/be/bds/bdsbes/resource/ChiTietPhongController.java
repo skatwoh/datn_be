@@ -106,4 +106,9 @@ public class ChiTietPhongController {
     public ResponseEntity<?> create(@RequestParam(value = "id") Long id){
         return ResponseEntity.ok(iChiTietPhongService.updateTrangThai(id));
     }
+
+    @GetMapping("get-room")
+    public ResponseEntity<?> getRoom(@RequestParam(value = "idPhong") Long idPhong){
+        return ResponseEntity.ok(iChiTietPhongService.getCTP(idPhong));
+    }
 }
