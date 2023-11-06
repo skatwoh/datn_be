@@ -12,7 +12,7 @@ import java.util.List;
 public interface DatPhongRepository extends JpaRepository<DatPhong, Long> {
 
     @Query("select new be.bds.bdsbes.service.dto.response.DatPhongResponse(d.id, k.id, k.ma, k.sdt, u.name, v.id, v.ma," +
-            " v.giamGia, d.ngayDat, d.checkIn, d.checkOut, d.soNguoi, d.ghiChu, d.trangThai) " +
+            " v.giamGia, d.ngayDat, d.checkIn, d.checkOut, d.soNguoi, d.ghiChu, d.trangThai, d.phong.ma) " +
             "from DatPhong d join d.user u join u.khachHang k left join d.voucher v")
     List<DatPhongResponse> getAllDatPhong();
 }

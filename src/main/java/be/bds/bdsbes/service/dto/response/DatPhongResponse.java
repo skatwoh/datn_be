@@ -38,4 +38,6 @@ public class DatPhongResponse {
     private String ghiChu;
 
     private Integer trangThai;
+
+    private String tenPhong;
 }
