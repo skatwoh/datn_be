@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -27,4 +29,6 @@ public class ChiTietPhongResponse1 {
     private Long idPhong;
 
     private String maPhong;
+
+    private BigDecimal giaPhong;
 }

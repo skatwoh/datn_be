@@ -16,4 +16,6 @@ spring:
           auth: true                  # Sử dụng xác thực SMTP
           starttls:
             enable: true              # Sử dụng TLS
-
+  task:
+    scheduling:
+      enabled: true
