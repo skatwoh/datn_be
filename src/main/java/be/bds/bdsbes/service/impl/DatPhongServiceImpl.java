@@ -73,7 +73,7 @@ public class DatPhongServiceImpl implements IDatPhongService {
         datPhong.setSoNguoi(datPhongDTO.getSoNguoi());
         datPhong.setGhiChu(datPhongDTO.getGhiChu());
         datPhong.setTrangThai(datPhongDTO.getTrangThai());
-        datPhong.setVoucher(Voucher.builder().id(datPhongDTO.getIdVoucher()).build());
+        datPhong.setVoucher(Voucher.builder().id(1L).build());
         datPhong.setUser(User.builder().id(datPhongDTO.getUserId()).build());
         datPhong.setPhong(Phong.builder().id(datPhongDTO.getIdPhong()).build());
         return datPhongRepository.save(datPhong);
