@@ -46,7 +46,7 @@ public class DatPhong {
     @JoinColumn(name = "id_phong")
     private Phong phong;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_voucher")
     private Voucher voucher;
 

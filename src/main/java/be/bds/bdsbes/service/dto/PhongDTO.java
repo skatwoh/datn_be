@@ -21,7 +21,6 @@ public class PhongDTO {
     @NotNull(message = "Not allow null")
     private BigDecimal giaPhong;
 
-    @NotNull(message = "Not allow null")
     private Integer trangThai;
 
     public Phong dto(Phong phong){
