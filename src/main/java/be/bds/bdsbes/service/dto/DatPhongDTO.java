@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * DTO for {@link be.bds.bdsbes.entities.DatPhong}
@@ -14,13 +15,15 @@ import java.time.LocalDate;
 @Setter
 public class DatPhongDTO implements Serializable {
 
-    LocalDate ngayDat;
+    String ma;
+
+    LocalDateTime ngayDat;
 
     @NotNull(message = "Bạn cần chọn ngày check-in")
-    LocalDate checkIn;
+    LocalDateTime checkIn;
 
     @NotNull(message = "Bạn cần chọn ngày check-out")
-    LocalDate checkOut;
+    LocalDateTime checkOut;
 
     @NotNull(message = "Vui lòng điền số người")
     Integer soNguoi;
