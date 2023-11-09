@@ -20,7 +20,7 @@ public interface DatPhongRepository extends JpaRepository<DatPhong, Long> {
 
     @Query("SELECT CASE WHEN COUNT(dp) > 0 THEN true ELSE false END " +
             "FROM DatPhong dp " +
-            "WHERE dp.phong.id = :idPhong and dp.checkIn = :checkIn")
+            "WHERE dp.phong.id = :idPhong and cast(dp.checkIn as date) = cast(:checkIn as date) ")
     Boolean validateCheckIn(@Param("idPhong") Long idPhong, @Param("checkIn") LocalDateTime checkIn);
 
 

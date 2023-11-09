@@ -17,12 +17,18 @@ import be.bds.bdsbes.utils.dto.PagedResponse;
 import be.bds.bdsbes.utils.dto.ValidationErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.format.DateTimeFormatters;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -64,18 +70,36 @@ public class PhongServiceImpl implements IPhongService {
     }
 
     @Override
-    public Phong create(PhongDTO phongDTO) {
+    public Phong create(PhongDTO phongDTO) throws ServiceException{
         Phong phong = phongDTO.dto(new Phong());
         List<Phong> listP = phongRepository.findAll(Sort.by(Sort.Direction.ASC, "ma"));
         if (listP.size() == 0) {
+            if(phongDTO.getIdLoaiPhong().doubleValue() < 0) {
+                throw ServiceExceptionBuilderUtil.newBuilder()
+                        .addError(new ValidationErrorResponse("giaPhong", ValidationErrorUtil.Max))
+                        .build();
+            }
             phong.setMa(String.valueOf(101));
+            phong.setTrangThai(1);
             return phongRepository.save(phong);
         }
         if (Integer.valueOf(listP.get(listP.size() - 1).getMa()) % 10 == 0) {
+            if(phongDTO.getIdLoaiPhong().doubleValue() < 0) {
+                throw ServiceExceptionBuilderUtil.newBuilder()
+                        .addError(new ValidationErrorResponse("giaPhong", ValidationErrorUtil.Max))
+                        .build();
+            }
             phong.setMa(String.valueOf(Integer.valueOf(listP.get(listP.size() - 1).getMa()) + 91));
+            phong.setTrangThai(1);
             return phongRepository.save(phong);
         }
+        if(phongDTO.getIdLoaiPhong().doubleValue() < 0) {
+            throw ServiceExceptionBuilderUtil.newBuilder()
+                    .addError(new ValidationErrorResponse("giaPhong", ValidationErrorUtil.Max))
+                    .build();
+        }
         phong.setMa(String.valueOf(Integer.valueOf(listP.get(listP.size() - 1).getMa()) + 1));
+        phong.setTrangThai(1);
         return phongRepository.save(phong);
     }
 
@@ -155,4 +179,22 @@ public class PhongServiceImpl implements IPhongService {
     public List<PhongResponse1> singleListRoom() {
         return phongRepository.singleListRoom();
     }
+
+    @Override
+    public PagedResponse<PhongResponse1> searchRoomManager(int page, int size, int soNguoi, LocalDateTime checkIn, LocalDateTime checkOut)  throws ServiceException {
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
+        Page<Phong> entities = phongRepository.searchRoomManager(pageable, soNguoi, checkIn, checkOut);
+
+        List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());
+        return new PagedResponse<>(
+                dtos,
+                page,
+                size,
+                entities.getTotalElements(),
+                entities.getTotalPages(),
+                entities.isLast(),
+                entities.getSort().toString()
+        );
+    }
+
 }
