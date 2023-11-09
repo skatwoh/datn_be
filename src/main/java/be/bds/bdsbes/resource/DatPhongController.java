@@ -11,6 +11,9 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.itextpdf.text.DocumentException;
+import be.bds.bdsbes.utils.ServiceExceptionBuilderUtil;
+import be.bds.bdsbes.utils.ValidationErrorUtil;
+import be.bds.bdsbes.utils.dto.ValidationErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,32 +58,31 @@ public class DatPhongController {
     }
 
     @GetMapping("get-one/{id}")
-    public ResponseEntity<?> getOne(@PathVariable("id") Long id){
-        if(iDatPhongService.getOne(id) == null){
+    public ResponseEntity<?> getOne(@PathVariable("id") Long id) {
+        if (iDatPhongService.getOne(id) == null) {
             return ResponseEntity.badRequest().body("Không tồn tại");
         }
         return ResponseEntity.ok(iDatPhongService.getOne(id));
     }
 
     @PostMapping("create")
-    public ResponseEntity<?> create(@Valid @RequestBody DatPhongDTO datPhongDTO, BindingResult result){
-        if(result.hasErrors()){
-            List<ObjectError> errors = result.getAllErrors();
-            return ResponseEntity.ok(errors);
+    public ResponseEntity<?> create(@Valid @RequestBody DatPhongDTO datPhongDTO) {
+        try {
+            Boolean response = iDatPhongService.create(datPhongDTO);
+            return ResponseUtil.wrap(response);
+        } catch (ServiceException e) {
+            log.error(this.getClass().getName(), e);
+            return ResponseUtil.generateErrorResponse(e);
         }
-        if(datPhongDTO.getCheckIn().isAfter(datPhongDTO.getCheckOut())){
-            return ResponseEntity.badRequest().body("Ngày check-in phải trước ngày check-out");
-        }
-            return ResponseEntity.ok().body(iDatPhongService.create(datPhongDTO));
 
     }
 
     @PutMapping("update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id, @Valid @RequestBody DatPhongDTO datPhongDTO, BindingResult result){
-        if(iDatPhongService.update(datPhongDTO, id) == null){
+    public ResponseEntity<?> update(@PathVariable("id") Long id, @Valid @RequestBody DatPhongDTO datPhongDTO, BindingResult result) {
+        if (iDatPhongService.update(datPhongDTO, id) == null) {
             return ResponseEntity.badRequest().body("Không tìm thấy");
         }
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             List<ObjectError> errors = result.getAllErrors();
             return ResponseEntity.ok(errors);
         } else {

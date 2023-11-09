@@ -7,11 +7,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -34,5 +33,5 @@ public interface PhongRepository extends JpaRepository<Phong, Long> {
     @Query("select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id " +
             "inner join DatPhong d on p.id = d.phong.id " +
             "where ct.soLuongNguoi >= ?1 and (p.id not in (select d.phong.id from DatPhong d where (?2 between d.checkIn and d.checkOut) or (?3 between d.checkIn and d.checkOut) )) order by p.ma asc")
-    Page<Phong> searchRoomManager(Pageable pageable, int soNguoi, LocalDate checkIn, LocalDate checkOut);
+    Page<Phong> searchRoomManager(Pageable pageable, int soNguoi, LocalDateTime checkIn, LocalDateTime checkOut);
 }

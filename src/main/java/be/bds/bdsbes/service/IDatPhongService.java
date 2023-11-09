@@ -16,7 +16,7 @@ public interface IDatPhongService {
 
     List<DatPhongResponse> getAll();
     DatPhong getOne(Long id);
-    DatPhong create(DatPhongDTO datPhongDTO);
+    Boolean create(DatPhongDTO datPhongDTO) throws ServiceException;
 
     DatPhong update(DatPhongDTO datPhongDTO, Long id);
 

@@ -17,6 +17,7 @@ import be.bds.bdsbes.utils.dto.PagedResponse;
 import be.bds.bdsbes.utils.dto.ValidationErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.format.DateTimeFormatters;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +25,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -177,7 +181,7 @@ public class PhongServiceImpl implements IPhongService {
     }
 
     @Override
-    public PagedResponse<PhongResponse1> searchRoomManager(int page, int size, int soNguoi, LocalDate checkIn, LocalDate checkOut)  throws ServiceException {
+    public PagedResponse<PhongResponse1> searchRoomManager(int page, int size, int soNguoi, LocalDateTime checkIn, LocalDateTime checkOut)  throws ServiceException {
         Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
         Page<Phong> entities = phongRepository.searchRoomManager(pageable, soNguoi, checkIn, checkOut);
 

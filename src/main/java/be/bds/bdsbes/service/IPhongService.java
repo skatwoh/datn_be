@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IPhongService {
@@ -31,5 +32,5 @@ public interface IPhongService {
 
     List<PhongResponse1> singleListRoom();
 
-    PagedResponse<PhongResponse1> searchRoomManager(int page, int size, int soNguoi, LocalDate checkIn, LocalDate checkOut) throws ServiceException;
+    PagedResponse<PhongResponse1> searchRoomManager(int page, int size, int soNguoi, LocalDateTime checkIn, LocalDateTime checkOut) throws ServiceException;
 }

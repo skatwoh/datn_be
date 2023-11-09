@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -127,7 +128,7 @@ public class PhongController {
             @RequestParam(value = "checkIn", defaultValue = "") String checkIn,
             @RequestParam(value = "checkOut", defaultValue = "") String checkOut) {
         try {
-            return ResponseUtil.wrap(this.iPhongService.searchRoomManager(page, size, soNguoi, LocalDate.parse(checkIn), LocalDate.parse(checkOut)));
+            return ResponseUtil.wrap(this.iPhongService.searchRoomManager(page, size, soNguoi, LocalDateTime.parse(checkIn), LocalDateTime.parse(checkOut)));
         } catch (Exception ex) {
             log.error(this.getClass().getName(), ex);
             return ResponseUtil.generateErrorResponse(ex);

@@ -8,6 +8,7 @@ import org.hibernate.annotations.Nationalized;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Builder
 @AllArgsConstructor
@@ -51,13 +52,13 @@ public class DatPhong {
     private Voucher voucher;
 
     @Column(name = COLUMN_NGAYDAT_NAME)
-    private LocalDate ngayDat;
+    private LocalDateTime ngayDat;
 
     @Column(name = COLUMN_CHECKIN_NAME)
-    private LocalDate checkIn;
+    private LocalDateTime checkIn;
 
     @Column(name = COLUMN_CHECKOUT_NAME)
-    private LocalDate checkOut;
+    private LocalDateTime checkOut;
 
     @Column(name = COLUMN_SONGUOI_NAME)
     private Integer soNguoi;
