@@ -9,6 +9,7 @@ import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Slf4j
@@ -128,7 +130,21 @@ public class PhongController {
             @RequestParam(value = "checkIn", defaultValue = "") String checkIn,
             @RequestParam(value = "checkOut", defaultValue = "") String checkOut) {
         try {
-            return ResponseUtil.wrap(this.iPhongService.searchRoomManager(page, size, soNguoi, LocalDateTime.parse(checkIn), LocalDateTime.parse(checkOut)));
+            // Log the received date strings
+            log.info("Received checkIn: {}", checkIn);
+            log.info("Received checkOut: {}", checkOut);
+
+            // Parse date strings to LocalDateTime
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDateTime parsedCheckIn = LocalDate.parse(checkIn, formatter).atStartOfDay();
+            LocalDateTime parsedCheckOut = LocalDate.parse(checkOut, formatter).atStartOfDay();
+
+
+            // Log the parsed LocalDateTime values
+            log.info("Parsed checkIn: {}", parsedCheckIn);
+            log.info("Parsed checkOut: {}", parsedCheckOut);
+
+            return ResponseUtil.wrap(this.iPhongService.searchRoomManager(page, size, soNguoi, parsedCheckIn, parsedCheckOut));
         } catch (Exception ex) {
             log.error(this.getClass().getName(), ex);
             return ResponseUtil.generateErrorResponse(ex);
