@@ -27,11 +27,11 @@ public class FeedBack {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_chi_tiet_phong")
-    private ChiTietPhong idChiTietPhong;
+    private ChiTietPhong chiTietPhong;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_khach_hang")
-    private KhachHang idKhachHang;
+    private KhachHang khachHang;
 
     @Nationalized
     @Lob

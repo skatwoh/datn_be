@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -13,11 +14,15 @@ public class DatPhongResponse {
 
     private Long id;
 
+    private String ma;
+
     private Long idKhachHang;
 
     private String maKhachHang;
 
-    private String soDienThoai;
+    private String name;
+
+    private String sdt;
 
     private Long idVoucher;
 
@@ -25,15 +30,17 @@ public class DatPhongResponse {
 
     private BigDecimal giamGia;
 
-    private LocalDate ngayDat;
+    private LocalDateTime ngayDat;
 
-    private LocalDate checkIn;
+    private LocalDateTime checkIn;
 
-    private LocalDate checkOut;
+    private LocalDateTime checkOut;
 
     private Integer soNguoi;
 
     private String ghiChu;
 
     private Integer trangThai;
+
+    private String tenPhong;
 }

@@ -82,11 +82,12 @@ public class AuthServiceImpl implements IAuthService {
         int ma = random.nextInt(max - min + 1) + min;
 
         user.setId((long) randomId);
+        user.setSdt(user.getSdt());
         user.setProvider(AuthProvider.local);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setEmailVerified(true);
         user.setKhachHang(KhachHang.builder().id(user.getId()).ma("KH" + ma).hoTen(user.getName())
-                .idTheThanhVien(TheThanhVien.builder().id(1L).build()).build());
+                .theThanhVien(TheThanhVien.builder().id(1L).build()).build());
 
         this.userRepository.save(user);
         return true;

@@ -1,15 +1,12 @@
 package be.bds.bdsbes.service.impl;
 
 import be.bds.bdsbes.entities.DuAn;
-import be.bds.bdsbes.entities.TaiKhoan;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.DuAnResponse1;
-import be.bds.bdsbes.payload.TaiKhoanResponse1;
 import be.bds.bdsbes.repository.DuAnRepository;
 import be.bds.bdsbes.service.IDuAnService;
 import be.bds.bdsbes.service.dto.DuAnDTO;
 import be.bds.bdsbes.service.mapper.DuAnMapper;
-import be.bds.bdsbes.service.mapper.TaiKhoanMapper;
 import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ServiceExceptionBuilderUtil;
 import be.bds.bdsbes.utils.ValidationErrorUtil;
@@ -39,6 +36,10 @@ public class DuAnServiceImpl implements IDuAnService {
     public List<DuAn> getList() {
         return duAnRepository.findAll();
     }
+    @Override
+    public DuAnResponse1 getDuAn(Long id) {
+        return duAnRepository.getDuAn(id);
+    }
 
     @Override
     public Page<DuAn> getPage(Integer page) {
@@ -46,15 +47,6 @@ public class DuAnServiceImpl implements IDuAnService {
         return duAnRepository.findAll(pageable);
     }
 
-    @Override
-    public DuAn getOne(Long id) {
-        Optional<DuAn> duAnOptional = duAnRepository.findById(id);
-        if(duAnOptional.isPresent()){
-            DuAn duAn = duAnOptional.get();
-            return duAn;
-        }
-        return null;
-    }
 
     @Override
     public DuAn create(DuAnDTO duAnDTO) {
@@ -71,6 +63,18 @@ public class DuAnServiceImpl implements IDuAnService {
         }
         return null;
     }
+    @Override
+    public Integer updateTrangThai(Long id) {
+        DuAn duAn = duAnRepository.findById(id).get();
+        if (duAn.getTrangThai() == 0) {
+            return duAnRepository.updateTrangThaiById(1, id);
+        }
+        if (duAn.getTrangThai() == 1) {
+            return duAnRepository.updateTrangThaiById(0, id);
+        }
+        return null;
+    }
+
     /**
      * @param page
      * @param size
@@ -108,4 +112,24 @@ public class DuAnServiceImpl implements IDuAnService {
                 entities.getSort().toString()
         );
     }
+
+    @Override
+    public PagedResponse<DuAnResponse1> searchProjetc(int page, int size, String searchInput) throws ServiceException {
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
+        Page<DuAn> entities = duAnRepository.searchProject(pageable, searchInput);
+
+        List<DuAnResponse1> dtos = this.duAnMapper.toDtoList(entities.getContent());
+        return new PagedResponse<>(
+                dtos,
+                page,
+                size,
+                entities.getTotalElements(),
+                entities.getTotalPages(),
+                entities.isLast(),
+                entities.getSort().toString()
+        );
+    }
 }
+
+
+

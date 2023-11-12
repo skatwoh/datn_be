@@ -44,9 +44,6 @@ public class LoaiPhong {
     private String ghiChu;
 
     @OneToMany(mappedBy = "loaiPhong")
-    private Set<ChiTietPhong> chiTietPhongs = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "loaiPhong")
     private Set<Phong> phongs = new LinkedHashSet<>();
 
 }

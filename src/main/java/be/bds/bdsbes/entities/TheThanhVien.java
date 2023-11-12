@@ -53,7 +53,7 @@ public class TheThanhVien {
     @Column(name = COLUMN_GHICHU_NAME)
     private String ghiChu;
 
-    @OneToMany(mappedBy = "idTheThanhVien")
+    @OneToMany(mappedBy = "theThanhVien")
     private Set<KhachHang> khachHangs = new LinkedHashSet<>();
 
 }

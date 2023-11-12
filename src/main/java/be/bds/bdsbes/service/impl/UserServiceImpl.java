@@ -3,11 +3,19 @@ package be.bds.bdsbes.service.impl;
 import be.bds.bdsbes.domain.User;
 import be.bds.bdsbes.exception.ResourceNotFoundException;
 import be.bds.bdsbes.exception.ServiceException;
+import be.bds.bdsbes.payload.ManualActiveUserResponse;
+import be.bds.bdsbes.payload.PermissionResponse;
+import be.bds.bdsbes.payload.UserProfileResponse;
 import be.bds.bdsbes.repository.UserRepository;
 import be.bds.bdsbes.security.UserPrincipal;
+import be.bds.bdsbes.service.IUserService;
 import be.bds.bdsbes.service.mapper.UserMapper;
 import be.bds.bdsbes.utils.AppConstantsUtil;
+import be.bds.bdsbes.utils.ServiceExceptionBuilderUtil;
 import be.bds.bdsbes.utils.ValidationErrorUtil;
+import be.bds.bdsbes.utils.dto.KeyValue;
+import be.bds.bdsbes.utils.dto.PagedResponse;
+import be.bds.bdsbes.utils.dto.ValidationErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,15 +24,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-
-import be.bds.bdsbes.payload.ManualActiveUserResponse;
-import be.bds.bdsbes.payload.UserProfileResponse;
-import be.bds.bdsbes.service.IUserService;
-import be.bds.bdsbes.utils.ServiceExceptionBuilderUtil;
-import be.bds.bdsbes.utils.dto.KeyValue;
-import be.bds.bdsbes.utils.dto.PagedResponse;
-import be.bds.bdsbes.utils.dto.ValidationErrorResponse;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +42,7 @@ public class UserServiceImpl implements IUserService {
     public UserProfileResponse getCurrentUser(UserPrincipal userPrincipal) {
         User user = this.userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
         if (null != user) {
-            return new UserProfileResponse(user.getId(), user.getName(), user.getEmail(), user.getImageUrl(), user.getEmailVerified(), user.getCreatedAt(), user.getUpdatedAt(), user.getCv());
+            return new UserProfileResponse(user.getId(), user.getName(), user.getEmail(), user.getImageUrl(), user.getEmailVerified(), user.getCreatedAt(), user.getUpdatedAt(), user.getRole());
         }
         return null;
     }
@@ -110,5 +109,38 @@ public class UserServiceImpl implements IUserService {
         }
     }
 
+    @Override
+    public PermissionResponse setPermissionUser(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isPresent()) {
+            user.get().setRole("user");
+            userRepository.save(user.get());
 
+            return new PermissionResponse(user.get().getId(), user.get().getRole());
+        }
+        return null;
+    }
+
+    @Override
+    public PermissionResponse setPermissionAdmin(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isPresent()) {
+            user.get().setRole("admin");
+            userRepository.save(user.get());
+            return new PermissionResponse(user.get().getId(), user.get().getRole());
+        }
+        return null;
+    }
+
+    @Override
+    public PermissionResponse setPermissionGuest(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isPresent()) {
+            user.get().setRole("");
+            userRepository.save(user.get());
+
+            return new PermissionResponse(user.get().getId(), user.get().getRole());
+        }
+        return null;
+    }
 }

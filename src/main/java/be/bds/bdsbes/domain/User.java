@@ -1,5 +1,6 @@
 package be.bds.bdsbes.domain;
 
+import be.bds.bdsbes.entities.DatPhong;
 import be.bds.bdsbes.entities.KhachHang;
 import be.bds.bdsbes.utils.ValidationErrorUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -21,6 +23,9 @@ import java.util.Set;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@Builder
+@AllArgsConstructor
+
 @Table(
         name = "users",
         uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
@@ -53,7 +58,9 @@ public class User extends DateAudit {
 
     private String providerId;
 
-    private String cv;
+    private String role;
+
+    private String sdt;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_khach_hang")
@@ -65,6 +72,10 @@ public class User extends DateAudit {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+
+    @OneToMany(mappedBy = "user")
+    private Set<DatPhong> datPhongs = new LinkedHashSet<>();
 
     @Override
     public boolean equals(Object o) {

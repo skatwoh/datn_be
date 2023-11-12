@@ -26,11 +26,11 @@ public class ChiTietDatPhong {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_dat_phong")
-    private DatPhong idDatPhong;
+    private DatPhong datPhong;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_chi_tiet_phong")
-    private ChiTietPhong idChiTietPhong;
+    private ChiTietPhong chiTietPhong;
 
     @Size(max = 100)
     @Nationalized

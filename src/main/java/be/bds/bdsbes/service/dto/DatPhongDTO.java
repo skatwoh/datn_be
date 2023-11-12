@@ -1,32 +1,36 @@
 package be.bds.bdsbes.service.dto;
 
-import lombok.Value;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.UUID;
+import java.time.LocalDateTime;
 
 /**
  * DTO for {@link be.bds.bdsbes.entities.DatPhong}
  */
-@Value
+@Getter
+@Setter
 public class DatPhongDTO implements Serializable {
 
-    @NotNull(message = "Bạn cần chọn ngày đặt")
-    LocalDate ngayDat;
+    String ma;
+
+    LocalDateTime ngayDat;
 
     @NotNull(message = "Bạn cần chọn ngày check-in")
-    LocalDate checkIn;
+    LocalDateTime checkIn;
 
     @NotNull(message = "Bạn cần chọn ngày check-out")
-    LocalDate checkOut;
+    LocalDateTime checkOut;
 
     @NotNull(message = "Vui lòng điền số người")
     Integer soNguoi;
 
-    Long idKhachHang;
+    Long userId;
+
+    Long idPhong;
 
     Long idVoucher;
 

@@ -9,12 +9,16 @@ import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Slf4j
@@ -82,18 +86,20 @@ public class PhongController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody @Valid PhongDTO phongDTO, BindingResult result) {
-        if (result.hasErrors()) {
-            List<ObjectError> errorList = result.getAllErrors();
-            return ResponseEntity.badRequest().body(errorList);
+    public ResponseEntity<?> create(@RequestBody @Valid PhongDTO phongDTO) throws ServiceException{
+//        if (result.hasErrors()) {
+//            List<ObjectError> errorList = result.getAllErrors();
+//            return ResponseEntity.badRequest().body(errorList);
+//        }
+        try {
+            return ResponseUtil.wrap(this.iPhongService.create(phongDTO));
+        } catch (ServiceException e) {
+            log.error(this.getClass().getName(), e);
+            return ResponseUtil.generateErrorResponse(e);
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
         }
-        List<Phong> list = iPhongService.getList();
-        for (Phong phong : list) {
-            if (phong.getMa().equalsIgnoreCase(phongDTO.getMa())) {
-                return ResponseEntity.badRequest().body("Mã phòng " + phong.getMa() + " đã tồn tại");
-            }
-        }
-        return ResponseEntity.ok(iPhongService.create(phongDTO));
     }
 
     @PutMapping("update")
@@ -114,5 +120,36 @@ public class PhongController {
     @PutMapping("delete")
     public ResponseEntity<?> delete(@RequestParam(value = "id") Long id) {
         return ResponseEntity.ok(this.iPhongService.updateTrangThai(id));
+    }
+
+    @GetMapping("get-room-by-search")
+    public ResponseEntity<?> getListbySoNguoi(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "input", defaultValue = "") int soNguoi,
+            @RequestParam(value = "checkIn", defaultValue = "") String checkIn,
+            @RequestParam(value = "checkOut", defaultValue = "") String checkOut) {
+        try {
+            // Log the received date strings
+            log.info("Received checkIn: {}", checkIn);
+            log.info("Received checkOut: {}", checkOut);
+
+            // Parse date strings to LocalDateTime
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDateTime parsedCheckIn = LocalDate.parse(checkIn, formatter).atStartOfDay();
+            LocalDateTime parsedCheckOut = LocalDate.parse(checkOut, formatter).atStartOfDay();
+
+
+            // Log the parsed LocalDateTime values
+            log.info("Parsed checkIn: {}", parsedCheckIn);
+            log.info("Parsed checkOut: {}", parsedCheckOut);
+
+            return ResponseUtil.wrap(this.iPhongService.searchRoomManager(page, size, soNguoi, parsedCheckIn, parsedCheckOut));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -2,6 +2,7 @@ package be.bds.bdsbes.resource;
 
 import be.bds.bdsbes.domain.User;
 import be.bds.bdsbes.payload.ForgotPasswordRequest;
+import be.bds.bdsbes.payload.PasswordUpdateRequest;
 import be.bds.bdsbes.service.impl.EmailService;
 import be.bds.bdsbes.utils.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -97,6 +98,32 @@ public class AuthController {
             System.out.println(newPassword);
 
             return ResponseUtil.wrap("Password reset email sent successfully");
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        }
+    }
+
+    @PostMapping("/update-pass")
+    public ResponseEntity<?> updatePassword(@Valid @RequestBody PasswordUpdateRequest passwordUpdateRequest) {
+        try {
+            String email = "longhoang0323@gmail.com";
+            Optional<User> optional = iAuthService.findUserByEmail(email);
+            User user = optional.get();
+            if (user.getPassword().equals(passwordEncoder.encode(passwordUpdateRequest.getPassword()))) {
+                String newPassword = passwordUpdateRequest.getNewPassword();
+
+                String encodedPassword = passwordEncoder.encode(newPassword);
+
+
+                iAuthService.updatePassword(user, encodedPassword);
+
+                System.out.println(user.getEmail());
+                System.out.println(newPassword);
+
+                return ResponseUtil.wrap("Update password successfully");
+            }
+            return ResponseUtil.wrap("Update password failed");
         } catch (Exception ex) {
             log.error(this.getClass().getName(), ex);
             return ResponseUtil.generateErrorResponse(ex);

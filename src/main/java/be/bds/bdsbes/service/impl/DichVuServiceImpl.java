@@ -1,8 +1,10 @@
 package be.bds.bdsbes.service.impl;
 
 import be.bds.bdsbes.entities.DichVu;
+import be.bds.bdsbes.entities.DuAn;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.DichVuResponse1;
+import be.bds.bdsbes.payload.DuAnResponse1;
 import be.bds.bdsbes.repository.DichVuRepository;
 import be.bds.bdsbes.service.IDichVuService;
 import be.bds.bdsbes.service.dto.DichVuDTO;
@@ -37,6 +39,10 @@ public class DichVuServiceImpl implements IDichVuService {
     public List<DichVuResponse> getList() {
         return dichVuRepository.getAllDv();
     }
+    @Override
+    public DichVuResponse1 getDichVu(Long id) {
+        return dichVuRepository.getDichVu(id);
+    }
 
     @Override
     public Page<DichVu> getPage(Integer page) {
@@ -44,20 +50,22 @@ public class DichVuServiceImpl implements IDichVuService {
         return dichVuRepository.findAll(pageable);
     }
 
-    @Override
-    public DichVu getOne(Long id) {
-        Optional<DichVu> dichVuOptional = dichVuRepository.findById(id);
-        if(dichVuOptional.isPresent()){
-            DichVu dichVu = dichVuOptional.get();
-            return dichVu;
-        }
-        return null;
-    }
 
     @Override
     public DichVu create(DichVuDTO dichVuDTO) {
         DichVu dichVu = dichVuDTO.dto(new DichVu());
         return dichVuRepository.save(dichVu);
+    }
+    @Override
+    public Integer updateTrangThai(Long id) {
+        DichVu dichVu = dichVuRepository.findById(id).get();
+        if (dichVu.getTrangThai() == 0) {
+            return dichVuRepository.updateTrangThaiById(1, id);
+        }
+        if (dichVu.getTrangThai() == 1) {
+            return dichVuRepository.updateTrangThaiById(0, id);
+        }
+        return null;
     }
 
     @Override
@@ -106,4 +114,22 @@ public class DichVuServiceImpl implements IDichVuService {
                 entities.getSort().toString()
         );
     }
+
+    @Override
+    public PagedResponse<DichVuResponse1> searchRoomService(int page, int size, String searchInput) throws ServiceException {
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
+        Page<DichVu> entities = dichVuRepository.searchRoomService(pageable, searchInput);
+
+        List<DichVuResponse1> dtos = this.dichVuMapper.toDtoList(entities.getContent());
+        return new PagedResponse<>(
+                dtos,
+                page,
+                size,
+                entities.getTotalElements(),
+                entities.getTotalPages(),
+                entities.isLast(),
+                entities.getSort().toString()
+        );
+    }
 }
+
