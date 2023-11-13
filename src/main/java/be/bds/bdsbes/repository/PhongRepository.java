@@ -25,6 +25,7 @@ public interface PhongRepository extends JpaRepository<Phong, Long> {
     @Query("select p from Phong p where p.ma like CONCAT('%', ?1, '%') or p.loaiPhong.tenLoaiPhong like CONCAT('%',?1, '%') order by p.ma asc")
     Page<Phong> searchRoom(Pageable pageable, String searchInput);
 
+
     @Transactional
     @Modifying
     @Query("UPDATE Phong p SET p.trangThai = :trangThai WHERE p.id = :id")
