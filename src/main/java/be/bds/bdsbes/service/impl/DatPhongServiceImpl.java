@@ -5,6 +5,7 @@ import be.bds.bdsbes.entities.*;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.TaiKhoanResponse1;
 import be.bds.bdsbes.repository.DatPhongRepository;
+import be.bds.bdsbes.repository.ThongBaoRepository;
 import be.bds.bdsbes.service.IDatPhongService;
 import be.bds.bdsbes.service.dto.DatPhongDTO;
 import be.bds.bdsbes.service.dto.response.DatPhongResponse;
@@ -34,6 +35,9 @@ public class DatPhongServiceImpl implements IDatPhongService {
 
     @Autowired
     DatPhongRepository datPhongRepository;
+
+    @Autowired
+    ThongBaoRepository thongBaoRepository;
 
     @Autowired
     DatPhongMapper datPhongMapper;
