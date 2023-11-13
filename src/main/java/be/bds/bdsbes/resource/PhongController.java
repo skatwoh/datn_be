@@ -17,6 +17,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -33,10 +34,10 @@ public class PhongController {
     @Autowired
     ILoaiPhongService iLoaiPhongService;
 
-    @Scheduled(cron = "*/5 * * * * *")
-    public void executeTask() {
-            System.out.println("hello");
-    }
+//    @Scheduled(cron = "*/5 * * * * *")
+//    public void executeTask() {
+//            System.out.println("hello");
+//    }
 
     @GetMapping("list")
     public ResponseEntity<?> getList(
@@ -136,20 +137,13 @@ public class PhongController {
             @RequestParam(value = "checkIn", defaultValue = "") String checkIn,
             @RequestParam(value = "checkOut", defaultValue = "") String checkOut) {
         try {
-            // Log the received date strings
-            log.info("Received checkIn: {}", checkIn);
-            log.info("Received checkOut: {}", checkOut);
+            if(checkIn.equals("") || checkOut.equals("") || checkIn == null || checkOut == null){
+                return ResponseUtil.wrap(this.iPhongService.searchRoomManager2(page, size, soNguoi));
 
-            // Parse date strings to LocalDateTime
+            }
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDateTime parsedCheckIn = LocalDate.parse(checkIn, formatter).atStartOfDay();
             LocalDateTime parsedCheckOut = LocalDate.parse(checkOut, formatter).atStartOfDay();
-
-
-            // Log the parsed LocalDateTime values
-            log.info("Parsed checkIn: {}", parsedCheckIn);
-            log.info("Parsed checkOut: {}", parsedCheckOut);
-
             return ResponseUtil.wrap(this.iPhongService.searchRoomManager(page, size, soNguoi, parsedCheckIn, parsedCheckOut));
         } catch (Exception ex) {
             log.error(this.getClass().getName(), ex);
