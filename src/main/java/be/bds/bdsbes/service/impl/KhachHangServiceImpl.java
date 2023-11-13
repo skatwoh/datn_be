@@ -11,6 +11,7 @@ import be.bds.bdsbes.repository.TaiKhoanRepository;
 import be.bds.bdsbes.service.IKhachHangService;
 import be.bds.bdsbes.service.dto.KhachHangDTO;
 import be.bds.bdsbes.service.dto.TheThanhVienDTO;
+import be.bds.bdsbes.service.dto.response.DatPhongResponse;
 import be.bds.bdsbes.service.mapper.KhachHangMapper;
 import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ServiceExceptionBuilderUtil;
@@ -99,9 +100,10 @@ public class KhachHangServiceImpl implements IKhachHangService {
         // Retrieve all entities
         Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
         Page<KhachHang> entities = khachHangRepository.findAll(pageable);
+        List<KhachHangResponse1> dtos = this.khachHangMapper.toDtoList(entities.getContent());
 
         return new PagedResponse<>(
-                this.khachHangMapper.toDtoList(entities.getContent()),
+                dtos,
                 page,
                 size,
                 entities.getTotalElements(),

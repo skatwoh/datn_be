@@ -15,7 +15,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 @Entity
 @Table(name = KhachHang.TABLE_NAME)
 public class KhachHang {
@@ -67,9 +66,6 @@ public class KhachHang {
     @Lob
     @Column(name = COLUMN_GHICHU_NAME)
     private String ghiChu;
-
-    @OneToMany(mappedBy = "user")
-    private Set<DatPhong> datPhongs = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "khachHang")
     private Set<FeedBack> feedBacks = new LinkedHashSet<>();
