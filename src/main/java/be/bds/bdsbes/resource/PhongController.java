@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,11 @@ public class PhongController {
 
     @Autowired
     ILoaiPhongService iLoaiPhongService;
+
+    @Scheduled(cron = "*/5 * * * * *")
+    public void executeTask() {
+            System.out.println("hello");
+    }
 
     @GetMapping("list")
     public ResponseEntity<?> getList(
@@ -147,6 +153,7 @@ public class PhongController {
             return ResponseUtil.wrap(this.iPhongService.searchRoomManager(page, size, soNguoi, parsedCheckIn, parsedCheckOut));
         } catch (Exception ex) {
             log.error(this.getClass().getName(), ex);
+
             return ResponseUtil.generateErrorResponse(ex);
         } catch (ServiceException e) {
             throw new RuntimeException(e);
