@@ -2,6 +2,7 @@ package be.bds.bdsbes.domain;
 
 import be.bds.bdsbes.entities.DatPhong;
 import be.bds.bdsbes.entities.KhachHang;
+import be.bds.bdsbes.entities.ThongBao;
 import be.bds.bdsbes.utils.ValidationErrorUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -76,6 +77,9 @@ public class User extends DateAudit {
 
     @OneToMany(mappedBy = "user")
     private Set<DatPhong> datPhongs = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<ThongBao> thongBaos = new LinkedHashSet<>();
 
     @Override
     public boolean equals(Object o) {
