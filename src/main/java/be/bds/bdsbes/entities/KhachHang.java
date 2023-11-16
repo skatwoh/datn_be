@@ -68,13 +68,13 @@ public class KhachHang {
     private String ghiChu;
 
     @OneToMany(mappedBy = "khachHang")
+    private Set<DichVuSuDung> dichVuSuDungs = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "khachHang")
     private Set<FeedBack> feedBacks = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "khachHang")
     private Set<HoaDon> hoaDons = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "khachHang")
-    private Set<LichSuDatPhong> lichSuDatPhongs = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "khachHang")
     private Set<User> users = new LinkedHashSet<>();

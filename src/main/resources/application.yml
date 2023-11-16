@@ -19,3 +19,15 @@ spring:
   task:
     scheduling:
       enabled: true
+
+vnpay:
+  url: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html  # URL của VNPAY
+  merchant-id: your_merchant_id  # ID của Merchant
+  access-key: your_access_key    # Access Key của Merchant
+  secret-key: your_secret_key    # Secret Key của Merchant
+  return-url: http://your-app-domain.com/payment/callback  # URL để nhận callback từ VNPAY
+  cancel-url: http://your-app-domain.com/payment/cancel    # URL khi thanh toán bị hủy bỏ
+
+slack:
+  webhook:
+    url: https://hooks.slack.com/services/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
