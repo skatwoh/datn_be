@@ -58,6 +58,9 @@ public class HoaDon {
     private DatPhong datPhong;
 
     @OneToMany(mappedBy = "hoaDon")
+    private Set<DatPhong> datPhongs = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "hoaDon")
     private Set<HoaDonChiTiet> hoaDonChiTiets = new LinkedHashSet<>();
 
 }

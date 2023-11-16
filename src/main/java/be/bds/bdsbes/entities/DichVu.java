@@ -6,6 +6,8 @@ import org.hibernate.annotations.Nationalized;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Builder
 @AllArgsConstructor
@@ -49,5 +51,8 @@ public class DichVu {
 
     @Column(name = COLUMN_TRANGTHAI_NAME)
     private Integer trangThai;
+
+    @OneToMany(mappedBy = "dichVu")
+    private Set<ChiTietDichVu> chiTietDichVus = new LinkedHashSet<>();
 
 }
