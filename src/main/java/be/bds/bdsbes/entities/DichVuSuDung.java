@@ -14,9 +14,9 @@ import java.time.LocalDate;
 @Setter
 @ToString
 @Entity
-@Table(name = LichSuDatPhong.TABLE_NAME)
-public class LichSuDatPhong {
-    public static final String TABLE_NAME = "lich_su_dat_phong";
+@Table(name = DichVuSuDung.TABLE_NAME)
+public class DichVuSuDung {
+    public static final String TABLE_NAME = "dich_vu_su_dung";
     public static final String COLUMN_ID_NAME = "id";
     public static final String COLUMN_NGAYDAT_NAME = "ngay_dat";
     public static final String COLUMN_NGAYNHAN_NAME = "ngay_nhan";
