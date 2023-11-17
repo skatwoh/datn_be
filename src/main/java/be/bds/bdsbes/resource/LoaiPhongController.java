@@ -39,6 +39,11 @@ public class LoaiPhongController {
         }
     }
 
+    @GetMapping("detail")
+    public ResponseEntity<?> getOne(@RequestParam(value = "id") Long id) {
+        return ResponseEntity.ok(iLoaiPhongService.get(id));
+    }
+
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody @Valid LoaiPhongDTO loaiPhongDTO, BindingResult result){
         if(result.hasErrors()){
@@ -56,22 +61,11 @@ public class LoaiPhongController {
         return ResponseEntity.ok(iLoaiPhongService.create(loaiPhongDTO));
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> create(@PathVariable("id") Long id, @RequestBody @Valid LoaiPhongDTO loaiPhongDTO, BindingResult result){
+    @PutMapping("update")
+    public ResponseEntity<?> update(@RequestParam(value = "id") Long id, @RequestBody @Valid LoaiPhongDTO loaiPhongDTO, BindingResult result){
         if(result.hasErrors()){
             List<ObjectError> errorList = result.getAllErrors();
             return ResponseEntity.badRequest().body(errorList);
-        }
-        if(iLoaiPhongService.update(loaiPhongDTO, id) == null){
-            return ResponseEntity.badRequest().body("Khong tim thay loai phong co id " + id);
-        }
-        List<LoaiPhong> list = iLoaiPhongService.getList();
-        if(list.size() > 0){
-            for(LoaiPhong loaiPhong : list) {
-                if(loaiPhong.getMaLoaiPhong().equalsIgnoreCase(loaiPhongDTO.getMaLoaiPhong()) && !loaiPhong.getId().equals(id)){
-                    return  ResponseEntity.badRequest().body("Mã loại phòng đã tồn tại");
-                }
-            }
         }
         return ResponseEntity.ok(iLoaiPhongService.update(loaiPhongDTO, id));
     }

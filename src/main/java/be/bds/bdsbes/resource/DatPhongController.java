@@ -57,8 +57,8 @@ public class DatPhongController {
         }
     }
 
-    @GetMapping("get-one/{id}")
-    public ResponseEntity<?> getOne(@PathVariable("id") Long id) {
+    @GetMapping("detail")
+    public ResponseEntity<?> getOne(@RequestParam(value = "id") Long id) {
         if (iDatPhongService.getOne(id) == null) {
             return ResponseEntity.badRequest().body("Không tồn tại");
         }
@@ -77,8 +77,8 @@ public class DatPhongController {
 
     }
 
-    @PutMapping("update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id, @Valid @RequestBody DatPhongDTO datPhongDTO, BindingResult result) {
+    @PutMapping("update")
+    public ResponseEntity<?> update(@RequestParam(value = "id") Long id, @Valid @RequestBody DatPhongDTO datPhongDTO, BindingResult result) {
         if (iDatPhongService.update(datPhongDTO, id) == null) {
             return ResponseEntity.badRequest().body("Không tìm thấy");
         }
@@ -116,6 +116,27 @@ public class DatPhongController {
             e.printStackTrace();
             return new byte[0];
         }
+    }
+
+    @GetMapping("/list-room-order-by-user")
+    public ResponseEntity<?> getListByUser(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "id", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) Long id,
+            @RequestParam(value = "trangThai", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) Integer trangThai) {
+        try {
+            return ResponseUtil.wrap(this.iDatPhongService.getRoomOderByUser(page, size, id, trangThai));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @PutMapping("update-status")
+    public ResponseEntity<?> delete(@RequestParam(value = "id") Long id) {
+        return ResponseEntity.ok(this.iDatPhongService.updateTrangThai(id));
     }
 
 }

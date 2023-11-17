@@ -23,7 +23,7 @@ public interface PhongRepository extends JpaRepository<Phong, Long> {
     @Query("select new be.bds.bdsbes.payload.PhongResponse1(p.id, p.ma, p.giaPhong, p.trangThai, l.id, l.tenLoaiPhong) from Phong p inner join p.loaiPhong l")
     List<PhongResponse1> singleListRoom();
 
-    @Query("select p from Phong p where p.ma like CONCAT('%', ?1, '%') or p.loaiPhong.tenLoaiPhong like CONCAT('%',?1, '%') order by p.ma asc")
+    @Query("select p from Phong p where p.ma like CONCAT('%', ?1, '%') or p.loaiPhong.tenLoaiPhong like CONCAT('%',?1, '%')")
     Page<Phong> searchRoom(Pageable pageable, String searchInput);
 
 

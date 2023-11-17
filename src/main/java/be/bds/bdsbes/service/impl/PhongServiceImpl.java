@@ -50,7 +50,7 @@ public class PhongServiceImpl implements IPhongService {
 
     @Override
     public PagedResponse<PhongResponse1> searchRoom(int page, int size, String searchInput) throws ServiceException {
-        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
         Page<Phong> entities = phongRepository.searchRoom(pageable, searchInput);
 
         List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());

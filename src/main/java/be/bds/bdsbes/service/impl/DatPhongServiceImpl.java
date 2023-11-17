@@ -68,13 +68,8 @@ public class DatPhongServiceImpl implements IDatPhongService {
     }
 
     @Override
-    public DatPhong getOne(Long id) {
-        Optional<DatPhong> optionalDatPhong = datPhongRepository.findById(id);
-        if(optionalDatPhong.isPresent()){
-            DatPhong datPhong = optionalDatPhong.get();
-            return datPhong;
-        }
-        return null;
+    public DatPhongResponse getOne(Long id) {
+        return datPhongRepository.get(id);
     }
 
     /**
@@ -110,6 +105,7 @@ public class DatPhongServiceImpl implements IDatPhongService {
         datPhong.setSoNguoi(datPhongDTO.getSoNguoi());
         datPhong.setGhiChu(datPhongDTO.getGhiChu());
         datPhong.setTrangThai(datPhongDTO.getTrangThai());
+        datPhong.setTongGia(datPhongDTO.getTongGia());
         datPhong.setVoucher(Voucher.builder().id(1L).build());
         datPhong.setUser(User.builder().id(datPhongDTO.getUserId()).build());
         datPhong.setPhong(Phong.builder().id(datPhongDTO.getIdPhong()).build());
@@ -173,5 +169,51 @@ public class DatPhongServiceImpl implements IDatPhongService {
                 entities.isLast(),
                 entities.getSort().toString()
         );
+    }
+
+    @Override
+    public PagedResponse<DatPhongResponse> getRoomOderByUser(int page, int size, Long id, Integer trangThai) throws ServiceException {
+        if (page <= 0) {
+            throw ServiceExceptionBuilderUtil.newBuilder()
+                    .addError(new ValidationErrorResponse("page", ValidationErrorUtil.Invalid))
+                    .build();
+        }
+
+        if (size > AppConstantsUtil.MAX_PAGE_SIZE) {
+            List<KeyValue> params = new ArrayList<>();
+            params.add(new KeyValue("max", String.valueOf(AppConstantsUtil.MAX_PAGE_SIZE)));
+
+            throw ServiceExceptionBuilderUtil.newBuilder()
+                    .addError(new ValidationErrorResponse("pageSize", ValidationErrorUtil.Invalid, params))
+                    .build();
+        }
+
+        // Retrieve all entities
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
+        Page<DatPhong> entities = datPhongRepository.getAllDatPhongByUser(pageable, id, trangThai);
+
+        List<DatPhongResponse> dtos = this.datPhongMapper.toDtoList(entities.getContent());
+
+        return new PagedResponse<>(
+                dtos,
+                page,
+                size,
+                entities.getTotalElements(),
+                entities.getTotalPages(),
+                entities.isLast(),
+                entities.getSort().toString()
+        );
+    }
+
+    @Override
+    public Integer updateTrangThai(Long id) {
+        DatPhong datPhong = datPhongRepository.findById(id).get();
+        if(datPhong.getTrangThai() == 1){
+            return datPhongRepository.updateTrangThaiById(0, id);
+        }
+        if(datPhong.getTrangThai() == 0){
+            return datPhongRepository.updateTrangThaiById(1, id);
+        }
+        return null;
     }
 }
