@@ -14,7 +14,7 @@ public interface ILoaiPhongService {
 
     List<LoaiPhong> getList();
 
-    List<LoaiPhongResponse> singleListRoomType();
+    List<LoaiPhongResponse1> singleListRoomType();
     Page<LoaiPhong> getPage(Integer page);
 
     LoaiPhongResponse1 get(Long id);

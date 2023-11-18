@@ -38,7 +38,4 @@ public class Sale {
     @Column(name = "trang_thai")
     private Boolean trangThai;
 
-    @OneToMany(mappedBy = "sale")
-    private Set<Phong> phongs = new LinkedHashSet<>();
-
 }

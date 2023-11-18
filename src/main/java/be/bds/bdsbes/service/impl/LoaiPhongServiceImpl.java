@@ -59,7 +59,7 @@ public class LoaiPhongServiceImpl implements ILoaiPhongService {
     }
 
     @Override
-    public List<LoaiPhongResponse> singleListRoomType() {
+    public List<LoaiPhongResponse1> singleListRoomType() {
         return loaiPhongRepository.singleListRoomType();
     }
 
