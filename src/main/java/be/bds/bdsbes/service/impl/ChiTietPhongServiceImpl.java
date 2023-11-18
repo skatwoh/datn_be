@@ -43,7 +43,7 @@ public class ChiTietPhongServiceImpl implements IChiTietPhongService {
 
     @Override
     public PagedResponse<ChiTietPhongResponse1> searchRoom(int page, int size, String searchInput) throws ServiceException {
-        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
         Page<ChiTietPhong> entities = chiTietPhongRepository.searchRoomInformation(pageable, searchInput);
 
         List<ChiTietPhongResponse1> dtos = this.chiTietPhongMapper.toDtoList(entities.getContent());

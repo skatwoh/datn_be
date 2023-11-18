@@ -14,10 +14,10 @@ public interface ILoaiPhongService {
 
     List<LoaiPhong> getList();
 
-    List<LoaiPhongResponse> singleListRoomType();
+    List<LoaiPhongResponse1> singleListRoomType();
     Page<LoaiPhong> getPage(Integer page);
 
-    LoaiPhong getOne(Long id);
+    LoaiPhongResponse1 get(Long id);
 
     LoaiPhong create(LoaiPhongDTO loaiPhongDTO);
 

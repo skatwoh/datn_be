@@ -43,4 +43,7 @@ public class DatPhongResponse {
     private Integer trangThai;
 
     private String tenPhong;
+
+    private BigDecimal tongGia;
+
 }

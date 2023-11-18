@@ -36,6 +36,22 @@ public class LoaiPhongServiceImpl implements ILoaiPhongService {
     @Autowired
     private LoaiPhongMapper loaiPhongMapper;
 
+    public int getNumberOfRecords() {
+        Long count = loaiPhongRepository.count();
+        return count.intValue();
+    }
+
+
+    private String generateAutoCode() {
+        int numberOfDigits = 2;
+
+        int numberOfExistingRecords = getNumberOfRecords();
+
+        String autoCode = "LP" + String.format("%0" + numberOfDigits + "d", numberOfExistingRecords + 1);
+
+        return autoCode;
+    }
+
 
     @Override
     public List<LoaiPhong> getList() {
@@ -43,7 +59,7 @@ public class LoaiPhongServiceImpl implements ILoaiPhongService {
     }
 
     @Override
-    public List<LoaiPhongResponse> singleListRoomType() {
+    public List<LoaiPhongResponse1> singleListRoomType() {
         return loaiPhongRepository.singleListRoomType();
     }
 
@@ -54,18 +70,14 @@ public class LoaiPhongServiceImpl implements ILoaiPhongService {
     }
 
     @Override
-    public LoaiPhong getOne(Long id) {
-        Optional<LoaiPhong> optionalLoaiPhong = loaiPhongRepository.findById(id);
-        if(optionalLoaiPhong.isPresent()){
-            LoaiPhong loaiPhong = optionalLoaiPhong.get();
-            return loaiPhong;
-        }
-        return null;
+    public LoaiPhongResponse1 get(Long id) {
+        return loaiPhongRepository.get(id);
     }
 
     @Override
     public LoaiPhong create(LoaiPhongDTO loaiPhongDTO) {
         LoaiPhong loaiPhong = loaiPhongDTO.dto(new LoaiPhong());
+        loaiPhong.setMaLoaiPhong(generateAutoCode());
         return loaiPhongRepository.save(loaiPhong);
     }
 

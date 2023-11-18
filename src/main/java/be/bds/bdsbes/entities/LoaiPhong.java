@@ -43,7 +43,5 @@ public class LoaiPhong {
     @Column(name = COLUMN_GHICHU_NAME)
     private String ghiChu;
 
-    @OneToMany(mappedBy = "loaiPhong")
-    private Set<Phong> phongs = new LinkedHashSet<>();
 
 }

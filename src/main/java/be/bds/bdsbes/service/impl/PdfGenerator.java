@@ -25,6 +25,8 @@ public class PdfGenerator {
 
     public void export(HttpServletResponse response, Long id) throws IOException, DocumentException, ParseException {
         DatPhong datPhong = datPhongRepository.findById(id).get();
+        int tienPhong = (int) (Double.parseDouble(String.valueOf(datPhong.getPhong().getGiaPhong())) * (datPhong.getCheckOut().getDayOfMonth()-datPhong.getCheckIn().getDayOfMonth()));
+        int tongGia =  (int) (Double.parseDouble(String.valueOf(datPhong.getTongGia())));
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
         NumberFormat formatter = NumberFormat.getInstance(Locale.US);
@@ -87,6 +89,8 @@ public class PdfGenerator {
         PdfPCell cellCheckout2 = new PdfPCell(new Phrase(sdf2.format(sdf1.parse(String.valueOf(datPhong.getCheckOut()))), fontTable));
         PdfPCell cellSoNgay = new PdfPCell(new Phrase("So ngay thue ", fontTable));
         PdfPCell cellSoNgay2 = new PdfPCell(new Phrase(String.valueOf(datPhong.getCheckOut().getDayOfMonth()-datPhong.getCheckIn().getDayOfMonth()), fontTable));
+        PdfPCell cellPhiDichVu = new PdfPCell(new Phrase("Phi dich vu ", fontTable));
+        PdfPCell cellPhiDichVu2 = new PdfPCell(new Phrase(String.valueOf(formatter.format(tongGia - tienPhong)), fontTable));
         cellGiaPhong.setHorizontalAlignment(Element.ALIGN_CENTER);
         cellGiaPhong2.setHorizontalAlignment(Element.ALIGN_CENTER);
         cellSoNguoi.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -97,6 +101,8 @@ public class PdfGenerator {
         cellCheckout2.setHorizontalAlignment(Element.ALIGN_CENTER);
         cellSoNgay.setHorizontalAlignment(Element.ALIGN_CENTER);
         cellSoNgay2.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cellPhiDichVu.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cellPhiDichVu2.setHorizontalAlignment(Element.ALIGN_CENTER);
         pdfPTable.addCell(cellGiaPhong);
         pdfPTable.addCell(cellGiaPhong2);
         pdfPTable.addCell(cellSoNguoi);
@@ -107,11 +113,12 @@ public class PdfGenerator {
         pdfPTable.addCell(cellCheckout2);
         pdfPTable.addCell(cellSoNgay);
         pdfPTable.addCell(cellSoNgay2);
+        pdfPTable.addCell(cellPhiDichVu);
+        pdfPTable.addCell(cellPhiDichVu2);
         pdfPTable.completeRow();
 
         //
-        int tongTien = (int) (Double.parseDouble(String.valueOf(datPhong.getPhong().getGiaPhong())) * (datPhong.getCheckOut().getDayOfMonth()-datPhong.getCheckIn().getDayOfMonth()));
-        String formattedTongTien = formatter.format(tongTien);
+        String formattedTongTien = formatter.format(datPhong.getTongGia());
         Paragraph paragraphTongTien = new Paragraph("Tong tien: " + formattedTongTien + "VND", fontInfor);
         paragraphTongTien.setAlignment(Paragraph.ALIGN_LEFT);
         Paragraph paragraph9 = new Paragraph("\n", fontInfor);

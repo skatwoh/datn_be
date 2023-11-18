@@ -28,12 +28,13 @@ public interface IPhongService {
     Integer updateTrangThai(Long id);
 
     PagedResponse<PhongResponse1> getPhong(int page, int size) throws ServiceException;
+    PagedResponse<PhongResponse1> getListRoom(int page, int size) throws ServiceException;
 
     PagedResponse<PhongResponse1> getPhongSortbyId(int page, int size) throws ServiceException;
 
     List<PhongResponse1> singleListRoom();
 
-    PagedResponse<PhongResponse1> searchRoomManager(int page, int size, int soNguoi, LocalDateTime checkIn, LocalDateTime checkOut) throws ServiceException;
+    PagedResponse<PhongResponse1> searchRoomManager(int page, int size, String tenLoaiPhong, LocalDateTime checkIn, LocalDateTime checkOut) throws ServiceException;
 
-    PagedResponse<PhongResponse1> searchRoomManager2(int page, int size, int soNguoi);
+    PagedResponse<PhongResponse1> searchRoomManager2(int page, int size, String tenLoaiPhong);
 }

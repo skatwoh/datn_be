@@ -15,10 +15,14 @@ public interface IDatPhongService {
     List<DatPhong> getList();
 
     List<DatPhongResponse> getAll();
-    DatPhong getOne(Long id);
+    DatPhongResponse getOne(Long id);
     Boolean create(DatPhongDTO datPhongDTO) throws ServiceException;
 
     DatPhong update(DatPhongDTO datPhongDTO, Long id);
 
     PagedResponse<DatPhongResponse> getRoomOrder(int page, int size) throws ServiceException;
+
+    PagedResponse<DatPhongResponse> getRoomOderByUser(int page, int size, Long id, Integer trangThai) throws ServiceException;
+    Integer updateTrangThai(Long id);
+
 }

@@ -53,6 +53,20 @@ public class PhongController {
         }
     }
 
+    @GetMapping("list-room")
+    public ResponseEntity<?> getListRoom(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size) {
+        try {
+            return ResponseUtil.wrap(this.iPhongService.getListRoom(page, size));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @GetMapping("sort-by-id-desc")
     public ResponseEntity<?> sortById(
             @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
@@ -133,18 +147,18 @@ public class PhongController {
     public ResponseEntity<?> getListbySoNguoi(
             @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
             @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
-            @RequestParam(value = "input", defaultValue = "") int soNguoi,
+            @RequestParam(value = "input", defaultValue = "") String tenLoaiPhong,
             @RequestParam(value = "checkIn", defaultValue = "") String checkIn,
             @RequestParam(value = "checkOut", defaultValue = "") String checkOut) {
         try {
             if(checkIn.equals("") || checkOut.equals("") || checkIn == null || checkOut == null){
-                return ResponseUtil.wrap(this.iPhongService.searchRoomManager2(page, size, soNguoi));
+                return ResponseUtil.wrap(this.iPhongService.searchRoomManager2(page, size, tenLoaiPhong));
 
             }
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDateTime parsedCheckIn = LocalDate.parse(checkIn, formatter).atStartOfDay();
             LocalDateTime parsedCheckOut = LocalDate.parse(checkOut, formatter).atStartOfDay();
-            return ResponseUtil.wrap(this.iPhongService.searchRoomManager(page, size, soNguoi, parsedCheckIn, parsedCheckOut));
+            return ResponseUtil.wrap(this.iPhongService.searchRoomManager(page, size, tenLoaiPhong, parsedCheckIn, parsedCheckOut));
         } catch (Exception ex) {
             log.error(this.getClass().getName(), ex);
 
