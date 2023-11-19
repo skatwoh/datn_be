@@ -36,7 +36,7 @@ public interface PhongRepository extends JpaRepository<Phong, Long> {
     Integer updateTrangThaiById(int trangThai, Long id);
 
     @Query("select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id inner join LoaiPhong l on l.id = p.loaiPhong.id " +
-            "where p.trangThai = 1 and ct.trangThai = 1 and l.tenLoaiPhong = :tenLoaiPhong and (p.id not in (select d.phong.id from DatPhong d where (:checkIn between d.checkIn and d.checkOut) or (:checkOut between d.checkIn and d.checkOut) )) order by p.ma asc")
+            "where p.trangThai = 1 and ct.trangThai = 1 and l.tenLoaiPhong = :tenLoaiPhong and (p.id not in (select d.phong.id from DatPhong d where (:checkIn between d.checkIn and d.checkOut) or (:checkOut between d.checkIn and d.checkOut) and d.trangThai = 1 )) order by p.ma asc")
     Page<Phong> searchRoomManager(Pageable pageable, String tenLoaiPhong, LocalDateTime checkIn, LocalDateTime checkOut);
 
     @Query("select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id inner join LoaiPhong l on l.id = p.loaiPhong.id " +

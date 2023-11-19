@@ -151,9 +151,11 @@ public class PhongController {
             @RequestParam(value = "checkIn", defaultValue = "") String checkIn,
             @RequestParam(value = "checkOut", defaultValue = "") String checkOut) {
         try {
-            if(checkIn.equals("") || checkOut.equals("") || checkIn == null || checkOut == null){
+            if(tenLoaiPhong.isEmpty()){
+                return ResponseUtil.wrap(this.iPhongService.getPhong(page, size));
+            }
+            if(tenLoaiPhong != null  && (checkIn.equals("") || checkOut.equals("") || checkIn == null || checkOut == null)){
                 return ResponseUtil.wrap(this.iPhongService.searchRoomManager2(page, size, tenLoaiPhong));
-
             }
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDateTime parsedCheckIn = LocalDate.parse(checkIn, formatter).atStartOfDay();
