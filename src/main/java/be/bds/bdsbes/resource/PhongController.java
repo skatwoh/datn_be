@@ -144,7 +144,7 @@ public class PhongController {
     }
 
     @GetMapping("get-room-by-search")
-    public ResponseEntity<?> getListbySoNguoi(
+    public ResponseEntity<?> getListByAll(
             @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
             @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
             @RequestParam(value = "input", defaultValue = "") String tenLoaiPhong,
@@ -153,11 +153,11 @@ public class PhongController {
         try {
             if(checkIn.equals("") || checkOut.equals("") || checkIn == null || checkOut == null){
                 return ResponseUtil.wrap(this.iPhongService.searchRoomManager2(page, size, tenLoaiPhong));
-
             }
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDateTime parsedCheckIn = LocalDate.parse(checkIn, formatter).atStartOfDay();
             LocalDateTime parsedCheckOut = LocalDate.parse(checkOut, formatter).atStartOfDay();
+            System.out.println(parsedCheckOut + " " + parsedCheckIn);
             return ResponseUtil.wrap(this.iPhongService.searchRoomManager(page, size, tenLoaiPhong, parsedCheckIn, parsedCheckOut));
         } catch (Exception ex) {
             log.error(this.getClass().getName(), ex);

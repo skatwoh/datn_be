@@ -216,6 +216,16 @@ public class PhongServiceImpl implements IPhongService {
 
     @Override
     public PagedResponse<PhongResponse1> searchRoomManager(int page, int size, String tenLoaiPhong, LocalDateTime checkIn, LocalDateTime checkOut)  throws ServiceException {
+//        if(checkIn.isAfter(checkOut)){
+//            throw ServiceExceptionBuilderUtil.newBuilder()
+//                    .addError(new ValidationErrorResponse("checkIn", ValidationErrorUtil.CheckIn))
+//                    .build();
+//        }
+//        if (checkIn.isBefore(LocalDateTime.now())) {
+//            throw ServiceExceptionBuilderUtil.newBuilder()
+//                    .addError(new ValidationErrorResponse("checkIn", ValidationErrorUtil.CheckInBeforeDateNow))
+//                    .build();
+//        }
         Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
         Page<Phong> entities = phongRepository.searchRoomManager(pageable, tenLoaiPhong, checkIn, checkOut);
 
