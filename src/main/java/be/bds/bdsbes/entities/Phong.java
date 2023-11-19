@@ -47,4 +47,9 @@ public class Phong {
     @Column(name = COLUMN_TRANGTHAI_NAME)
     private Integer trangThai;
 
+    @OneToMany(mappedBy = "phong")
+    private Set<ChiTietPhong> chiTietPhongs = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "phong")
+    private Set<DatPhong> datPhongs = new LinkedHashSet<>();
 }
