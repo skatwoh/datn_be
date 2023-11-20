@@ -67,6 +67,21 @@ public class PhongController {
         }
     }
 
+    @GetMapping("list-room-same")
+    public ResponseEntity<?> getListSameRoom(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "idLoaiPhong", defaultValue = "") Long idLoaiPhong) {
+        try {
+            return ResponseUtil.wrap(this.iPhongService.getListSameRoom(page, size, idLoaiPhong));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @GetMapping("sort-by-id-desc")
     public ResponseEntity<?> sortById(
             @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
@@ -147,24 +162,29 @@ public class PhongController {
     public ResponseEntity<?> getListByAll(
             @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
             @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "soLuongNguoi", defaultValue = "") String soLuongNguoi,
             @RequestParam(value = "input", defaultValue = "") String tenLoaiPhong,
             @RequestParam(value = "checkIn", defaultValue = "") String checkIn,
             @RequestParam(value = "checkOut", defaultValue = "") String checkOut) {
         try {
-            if(checkIn.equals("") || checkOut.equals("") || checkIn == null || checkOut == null){
-                return ResponseUtil.wrap(this.iPhongService.searchRoomManager2(page, size, tenLoaiPhong));
+            if(tenLoaiPhong.isEmpty() && (checkIn.isEmpty() && checkOut.isEmpty())){
+                return ResponseUtil.wrap(this.iPhongService.getPhong(page, size));
+            }
+            if(tenLoaiPhong != null  && (checkIn.equals("") || checkOut.equals("") || checkIn == null || checkOut == null)){
+                return ResponseUtil.wrap(this.iPhongService.searchRoomManager2(page, size, Integer.valueOf(soLuongNguoi), tenLoaiPhong));
             }
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDateTime parsedCheckIn = LocalDate.parse(checkIn, formatter).atStartOfDay();
             LocalDateTime parsedCheckOut = LocalDate.parse(checkOut, formatter).atStartOfDay();
             System.out.println(parsedCheckOut + " " + parsedCheckIn);
-            return ResponseUtil.wrap(this.iPhongService.searchRoomManager(page, size, tenLoaiPhong, parsedCheckIn, parsedCheckOut));
-        } catch (Exception ex) {
+            if (Integer.valueOf(soLuongNguoi) ==4){
+                return ResponseUtil.wrap(this.iPhongService.searchRoomManager3(page, size, Integer.valueOf(soLuongNguoi), tenLoaiPhong, parsedCheckIn, parsedCheckOut));
+            }
+            return ResponseUtil.wrap(this.iPhongService.searchRoomManager(page, size, Integer.valueOf(soLuongNguoi), tenLoaiPhong, parsedCheckIn, parsedCheckOut));
+        } catch (Exception | ServiceException ex) {
             log.error(this.getClass().getName(), ex);
 
-            return ResponseUtil.generateErrorResponse(ex);
-        } catch (ServiceException e) {
-            throw new RuntimeException(e);
+            return ResponseUtil.generateErrorResponse((ServiceException) ex);
         }
     }
 }

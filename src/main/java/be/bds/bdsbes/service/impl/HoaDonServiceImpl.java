@@ -1,10 +1,13 @@
 package be.bds.bdsbes.service.impl;
 
 import be.bds.bdsbes.entities.HoaDon;
+import be.bds.bdsbes.entities.KhachHang;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.HoaDonResponse;
 import be.bds.bdsbes.repository.HoaDonRepository;
+import be.bds.bdsbes.repository.KhachHangRepository;
 import be.bds.bdsbes.service.IHoaDonService;
+import be.bds.bdsbes.service.dto.HoaDonDTO;
 import be.bds.bdsbes.service.mapper.HoaDonMapper;
 import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ServiceExceptionBuilderUtil;
@@ -19,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +31,9 @@ public class HoaDonServiceImpl implements IHoaDonService {
 
     @Autowired
     HoaDonRepository hoaDonRepository;
+
+    @Autowired
+    KhachHangRepository khachHangRepository;
 
     @Autowired
     HoaDonMapper hoaDonMapper;
@@ -96,4 +103,25 @@ public class HoaDonServiceImpl implements IHoaDonService {
                 entities.getSort().toString()
         );
     }
+
+    /**
+     * @param hoaDonDTO
+     * @return
+     * @throws ServiceException
+     */
+    @Override
+    public Boolean create(HoaDonDTO hoaDonDTO) throws ServiceException {
+        HoaDon hoaDon =new HoaDon();
+        hoaDon.setNgayTao(LocalDateTime.now());
+        hoaDon.setNgayThanhToan(hoaDonDTO.getNgayThanhToan());
+        hoaDon.setTongTien(hoaDonDTO.getTongTien());
+        hoaDon.setTrangThai(1);
+        hoaDon.setGhiChu(hoaDonDTO.getGhiChu());
+        Long idKhachHang = khachHangRepository.findByIdKhachHang(hoaDonDTO.getIdKhachHang());
+        hoaDon.setKhachHang(KhachHang.builder().id(idKhachHang).build());
+        hoaDonRepository.save(hoaDon);
+        return true;
+    }
+
+
 }

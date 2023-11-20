@@ -2,15 +2,13 @@ package be.bds.bdsbes.resource;
 
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.service.IHoaDonService;
+import be.bds.bdsbes.service.dto.HoaDonDTO;
 import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -42,6 +40,18 @@ public class HoaDonController {
             @RequestParam(value = "sdt", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) String sdt) {
         try {
             return ResponseUtil.wrap(this.iHoaDonService.getHoaDonByCustomer(page, size, hoTen, sdt));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @PostMapping("create")
+    public ResponseEntity<?> create(@RequestBody HoaDonDTO hoaDonDTO) {
+        try {
+            return ResponseUtil.wrap(this.iHoaDonService.create(hoaDonDTO));
         } catch (Exception ex) {
             log.error(this.getClass().getName(), ex);
             return ResponseUtil.generateErrorResponse(ex);
