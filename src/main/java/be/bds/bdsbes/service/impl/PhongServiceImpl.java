@@ -160,6 +160,39 @@ public class PhongServiceImpl implements IPhongService {
     }
 
     @Override
+    public PagedResponse<PhongResponse1> getListSameRoom(int page, int size, Long idLoaiPhong) throws ServiceException {
+        if (page <= 0) {
+            throw ServiceExceptionBuilderUtil.newBuilder()
+                    .addError(new ValidationErrorResponse("page", ValidationErrorUtil.Invalid))
+                    .build();
+        }
+
+        if (size > AppConstantsUtil.MAX_PAGE_SIZE) {
+            List<KeyValue> params = new ArrayList<>();
+            params.add(new KeyValue("max", String.valueOf(AppConstantsUtil.MAX_PAGE_SIZE)));
+
+            throw ServiceExceptionBuilderUtil.newBuilder()
+                    .addError(new ValidationErrorResponse("pageSize", ValidationErrorUtil.Invalid, params))
+                    .build();
+        }
+
+        // Retrieve all entities
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
+        Page<Phong> entities = phongRepository.getListSameRoom(pageable, idLoaiPhong);
+
+        List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());
+        return new PagedResponse<>(
+                dtos,
+                page,
+                size,
+                entities.getTotalElements(),
+                entities.getTotalPages(),
+                entities.isLast(),
+                entities.getSort().toString()
+        );
+    }
+
+    @Override
     public PagedResponse<PhongResponse1> getListRoom(int page, int size) throws ServiceException {
         if (page <= 0) {
             throw ServiceExceptionBuilderUtil.newBuilder()
@@ -215,9 +248,19 @@ public class PhongServiceImpl implements IPhongService {
     }
 
     @Override
-    public PagedResponse<PhongResponse1> searchRoomManager(int page, int size, String tenLoaiPhong, LocalDateTime checkIn, LocalDateTime checkOut)  throws ServiceException {
+    public PagedResponse<PhongResponse1> searchRoomManager(int page, int size, Integer soLuongNguoi, String tenLoaiPhong, LocalDateTime checkIn, LocalDateTime checkOut)  throws ServiceException {
+        if(checkIn.toLocalDate().isAfter(checkOut.toLocalDate())){
+            throw ServiceExceptionBuilderUtil.newBuilder()
+                    .addError(new ValidationErrorResponse("checkIn", ValidationErrorUtil.CheckIn))
+                    .build();
+        }
+        if (checkIn.toLocalDate().isBefore(LocalDate.now())) {
+            throw ServiceExceptionBuilderUtil.newBuilder()
+                    .addError(new ValidationErrorResponse("checkIn", ValidationErrorUtil.CheckInBeforeDateNow))
+                    .build();
+        }
         Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
-        Page<Phong> entities = phongRepository.searchRoomManager(pageable, tenLoaiPhong, checkIn, checkOut);
+        Page<Phong> entities = phongRepository.searchRoomManager(pageable, soLuongNguoi, tenLoaiPhong, checkIn, checkOut);
 
         List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());
         return new PagedResponse<>(
@@ -232,9 +275,36 @@ public class PhongServiceImpl implements IPhongService {
     }
 
     @Override
-    public PagedResponse<PhongResponse1> searchRoomManager2(int page, int size, String tenLoaiPhong) {
+    public PagedResponse<PhongResponse1> searchRoomManager3(int page, int size, Integer soLuongNguoi, String tenLoaiPhong, LocalDateTime checkIn, LocalDateTime checkOut) throws ServiceException {
+        if(checkIn.toLocalDate().isAfter(checkOut.toLocalDate())){
+            throw ServiceExceptionBuilderUtil.newBuilder()
+                    .addError(new ValidationErrorResponse("checkIn", ValidationErrorUtil.CheckIn))
+                    .build();
+        }
+        if (checkIn.toLocalDate().isBefore(LocalDate.now())) {
+            throw ServiceExceptionBuilderUtil.newBuilder()
+                    .addError(new ValidationErrorResponse("checkIn", ValidationErrorUtil.CheckInBeforeDateNow))
+                    .build();
+        }
         Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
-        Page<Phong> entities = phongRepository.searchRoomManager2(pageable, tenLoaiPhong);
+        Page<Phong> entities = phongRepository.searchRoomManager3(pageable, soLuongNguoi, tenLoaiPhong, checkIn, checkOut);
+
+        List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());
+        return new PagedResponse<>(
+                dtos,
+                page,
+                size,
+                entities.getTotalElements(),
+                entities.getTotalPages(),
+                entities.isLast(),
+                entities.getSort().toString()
+        );
+    }
+
+    @Override
+    public PagedResponse<PhongResponse1> searchRoomManager2(int page, int size, Integer soLuongNguoi, String tenLoaiPhong) {
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
+        Page<Phong> entities = phongRepository.searchRoomManager2(pageable, soLuongNguoi, tenLoaiPhong);
 
         List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());
         return new PagedResponse<>(
