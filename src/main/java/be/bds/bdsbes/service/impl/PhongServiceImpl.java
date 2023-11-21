@@ -160,7 +160,7 @@ public class PhongServiceImpl implements IPhongService {
     }
 
     @Override
-    public PagedResponse<PhongResponse1> getListSameRoom(int page, int size, Long idLoaiPhong) throws ServiceException {
+    public PagedResponse<PhongResponse1> getListSameRoom(int page, int size, Long idPhong) throws ServiceException {
         if (page <= 0) {
             throw ServiceExceptionBuilderUtil.newBuilder()
                     .addError(new ValidationErrorResponse("page", ValidationErrorUtil.Invalid))
@@ -178,7 +178,7 @@ public class PhongServiceImpl implements IPhongService {
 
         // Retrieve all entities
         Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
-        Page<Phong> entities = phongRepository.getListSameRoom(pageable, idLoaiPhong);
+        Page<Phong> entities = phongRepository.getListSameRoom(pageable, idPhong);
 
         List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());
         return new PagedResponse<>(

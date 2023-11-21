@@ -71,9 +71,9 @@ public class PhongController {
     public ResponseEntity<?> getListSameRoom(
             @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
             @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
-            @RequestParam(value = "idLoaiPhong", defaultValue = "") Long idLoaiPhong) {
+            @RequestParam(value = "idPhong", defaultValue = "") Long idPhong) {
         try {
-            return ResponseUtil.wrap(this.iPhongService.getListSameRoom(page, size, idLoaiPhong));
+            return ResponseUtil.wrap(this.iPhongService.getListSameRoom(page, size, idPhong));
         } catch (Exception ex) {
             log.error(this.getClass().getName(), ex);
             return ResponseUtil.generateErrorResponse(ex);

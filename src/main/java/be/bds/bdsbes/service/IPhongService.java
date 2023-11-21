@@ -28,7 +28,7 @@ public interface IPhongService {
     Integer updateTrangThai(Long id);
 
     PagedResponse<PhongResponse1> getPhong(int page, int size) throws ServiceException;
-    PagedResponse<PhongResponse1> getListSameRoom(int page, int size, Long idLoaiPhong) throws ServiceException;
+    PagedResponse<PhongResponse1> getListSameRoom(int page, int size, Long idPhong) throws ServiceException;
     PagedResponse<PhongResponse1> getListRoom(int page, int size) throws ServiceException;
 
     PagedResponse<PhongResponse1> getPhongSortbyId(int page, int size) throws ServiceException;
