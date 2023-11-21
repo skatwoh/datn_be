@@ -3,13 +3,15 @@ package be.bds.bdsbes.service.impl;
 import be.bds.bdsbes.domain.User;
 import be.bds.bdsbes.entities.*;
 import be.bds.bdsbes.exception.ServiceException;
-import be.bds.bdsbes.payload.TaiKhoanResponse1;
+import be.bds.bdsbes.payload.PhongResponse1;
 import be.bds.bdsbes.repository.DatPhongRepository;
 import be.bds.bdsbes.repository.ThongBaoRepository;
 import be.bds.bdsbes.service.IDatPhongService;
 import be.bds.bdsbes.service.dto.DatPhongDTO;
 import be.bds.bdsbes.service.dto.response.DatPhongResponse;
+import be.bds.bdsbes.service.dto.response.PhongResponse;
 import be.bds.bdsbes.service.mapper.DatPhongMapper;
+import be.bds.bdsbes.service.mapper.PhongMapper;
 import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ServiceExceptionBuilderUtil;
 import be.bds.bdsbes.utils.ValidationErrorUtil;
@@ -24,6 +26,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +44,9 @@ public class DatPhongServiceImpl implements IDatPhongService {
 
     @Autowired
     DatPhongMapper datPhongMapper;
+
+    @Autowired
+    PhongMapper phongMapper;
     public int getNumberOfRecords() {
         Long count = datPhongRepository.count();
         return count.intValue();
@@ -209,6 +215,41 @@ public class DatPhongServiceImpl implements IDatPhongService {
                 entities.getSort().toString()
         );
     }
+
+    @Override
+    public PagedResponse<PhongResponse1> getPhongByUpperPrice(int page, int size, BigDecimal giaPhong) throws ServiceException {
+        if (page <= 0) {
+            throw ServiceExceptionBuilderUtil.newBuilder()
+                    .addError(new ValidationErrorResponse("page", ValidationErrorUtil.Invalid))
+                    .build();
+        }
+
+        if (size > AppConstantsUtil.MAX_PAGE_SIZE) {
+            List<KeyValue> params = new ArrayList<>();
+            params.add(new KeyValue("max", String.valueOf(AppConstantsUtil.MAX_PAGE_SIZE)));
+
+            throw ServiceExceptionBuilderUtil.newBuilder()
+                    .addError(new ValidationErrorResponse("pageSize", ValidationErrorUtil.Invalid, params))
+                    .build();
+        }
+
+        // Retrieve all entities
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
+        Page<Phong> entities = datPhongRepository.getPhongByUpperPrice(pageable, giaPhong);
+
+        List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());
+
+        return new PagedResponse<>(
+                dtos,
+                page,
+                size,
+                entities.getTotalElements(),
+                entities.getTotalPages(),
+                entities.isLast(),
+                entities.getSort().toString()
+        );
+    }
+
 
     @Override
     public Integer updateTrangThai(Long id) {

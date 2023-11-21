@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -126,6 +127,21 @@ public class DatPhongController {
             @RequestParam(value = "trangThai", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) Integer trangThai) {
         try {
             return ResponseUtil.wrap(this.iDatPhongService.getRoomOderByUser(page, size, id, trangThai));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @GetMapping("/list-room-order-by-upper-price")
+    public ResponseEntity<?> getListRoomByUpperPrice(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "giaPhong", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE)BigDecimal giaPhong
+            ) {
+        try {
+            return ResponseUtil.wrap(this.iDatPhongService.getPhongByUpperPrice(page, size, giaPhong));
         } catch (Exception ex) {
             log.error(this.getClass().getName(), ex);
             return ResponseUtil.generateErrorResponse(ex);
