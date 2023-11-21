@@ -29,6 +29,6 @@ public interface IDatPhongService {
 
     PagedResponse<PhongResponse1> getPhongByUpperPrice(int page, int size, BigDecimal giaPhong) throws ServiceException;
 
-    Integer updateTrangThai(Long id);
+    Integer updateTrangThai(Long id) throws ServiceException;
 
 }
