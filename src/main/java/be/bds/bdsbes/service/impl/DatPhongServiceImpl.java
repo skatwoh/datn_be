@@ -252,9 +252,14 @@ public class DatPhongServiceImpl implements IDatPhongService {
 
 
     @Override
-    public Integer updateTrangThai(Long id) {
+    public Integer updateTrangThai(Long id) throws ServiceException {
+
         DatPhong datPhong = datPhongRepository.findById(id).get();
-        if(datPhong.getTrangThai() == 1){
+        System.out.println(datPhong.getCheckIn());
+        if(datPhong.getCheckIn().toLocalDate().isBefore(LocalDate.now())){
+            System.out.println("Hello");
+        }
+        if(datPhong.getTrangThai() == 1 && datPhong.getCheckIn().toLocalDate().isAfter(LocalDate.now())){
             return datPhongRepository.updateTrangThaiById(0, id);
         }
         if(datPhong.getTrangThai() == 0){
