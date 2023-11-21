@@ -51,7 +51,7 @@ public interface PhongRepository extends JpaRepository<Phong, Long> {
             "where p.trangThai = 1 and ct.trangThai = 1 and ct.soLuongNguoi = :soLuongNguoi and l.tenLoaiPhong like :tenLoaiPhong order by p.ma asc")
     Page<Phong> searchRoomManager2(Pageable pageable, Integer soLuongNguoi, String tenLoaiPhong);
 
-    @Query(value = "select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id where p.trangThai = 1 and ct.trangThai = 1 and p.loaiPhong.id = :idLoaiPhong")
-    Page<Phong> getListSameRoom(Pageable pageable, Long idLoaiPhong);
+    @Query(value = "select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id where p.trangThai = 1 and ct.trangThai = 1 and p.loaiPhong.id in (select p.loaiPhong.id from Phong p where p.id = :idPhong)")
+    Page<Phong> getListSameRoom(Pageable pageable, Long idPhong);
 
 }
