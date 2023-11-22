@@ -1,8 +1,11 @@
 package be.bds.bdsbes.resource;
 
+import be.bds.bdsbes.entities.DatPhong;
 import be.bds.bdsbes.exception.ServiceException;
+import be.bds.bdsbes.repository.DatPhongRepository;
 import be.bds.bdsbes.service.IDatPhongService;
 import be.bds.bdsbes.service.dto.DatPhongDTO;
+import be.bds.bdsbes.service.dto.response.DatPhongResponse;
 import be.bds.bdsbes.service.impl.PdfGenerator;
 import be.bds.bdsbes.utils.*;
 import com.google.zxing.BarcodeFormat;
@@ -12,9 +15,19 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.itextpdf.text.DocumentException;
 import be.bds.bdsbes.utils.dto.ValidationErrorResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.text.PDFTextStripper;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -22,8 +35,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,6 +53,8 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 @RestController
 @RequestMapping("/rpc/bds/dat-phong")
 public class DatPhongController {
+    @Autowired
+    private DatPhongRepository datPhongRepository;
 
     @Autowired
     IDatPhongService iDatPhongService;
@@ -157,5 +177,29 @@ public class DatPhongController {
             return ResponseUtil.wrap(apiError);
         }
     }
+
+
+    @GetMapping("/generate-bill")
+    public ResponseEntity<?> generateInvoice(@RequestParam(value = "id") Long id) {
+        try {
+            pdfGenerator.exportPdf(id);
+            FileInputStream pdfInputStream = new FileInputStream("src/main/resources/template/output/datphong.pdf");
+            // Trả về tệp PDF dưới dạng InputStreamResource
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=datphong.pdf");
+            return ResponseEntity
+                    .ok()
+                    .headers(headers)
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .body(new InputStreamResource(pdfInputStream));
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Trả về lỗi nếu có vấn đề trong quá trình tạo hóa đơn
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+
+
 
 }

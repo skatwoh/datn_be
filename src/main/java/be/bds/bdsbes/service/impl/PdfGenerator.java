@@ -2,13 +2,26 @@ package be.bds.bdsbes.service.impl;
 
 import be.bds.bdsbes.entities.DatPhong;
 import be.bds.bdsbes.repository.DatPhongRepository;
+import be.bds.bdsbes.repository.HoaDonRepository;
+import be.bds.bdsbes.service.dto.response.DatPhongResponse;
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.*;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,6 +31,9 @@ import java.util.Locale;
 public class PdfGenerator {
 
     private final DatPhongRepository datPhongRepository;
+
+    @Autowired
+    private HoaDonRepository hoaDonRepository;
 
     public PdfGenerator(DatPhongRepository datPhongRepository) {
         this.datPhongRepository = datPhongRepository;
@@ -152,5 +168,63 @@ public class PdfGenerator {
         document.close();
     }
 
+    private void convertDocxToPdf() throws IOException {
+        // Đường dẫn tới tệp DOCX và PDF
+        String docxFilePath = "src/main/resources/template/output/template.docx";
+        String pdfFilePath = "src/main/resources/template/output/datphong.pdf";
+        // Đọc nội dung từ tệp DOCX
+        FileInputStream docxInputStream = new FileInputStream(docxFilePath);
+        XWPFDocument doc = new XWPFDocument(docxInputStream);
+        // Tạo một tài liệu PDF mới
+        PDDocument pdfDocument = new PDDocument();
+        // Duyệt qua các đoạn văn bản trong DOCX và thêm vào tài liệu PDF
+        for (XWPFParagraph paragraph : doc.getParagraphs()) {
+            String text = paragraph.getText();
+            // Tạo một trang mới cho mỗi đoạn văn bản
+            PDPage page = new PDPage();
+            pdfDocument.addPage(page);
+            try (PDPageContentStream contentStream = new PDPageContentStream(pdfDocument, page)) {
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+                contentStream.beginText();
+                contentStream.newLineAtOffset(10, 700); // Set the position to start adding text
+                contentStream.showText(text);
+                contentStream.endText();
+            }
+        }
+        // Lưu tài liệu PDF
+        pdfDocument.save(pdfFilePath);
+        pdfDocument.close();
+    }
+
+    public void exportPdf(Long id) throws IOException {
+        DatPhongResponse datPhong = datPhongRepository.get(id);
+        // Đường dẫn tới file template DOCX
+        String templatePath = "src/main/resources/template/hoa_don.docx";
+        Path path = Paths.get(templatePath);
+        // Đọc template DOCX
+        FileInputStream fis = new FileInputStream(String.valueOf(path));
+        XWPFDocument document = new XWPFDocument(fis);
+        // Thay thế các placeholder với dữ liệu thực tế từ DB
+        document.getParagraphs().forEach(paragraph -> {
+            paragraph.getRuns().forEach(run -> {
+                String text = run.getText(0);
+                if (text != null) {
+                        text = text.replace("{{ma}}", datPhong.getMa());
+                        text = text.replace("{{maKhachHang}}", datPhong.getMaKhachHang());
+                        text = text.replace("${data.checkIn}", String.valueOf(datPhong.getCheckIn()));
+                        text = text.replace("${data.checkOut}", datPhong.getCheckOut().toString());
+                    run.setText(text, 0);
+                }
+            });
+        });
+        // Lưu tệp DOCX đã được cập nhật
+        FileOutputStream fos = new FileOutputStream("src/main/resources/template/output/template.docx");
+        document.write(fos);
+        fos.close();
+        // Chuyển đổi thành PDF
+        convertDocxToPdf();
+
+
+    }
 
 }
