@@ -5,11 +5,13 @@ import be.bds.bdsbes.repository.DatPhongRepository;
 import be.bds.bdsbes.repository.HoaDonRepository;
 import be.bds.bdsbes.service.dto.response.DatPhongResponse;
 import com.itextpdf.text.*;
+import com.itextpdf.text.Font;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -223,8 +226,34 @@ public class PdfGenerator {
         fos.close();
         // Chuyển đổi thành PDF
         convertDocxToPdf();
+    }
 
+    public void exportPdf2(Long id){
+        DatPhongResponse datPhong = datPhongRepository.get(id);
+        PDDocument doc = null;
+        PDPage page = null;
+        try {
+            doc = new PDDocument();
+            page = new PDPage();
 
+            doc.addPage(page);
+            PDFont font = PDType1Font.HELVETICA_BOLD;
+
+            PDPageContentStream content = new PDPageContentStream(doc, page);
+            content.beginText();
+            content.setFont( font, 20 );
+            content.setNonStrokingColor(Color.BLUE);
+            content.moveTextPositionByAmount( 100, 700 );
+            content.drawString("Hello It's me");
+            content.drawString("Ma: " + datPhong.getMa());
+            content.endText();
+            content.close();
+
+            doc.save("pdf_with_text.pdf");
+            doc.close();
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
     }
 
 }

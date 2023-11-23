@@ -181,27 +181,30 @@ public class DatPhongController {
     }
 
 
+//    @GetMapping("/generate-bill")
+//    public ResponseEntity<?> generateInvoice(@RequestParam(value = "id") Long id) {
+//        try {
+//            pdfGenerator.exportPdf(id);
+//            FileInputStream pdfInputStream = new FileInputStream("src/main/resources/template/output/datphong.pdf");
+//            // Trả về tệp PDF dưới dạng InputStreamResource
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=datphong.pdf");
+//            return ResponseEntity
+//                    .ok()
+//                    .headers(headers)
+//                    .contentType(MediaType.APPLICATION_PDF)
+//                    .body(new InputStreamResource(pdfInputStream));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            // Trả về lỗi nếu có vấn đề trong quá trình tạo hóa đơn
+//            return ResponseEntity.status(500).body(null);
+//        }
+//    }
+
     @GetMapping("/generate-bill")
-    public ResponseEntity<?> generateInvoice(@RequestParam(value = "id") Long id) {
-        try {
-            pdfGenerator.exportPdf(id);
-            FileInputStream pdfInputStream = new FileInputStream("src/main/resources/template/output/datphong.pdf");
-            // Trả về tệp PDF dưới dạng InputStreamResource
-            HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=datphong.pdf");
-            return ResponseEntity
-                    .ok()
-                    .headers(headers)
-                    .contentType(MediaType.APPLICATION_PDF)
-                    .body(new InputStreamResource(pdfInputStream));
-        } catch (Exception e) {
-            e.printStackTrace();
-            // Trả về lỗi nếu có vấn đề trong quá trình tạo hóa đơn
-            return ResponseEntity.status(500).body(null);
-        }
+    public void generateInvoice(@RequestParam(value = "id") Long id) {
+        this.pdfGenerator.exportPdf2(id);
     }
-
-
 
 
 }
