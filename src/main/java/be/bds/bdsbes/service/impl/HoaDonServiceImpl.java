@@ -22,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -122,6 +123,40 @@ public class HoaDonServiceImpl implements IHoaDonService {
         Long idKhachHang = khachHangRepository.findByIdKhachHang(hoaDonDTO.getIdKhachHang());
         hoaDon.setKhachHang(KhachHang.builder().id(idKhachHang).build());
         hoaDonRepository.save(hoaDon);
+        return true;
+    }
+
+//    @Override
+//    public Boolean update(HoaDonDTO hoaDonDTO) throws ServiceException {
+//        Long id = hoaDonRepository.getId(hoaDonDTO.getIdKhachHang(), LocalDate.now());
+//        HoaDon hoaDon = hoaDonRepository.findById(id).get();
+//        BigDecimal tongTienCu = hoaDon.getTongTien();
+//        BigDecimal tongTienMoi = hoaDonDTO.getTongTien().add(tongTienCu);
+//        hoaDon.setTongTien(tongTienMoi);
+//        hoaDonRepository.save(hoaDon);
+//        return true;
+//    }
+
+    @Override
+    public Boolean update(HoaDonDTO hoaDonDTO, Long id) throws ServiceException {
+        Long idH = hoaDonRepository.getId(hoaDonDTO.getIdKhachHang(), LocalDate.now());
+        HoaDon hoaDon = hoaDonRepository.findById(id).get();
+        BigDecimal tongTienCu = hoaDon.getTongTien();
+        BigDecimal tongTienMoi = hoaDonDTO.getTongTien().add(tongTienCu);
+        hoaDon.setTongTien(tongTienMoi);
+        hoaDonRepository.save(hoaDon);
+        return true;
+    }
+
+    public Boolean createOrUpdate(HoaDonDTO hoaDonDTO) throws ServiceException {
+        Long idKH = khachHangRepository.findByIdKhachHang(hoaDonDTO.getIdKhachHang());
+        System.out.println(idKH);
+        HoaDonResponse hoaDonResponse = hoaDonRepository.getHoaDon(idKH, LocalDate.now());
+        if(hoaDonResponse != null){
+            this.update(hoaDonDTO, hoaDonResponse.getId());
+            return true;
+        }
+        this.create(hoaDonDTO);
         return true;
     }
 }

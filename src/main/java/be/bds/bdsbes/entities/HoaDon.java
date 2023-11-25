@@ -32,6 +32,9 @@ public class HoaDon {
     @Column(name = COLUMN_ID_NAME, nullable = false)
     private Long id;
 
+    @Column(name = "ma")
+    private String ma;
+
     @Column(name = COLUMN_NGAYTAO_NAME)
     private LocalDateTime ngayTao;
 

@@ -51,4 +51,7 @@ public interface DatPhongRepository extends JpaRepository<DatPhong, Long> {
             " v.giamGia, d.ngayDat, d.checkIn, d.checkOut, d.soNguoi, d.ghiChu, d.trangThai, d.phong.ma, d.tongGia) " +
             "from DatPhong d join d.user u join u.khachHang k left join d.voucher v where d.id= :id")
     List<DatPhongResponse> getDatPhong(Long id);
+
+    @Query("select p from DatPhong p where p.hoaDon.id = :id")
+    List<DatPhong> getDatPhongByHoaDon(Long id);
 }
