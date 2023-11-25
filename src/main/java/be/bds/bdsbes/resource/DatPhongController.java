@@ -7,15 +7,12 @@ import be.bds.bdsbes.service.IDatPhongService;
 import be.bds.bdsbes.service.dto.DatPhongDTO;
 import be.bds.bdsbes.service.dto.response.DatPhongResponse;
 import be.bds.bdsbes.service.impl.PdfGenerator;
-import be.bds.bdsbes.utils.AppConstantsUtil;
-import be.bds.bdsbes.utils.ResponseUtil;
+import be.bds.bdsbes.utils.*;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.itextpdf.text.DocumentException;
-import be.bds.bdsbes.utils.ServiceExceptionBuilderUtil;
-import be.bds.bdsbes.utils.ValidationErrorUtil;
 import be.bds.bdsbes.utils.dto.ValidationErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -174,37 +171,38 @@ public class DatPhongController {
     @PutMapping("update-status")
     public ResponseEntity<?> delete(@RequestParam(value = "id") Long id) {
         try {
-            return ResponseEntity.ok(this.iDatPhongService.updateTrangThai(id));
+            return ResponseUtil.wrap(this.iDatPhongService.updateTrangThai(id));
         } catch (ServiceException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Lỗi");
+            ApiError apiError = new ApiError(String.valueOf(StatusError.Failed), e.getMessage());
+            return ResponseUtil.wrap(apiError);
         }
     }
 
 
-//    @GetMapping("/generate-bill")
-//    public ResponseEntity<?> generateInvoice(@RequestParam(value = "id") Long id) {
-//        try {
-//            pdfGenerator.exportPdf(id);
-//            FileInputStream pdfInputStream = new FileInputStream("src/main/resources/template/output/datphong.pdf");
-//            // Trả về tệp PDF dưới dạng InputStreamResource
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=datphong.pdf");
-//            return ResponseEntity
-//                    .ok()
-//                    .headers(headers)
-//                    .contentType(MediaType.APPLICATION_PDF)
-//                    .body(new InputStreamResource(pdfInputStream));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            // Trả về lỗi nếu có vấn đề trong quá trình tạo hóa đơn
-//            return ResponseEntity.status(500).body(null);
-//        }
-//    }
-
     @GetMapping("/generate-bill")
-    public void generateInvoice(@RequestParam(value = "id") Long id) {
-        this.pdfGenerator.exportPdf2(id);
+    public ResponseEntity<?> generateInvoice(@RequestParam(value = "id") Long id) {
+        try {
+            pdfGenerator.exportPdf(id);
+            FileInputStream pdfInputStream = new FileInputStream("src/main/resources/template/output/datphong.pdf");
+            // Trả về tệp PDF dưới dạng InputStreamResource
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=datphong.pdf");
+            return ResponseEntity
+                    .ok()
+                    .headers(headers)
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .body(new InputStreamResource(pdfInputStream));
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Trả về lỗi nếu có vấn đề trong quá trình tạo hóa đơn
+            return ResponseEntity.status(500).body(null);
+        }
     }
+
+//    @GetMapping("/generate-bill")
+//    public void generateInvoice(@RequestParam(value = "id") Long id) {
+//        this.pdfGenerator.exportPdf2(id);
+//    }
 
 
 }

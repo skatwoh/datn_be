@@ -1,7 +1,9 @@
 package be.bds.bdsbes.service.impl;
 
 import be.bds.bdsbes.domain.User;
-import be.bds.bdsbes.entities.*;
+import be.bds.bdsbes.entities.DatPhong;
+import be.bds.bdsbes.entities.Phong;
+import be.bds.bdsbes.entities.Voucher;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.PhongResponse1;
 import be.bds.bdsbes.repository.DatPhongRepository;
@@ -9,7 +11,6 @@ import be.bds.bdsbes.repository.ThongBaoRepository;
 import be.bds.bdsbes.service.IDatPhongService;
 import be.bds.bdsbes.service.dto.DatPhongDTO;
 import be.bds.bdsbes.service.dto.response.DatPhongResponse;
-import be.bds.bdsbes.service.dto.response.PhongResponse;
 import be.bds.bdsbes.service.mapper.DatPhongMapper;
 import be.bds.bdsbes.service.mapper.PhongMapper;
 import be.bds.bdsbes.utils.AppConstantsUtil;
@@ -27,7 +28,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -255,9 +259,8 @@ public class DatPhongServiceImpl implements IDatPhongService {
     public Integer updateTrangThai(Long id) throws ServiceException {
 
         DatPhong datPhong = datPhongRepository.findById(id).get();
-        System.out.println(datPhong.getCheckIn());
         if(datPhong.getCheckIn().toLocalDate().isBefore(LocalDate.now())){
-            System.out.println("Hello");
+            throw new ServiceException(ValidationErrorUtil.DeleteRoomOrder);
         }
         if(datPhong.getTrangThai() == 1 && datPhong.getCheckIn().toLocalDate().isAfter(LocalDate.now())){
             return datPhongRepository.updateTrangThaiById(0, id);

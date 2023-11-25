@@ -15,6 +15,7 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +24,11 @@ import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.List;
 
 @Service
 public class PdfGenerator {
@@ -182,16 +182,17 @@ public class PdfGenerator {
         PDDocument pdfDocument = new PDDocument();
         // Duyệt qua các đoạn văn bản trong DOCX và thêm vào tài liệu PDF
         for (XWPFParagraph paragraph : doc.getParagraphs()) {
-            String text = paragraph.getText();
-            // Tạo một trang mới cho mỗi đoạn văn bản
-            PDPage page = new PDPage();
-            pdfDocument.addPage(page);
-            try (PDPageContentStream contentStream = new PDPageContentStream(pdfDocument, page)) {
-                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
-                contentStream.beginText();
-                contentStream.newLineAtOffset(10, 700); // Set the position to start adding text
-                contentStream.showText(text);
-                contentStream.endText();
+            String[] lines = paragraph.getText().split("\n");
+            for (String line : lines) {
+                PDPage page = new PDPage();
+                pdfDocument.addPage(page);
+                try (PDPageContentStream contentStream = new PDPageContentStream(pdfDocument, page)) {
+                    contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
+                    contentStream.beginText();
+                    contentStream.newLineAtOffset(10, 700);
+                    contentStream.showText(line);
+                    contentStream.endText();
+                }
             }
         }
         // Lưu tài liệu PDF
@@ -200,60 +201,32 @@ public class PdfGenerator {
     }
 
     public void exportPdf(Long id) throws IOException {
-        DatPhongResponse datPhong = datPhongRepository.get(id);
-        // Đường dẫn tới file template DOCX
-        String templatePath = "src/main/resources/template/hoa_don.docx";
-        Path path = Paths.get(templatePath);
-        // Đọc template DOCX
-        FileInputStream fis = new FileInputStream(String.valueOf(path));
+        FileInputStream fis = new FileInputStream("src/main/resources/template/hoa_don.docx");
         XWPFDocument document = new XWPFDocument(fis);
-        // Thay thế các placeholder với dữ liệu thực tế từ DB
-        document.getParagraphs().forEach(paragraph -> {
-            paragraph.getRuns().forEach(run -> {
-                String text = run.getText(0);
-                if (text != null) {
-                        text = text.replace("{{ma}}", datPhong.getMa());
-                        text = text.replace("{{maKhachHang}}", datPhong.getMaKhachHang());
-                        text = text.replace("${data.checkIn}", String.valueOf(datPhong.getCheckIn()));
-                        text = text.replace("${data.checkOut}", datPhong.getCheckOut().toString());
+
+        List<DatPhongResponse> dataList = datPhongRepository.getDatPhong(id);
+        for (DatPhongResponse data : dataList) {
+            for (XWPFParagraph paragraph : document.getParagraphs()) {
+                List<XWPFRun> runs = paragraph.getRuns();
+                for (XWPFRun run : runs) {
+                    String text = run.getText(0);
+                    // Thay thế trường dữ liệu trong cặp {{}}
+                    text = text.replace("{{ma}}", data.getMa());
                     run.setText(text, 0);
                 }
-            });
-        });
-        // Lưu tệp DOCX đã được cập nhật
-        FileOutputStream fos = new FileOutputStream("src/main/resources/template/output/template.docx");
-        document.write(fos);
-        fos.close();
-        // Chuyển đổi thành PDF
-        convertDocxToPdf();
-    }
+            }
+        }
 
-    public void exportPdf2(Long id){
-        DatPhongResponse datPhong = datPhongRepository.get(id);
-        PDDocument doc = null;
-        PDPage page = null;
-        try {
-            doc = new PDDocument();
-            page = new PDPage();
+        try (FileOutputStream out = new FileOutputStream("src/main/resources/template/output/datphong.pdf")) {
+            PDDocument pdfDocument = new PDDocument();
+            PDPage page = new PDPage();
+            pdfDocument.addPage(page);
 
-            doc.addPage(page);
-            PDFont font = PDType1Font.HELVETICA_BOLD;
-
-            PDPageContentStream content = new PDPageContentStream(doc, page);
-            content.beginText();
-            content.setFont( font, 20 );
-            content.setNonStrokingColor(Color.BLUE);
-            content.moveTextPositionByAmount( 100, 700 );
-            content.drawString("Hello It's me");
-            content.drawString("Ma: " + datPhong.getMa());
-            content.endText();
-            content.close();
-
-            doc.save("pdf_with_text.pdf");
-            doc.close();
-        } catch (Exception ex) {
-            System.out.println(ex);
+            pdfDocument.save(out);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+
 
 }

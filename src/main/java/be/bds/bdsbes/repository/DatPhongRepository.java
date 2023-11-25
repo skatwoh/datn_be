@@ -46,4 +46,9 @@ public interface DatPhongRepository extends JpaRepository<DatPhong, Long> {
     @Modifying
     @Query("UPDATE DatPhong d SET d.trangThai = :trangThai WHERE d.id = :id")
     Integer updateTrangThaiById(int trangThai, Long id);
+
+    @Query("select new be.bds.bdsbes.service.dto.response.DatPhongResponse(d.id, d.ma, k.id, k.ma, k.sdt, u.name, v.id, v.ma," +
+            " v.giamGia, d.ngayDat, d.checkIn, d.checkOut, d.soNguoi, d.ghiChu, d.trangThai, d.phong.ma, d.tongGia) " +
+            "from DatPhong d join d.user u join u.khachHang k left join d.voucher v where d.id= :id")
+    List<DatPhongResponse> getDatPhong(Long id);
 }
