@@ -208,7 +208,7 @@ public class PdfGenerator {
                 for (XWPFRun run : runs) {
                     String text = run.getText(0);
                     // Thay thế trường dữ liệu trong cặp {{}}
-                    text = text.replace("{{fieldName}}", data.getFieldName());
+                    text = text.replace("{{fieldName}}", data.getTenPhong());
                     run.setText(text, 0);
                 }
             }
