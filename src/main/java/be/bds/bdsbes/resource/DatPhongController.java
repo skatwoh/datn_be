@@ -199,7 +199,10 @@ public class DatPhongController {
         }
     }
 
-
+//    @GetMapping("/generate-bill")
+//    public void generateInvoice(@RequestParam(value = "id") Long id) {
+//        this.pdfGenerator.exportPdf2(id);
+//    }
 
 
 }

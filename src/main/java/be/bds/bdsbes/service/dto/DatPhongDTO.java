@@ -41,4 +41,6 @@ public class DatPhongDTO implements Serializable {
 
     BigDecimal tongGia;
 
+    Long idHoaDon;
+
 }

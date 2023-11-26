@@ -1,15 +1,18 @@
 package be.bds.bdsbes.service.impl;
 
 import be.bds.bdsbes.entities.DatPhong;
+import be.bds.bdsbes.entities.HoaDon;
 import be.bds.bdsbes.repository.DatPhongRepository;
 import be.bds.bdsbes.repository.HoaDonRepository;
 import be.bds.bdsbes.service.dto.response.DatPhongResponse;
 import com.itextpdf.text.*;
+import com.itextpdf.text.Font;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -18,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -40,15 +44,12 @@ public class PdfGenerator {
     }
 
     public void export(HttpServletResponse response, Long id) throws IOException, DocumentException, ParseException {
-        DatPhong datPhong = datPhongRepository.findById(id).get();
-        int tienPhong = (int) (Double.parseDouble(String.valueOf(datPhong.getPhong().getGiaPhong())) * (datPhong.getCheckOut().getDayOfMonth()-datPhong.getCheckIn().getDayOfMonth()));
-        int tongGia =  (int) (Double.parseDouble(String.valueOf(datPhong.getTongGia())));
+        HoaDon hoaDon = hoaDonRepository.findById(id).get();
+//        int tienPhong = (int) (Double.parseDouble(String.valueOf(datPhong.getPhong().getGiaPhong())) * (datPhong.getCheckOut().getDayOfMonth()-datPhong.getCheckIn().getDayOfMonth()));
+        int tongGia =  (int) (Double.parseDouble(String.valueOf(hoaDon.getTongTien())));
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
         NumberFormat formatter = NumberFormat.getInstance(Locale.US);
-//        String soTien = "100000";
-//        NumberFormat formatterVN = NumberFormat.getInstance(new Locale("vi", "VN"));
-//        String soTienChu = formatterVN.format(Long.parseLong(soTien));
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, response.getOutputStream());
         document.open();
@@ -62,9 +63,7 @@ public class PdfGenerator {
 
         Paragraph paragraph = new Paragraph("HOA DON THANH TOAN", fontTitle);
         paragraph.setAlignment(Paragraph.ALIGN_CENTER);
-        Paragraph paragraphPhong = new Paragraph("PHONG " + datPhong.getPhong().getMa(), fontTitle);
-        paragraphPhong.setAlignment(Paragraph.ALIGN_CENTER);
-        Paragraph paragraphDate = new Paragraph("\nNgay " + sdf2.format(sdf1.parse(String.valueOf(datPhong.getNgayDat()))), fontDate);
+        Paragraph paragraphDate = new Paragraph("\nNgay " + sdf2.format(sdf1.parse(String.valueOf(hoaDon.getNgayTao()))), fontDate);
         paragraphDate.setAlignment(Paragraph.ALIGN_CENTER);
         Paragraph paragraphLine = new Paragraph("", fontTitle);
         paragraph.setAlignment(Paragraph.ALIGN_CENTER);
@@ -76,27 +75,33 @@ public class PdfGenerator {
         Font fontTable = FontFactory.getFont(FontFactory.HELVETICA_BOLDOBLIQUE);
         fontTable.setSize(13);
 
-        Paragraph paragraphMaKH = new Paragraph("Ma khach hang: " + datPhong.getUser().getKhachHang().getMa(), fontInfor);
+        Paragraph paragraphMaKH = new Paragraph("Ma khach hang: " + hoaDon.getKhachHang().getMa(), fontInfor);
         paragraphMaKH.setAlignment(Paragraph.ALIGN_LEFT);
-        Paragraph paragraphTenKH = new Paragraph("Ten khach hang: " + datPhong.getUser().getName(), fontInfor);
+        Paragraph paragraphTenKH = new Paragraph("Ten khach hang: " + hoaDon.getKhachHang().getHoTen(), fontInfor);
         paragraphTenKH.setAlignment(Paragraph.ALIGN_LEFT);
-        Paragraph paragraphSDT = new Paragraph("SDT: " + datPhong.getUser().getSdt(), fontInfor);
+        Paragraph paragraphSDT = new Paragraph("SDT: " + hoaDon.getKhachHang().getSdt(), fontInfor);
         paragraphSDT.setAlignment(Paragraph.ALIGN_LEFT);
         Paragraph paragraphNull = new Paragraph("\n", fontInfor);
         paragraphNull.setAlignment(Paragraph.ALIGN_LEFT);
-        Paragraph paragraphMaPhong = new Paragraph("\nMa so phong: " + datPhong.getPhong().getMa(), fontTable);
+
+        String danhSachPhong = "";
+        List<DatPhong> list = datPhongRepository.getDatPhongByHoaDon(hoaDon.getId());
+        for (DatPhong d : list) {
+            danhSachPhong = danhSachPhong + d.getPhong().getMa() + ",";
+        }
+        Paragraph paragraphMaPhong = new Paragraph("\nDanh sach phong: " + danhSachPhong, fontTable);
         paragraphNull.setAlignment(Paragraph.ALIGN_LEFT);
-        Paragraph paragraphLoaiPhong = new Paragraph("\nLoai phong: " + datPhong.getPhong().getLoaiPhong().getTenLoaiPhong(), fontTable);
-        paragraphNull.setAlignment(Paragraph.ALIGN_LEFT);
-        Paragraph paragraphGiaPhong = new Paragraph("\nGia phong: " + String.valueOf(formatter.format(datPhong.getPhong().getGiaPhong())) + "VND/ngay", fontTable);
-        paragraphNull.setAlignment(Paragraph.ALIGN_LEFT);
-        Paragraph paragraphNgayNhan = new Paragraph("\nNgay nhan phong: " + sdf2.format(sdf1.parse(String.valueOf(datPhong.getCheckIn()))), fontTable);
-        paragraphNull.setAlignment(Paragraph.ALIGN_LEFT);
-        Paragraph paragraphNgayTra = new Paragraph("\nNgay tra phong: " + sdf2.format(sdf1.parse(String.valueOf(datPhong.getCheckOut()))), fontTable);
-        paragraphNull.setAlignment(Paragraph.ALIGN_LEFT);
-        Paragraph paragraphSoNgay = new Paragraph("\nSo ngay thue: " + String.valueOf(datPhong.getCheckOut().getDayOfMonth()-datPhong.getCheckIn().getDayOfMonth()) + " ngay", fontTable);
-        paragraphNull.setAlignment(Paragraph.ALIGN_LEFT);
-        Paragraph paragraphPhiDichVu = new Paragraph("\nPhi dich vu: " + String.valueOf(formatter.format(tongGia - tienPhong)) + "VND", fontTable);
+//        Paragraph paragraphLoaiPhong = new Paragraph("\nLoai phong: " + datPhong.getPhong().getLoaiPhong().getTenLoaiPhong(), fontTable);
+//        paragraphNull.setAlignment(Paragraph.ALIGN_LEFT);
+//        Paragraph paragraphGiaPhong = new Paragraph("\nGia phong: " + String.valueOf(formatter.format(datPhong.getPhong().getGiaPhong())) + "VND/ngay", fontTable);
+//        paragraphNull.setAlignment(Paragraph.ALIGN_LEFT);
+//        Paragraph paragraphNgayNhan = new Paragraph("\nNgay nhan phong: " + sdf2.format(sdf1.parse(String.valueOf(datPhong.getCheckIn()))), fontTable);
+//        paragraphNull.setAlignment(Paragraph.ALIGN_LEFT);
+//        Paragraph paragraphNgayTra = new Paragraph("\nNgay tra phong: " + sdf2.format(sdf1.parse(String.valueOf(datPhong.getCheckOut()))), fontTable);
+//        paragraphNull.setAlignment(Paragraph.ALIGN_LEFT);
+//        Paragraph paragraphSoNgay = new Paragraph("\nSo ngay thue: " + String.valueOf(datPhong.getCheckOut().getDayOfMonth()-datPhong.getCheckIn().getDayOfMonth()) + " ngay", fontTable);
+//        paragraphNull.setAlignment(Paragraph.ALIGN_LEFT);
+//        Paragraph paragraphPhiDichVu = new Paragraph("\nPhi dich vu: " + String.valueOf(formatter.format(tongGia - tienPhong)) + "VND", fontTable);
         paragraphNull.setAlignment(Paragraph.ALIGN_LEFT);
 //        PdfPCell headerCell2 = new PdfPCell(new Phrase("Ma so phong", fontTable));
 //        PdfPCell headerCell3 = new PdfPCell(new Phrase(datPhong.getPhong().getMa(), fontTable));
@@ -139,7 +144,7 @@ public class PdfGenerator {
 //        pdfPTable.completeRow();
 
         //
-        String formattedTongTien = formatter.format(datPhong.getTongGia());
+        String formattedTongTien = formatter.format(hoaDon.getTongTien());
         Paragraph paragraphTongTien = new Paragraph("\nTong thanh toan: " + formattedTongTien + "VND", fontInfor);
         paragraphTongTien.setAlignment(Paragraph.ALIGN_LEFT);
         Paragraph paragraph9 = new Paragraph("\n", fontInfor);
@@ -148,7 +153,6 @@ public class PdfGenerator {
         Paragraph paragraphEnd = new Paragraph("\nCAM ON QUY KHACH DA SU DUNG \nDICH VU CUA CHUNG TOI!", fontTitle);
         paragraphEnd.setAlignment(Paragraph.ALIGN_CENTER);
         document.add(paragraph);
-        document.add(paragraphPhong);
         document.add(paragraphDate);
         document.add(paragraphLine);
         document.add(paragraphMaKH);
@@ -156,12 +160,12 @@ public class PdfGenerator {
         document.add(paragraphSDT);
         document.add(paragraphNull);
         document.add(paragraphMaPhong);
-        document.add(paragraphLoaiPhong);
-        document.add(paragraphGiaPhong);
-        document.add(paragraphNgayNhan);
-        document.add(paragraphNgayTra);
-        document.add(paragraphSoNgay);
-        document.add(paragraphPhiDichVu);
+//        document.add(paragraphLoaiPhong);
+//        document.add(paragraphGiaPhong);
+//        document.add(paragraphNgayNhan);
+//        document.add(paragraphNgayTra);
+//        document.add(paragraphSoNgay);
+//        document.add(paragraphPhiDichVu);
         document.add(paragraphTongTien);
         document.add(paragraph9);
         document.add(paragraphEnd);
@@ -201,20 +205,20 @@ public class PdfGenerator {
         FileInputStream fis = new FileInputStream("src/main/resources/template/hoa_don.docx");
         XWPFDocument document = new XWPFDocument(fis);
 
-        List<DatPhongResponse> dataList = (List<DatPhongResponse>) datPhongRepository.get(id);
+        List<DatPhongResponse> dataList = datPhongRepository.getDatPhong(id);
         for (DatPhongResponse data : dataList) {
             for (XWPFParagraph paragraph : document.getParagraphs()) {
                 List<XWPFRun> runs = paragraph.getRuns();
                 for (XWPFRun run : runs) {
                     String text = run.getText(0);
                     // Thay thế trường dữ liệu trong cặp {{}}
-                    text = text.replace("{{fieldName}}", data.getTenPhong());
+                    text = text.replace("{{ma}}", data.getMa());
                     run.setText(text, 0);
                 }
             }
         }
 
-        try (FileOutputStream out = new FileOutputStream("output.pdf")) {
+        try (FileOutputStream out = new FileOutputStream("src/main/resources/template/output/datphong.pdf")) {
             PDDocument pdfDocument = new PDDocument();
             PDPage page = new PDPage();
             pdfDocument.addPage(page);

@@ -14,4 +14,8 @@ public interface IHoaDonService {
     PagedResponse<HoaDonResponse> getHoaDonByCustomer(int page, int size,String hoTen, String sdt) throws ServiceException;
 
     Boolean create(HoaDonDTO hoaDonDTO) throws ServiceException;
+
+    Boolean update(HoaDonDTO hoaDonDTO, Long id) throws ServiceException;
+
+    Boolean createOrUpdate(HoaDonDTO hoaDonDTO) throws ServiceException;
 }

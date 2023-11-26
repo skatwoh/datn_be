@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 @Setter
 public class HoaDonDTO {
 
+    private Long id;
+
     private LocalDateTime ngayTao;
 
     private LocalDateTime ngayThanhToan;

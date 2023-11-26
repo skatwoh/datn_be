@@ -2,11 +2,13 @@ package be.bds.bdsbes.service.impl;
 
 import be.bds.bdsbes.domain.User;
 import be.bds.bdsbes.entities.DatPhong;
+import be.bds.bdsbes.entities.HoaDon;
 import be.bds.bdsbes.entities.Phong;
 import be.bds.bdsbes.entities.Voucher;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.PhongResponse1;
 import be.bds.bdsbes.repository.DatPhongRepository;
+import be.bds.bdsbes.repository.HoaDonRepository;
 import be.bds.bdsbes.repository.ThongBaoRepository;
 import be.bds.bdsbes.service.IDatPhongService;
 import be.bds.bdsbes.service.dto.DatPhongDTO;
@@ -39,6 +41,8 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class DatPhongServiceImpl implements IDatPhongService {
+    @Autowired
+    private HoaDonRepository hoaDonRepository;
 
     @Autowired
     DatPhongRepository datPhongRepository;
@@ -124,6 +128,7 @@ public class DatPhongServiceImpl implements IDatPhongService {
         datPhong.setVoucher(Voucher.builder().id(1L).build());
         datPhong.setUser(User.builder().id(datPhongDTO.getUserId()).build());
         datPhong.setPhong(Phong.builder().id(datPhongDTO.getIdPhong()).build());
+//        datPhong.setHoaDon(HoaDon.builder().id(datPhongDTO.getUserId()).build());
         this.datPhongRepository.save(datPhong);
         return true;
     }
