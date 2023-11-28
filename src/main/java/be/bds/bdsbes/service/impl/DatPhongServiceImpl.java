@@ -9,6 +9,7 @@ import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.PhongResponse1;
 import be.bds.bdsbes.repository.DatPhongRepository;
 import be.bds.bdsbes.repository.HoaDonRepository;
+import be.bds.bdsbes.repository.KhachHangRepository;
 import be.bds.bdsbes.repository.ThongBaoRepository;
 import be.bds.bdsbes.service.IDatPhongService;
 import be.bds.bdsbes.service.dto.DatPhongDTO;
@@ -41,6 +42,8 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class DatPhongServiceImpl implements IDatPhongService {
+    @Autowired
+    private KhachHangRepository khachHangRepository;
     @Autowired
     private HoaDonRepository hoaDonRepository;
 
@@ -128,7 +131,9 @@ public class DatPhongServiceImpl implements IDatPhongService {
         datPhong.setVoucher(Voucher.builder().id(1L).build());
         datPhong.setUser(User.builder().id(datPhongDTO.getUserId()).build());
         datPhong.setPhong(Phong.builder().id(datPhongDTO.getIdPhong()).build());
-//        datPhong.setHoaDon(HoaDon.builder().id(datPhongDTO.getUserId()).build());
+        Long idKH = khachHangRepository.findByIdKhachHang(datPhongDTO.getUserId());
+        Long idHoaDon = hoaDonRepository.getId(idKH, LocalDate.now());
+        datPhong.setHoaDon(HoaDon.builder().id(idHoaDon).build());
         this.datPhongRepository.save(datPhong);
         return true;
     }

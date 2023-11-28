@@ -199,6 +199,11 @@ public class DatPhongController {
         }
     }
 
+//    @PutMapping("update-id-hoa-don")
+//    public ResponseEntity<?> updateHoaDonByDatPhong(@RequestParam (value = "id") Long id){
+//
+//    }
+
 //    @GetMapping("/generate-bill")
 //    public void generateInvoice(@RequestParam(value = "id") Long id) {
 //        this.pdfGenerator.exportPdf2(id);
