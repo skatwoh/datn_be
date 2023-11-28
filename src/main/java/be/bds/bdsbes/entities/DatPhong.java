@@ -9,6 +9,8 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Builder
 @AllArgsConstructor
@@ -71,7 +73,19 @@ public class DatPhong {
     @Column(name = COLUMN_TONGGIA_NAME)
     private BigDecimal tongGia;
 
+    @Column(name = "tien_coc", precision = 18)
+    private BigDecimal tienCoc;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "id_hoa_don")
+    private HoaDon hoaDon;
+
     @Column(name = COLUMN_TRANGTHAI_NAME)
     private Integer trangThai;
 
+    @OneToMany(mappedBy = "datPhong")
+    private Set<ChiTietDichVu> chiTietDichVus = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "datPhong")
+    private Set<DichVuSuDung> dichVuSuDungs = new LinkedHashSet<>();
 }

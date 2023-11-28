@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -37,4 +38,9 @@ public class DatPhongDTO implements Serializable {
     String ghiChu;
 
     Integer trangThai;
+
+    BigDecimal tongGia;
+
+    Long idHoaDon;
+
 }

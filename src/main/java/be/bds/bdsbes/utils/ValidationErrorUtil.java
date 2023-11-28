@@ -29,4 +29,7 @@ public @interface ValidationErrorUtil {
     String InUse = "validation.constraints.InUse";
     String CheckIn = "validation.constraints.CheckIn";
     String CheckDateBook = "validation.constraints.CheckDateBook";
+    String CheckInBeforeDateNow = "validation.constraints.CheckInBeforeDateNow";
+
+    String DeleteRoomOrder = "validation.constraints.DeleteRoomOrder";
 }

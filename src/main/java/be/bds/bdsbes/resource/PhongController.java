@@ -53,6 +53,35 @@ public class PhongController {
         }
     }
 
+    @GetMapping("list-room")
+    public ResponseEntity<?> getListRoom(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size) {
+        try {
+            return ResponseUtil.wrap(this.iPhongService.getListRoom(page, size));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("list-room-same")
+    public ResponseEntity<?> getListSameRoom(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "idPhong", defaultValue = "") Long idPhong) {
+        try {
+            return ResponseUtil.wrap(this.iPhongService.getListSameRoom(page, size, idPhong));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @GetMapping("sort-by-id-desc")
     public ResponseEntity<?> sortById(
             @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
@@ -130,27 +159,32 @@ public class PhongController {
     }
 
     @GetMapping("get-room-by-search")
-    public ResponseEntity<?> getListbySoNguoi(
+    public ResponseEntity<?> getListByAll(
             @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
             @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
-            @RequestParam(value = "input", defaultValue = "") int soNguoi,
+            @RequestParam(value = "soLuongNguoi", defaultValue = "") String soLuongNguoi,
+            @RequestParam(value = "input", defaultValue = "") String tenLoaiPhong,
             @RequestParam(value = "checkIn", defaultValue = "") String checkIn,
             @RequestParam(value = "checkOut", defaultValue = "") String checkOut) {
         try {
-            if(checkIn.equals("") || checkOut.equals("") || checkIn == null || checkOut == null){
-                return ResponseUtil.wrap(this.iPhongService.searchRoomManager2(page, size, soNguoi));
-
+            if(tenLoaiPhong.isEmpty() && (checkIn.isEmpty() && checkOut.isEmpty())){
+                return ResponseUtil.wrap(this.iPhongService.getPhong(page, size));
+            }
+            if(tenLoaiPhong != null  && (checkIn.equals("") || checkOut.equals("") || checkIn == null || checkOut == null)){
+                return ResponseUtil.wrap(this.iPhongService.searchRoomManager2(page, size, Integer.valueOf(soLuongNguoi), tenLoaiPhong));
             }
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDateTime parsedCheckIn = LocalDate.parse(checkIn, formatter).atStartOfDay();
             LocalDateTime parsedCheckOut = LocalDate.parse(checkOut, formatter).atStartOfDay();
-            return ResponseUtil.wrap(this.iPhongService.searchRoomManager(page, size, soNguoi, parsedCheckIn, parsedCheckOut));
-        } catch (Exception ex) {
+            System.out.println(parsedCheckOut + " " + parsedCheckIn);
+            if (Integer.valueOf(soLuongNguoi) ==4){
+                return ResponseUtil.wrap(this.iPhongService.searchRoomManager3(page, size, Integer.valueOf(soLuongNguoi), tenLoaiPhong, parsedCheckIn, parsedCheckOut));
+            }
+            return ResponseUtil.wrap(this.iPhongService.searchRoomManager(page, size, Integer.valueOf(soLuongNguoi), tenLoaiPhong, parsedCheckIn, parsedCheckOut));
+        } catch (Exception | ServiceException ex) {
             log.error(this.getClass().getName(), ex);
 
-            return ResponseUtil.generateErrorResponse(ex);
-        } catch (ServiceException e) {
-            throw new RuntimeException(e);
+            return ResponseUtil.generateErrorResponse((ServiceException) ex);
         }
     }
 }

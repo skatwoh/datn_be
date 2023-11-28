@@ -86,7 +86,7 @@ public class AuthServiceImpl implements IAuthService {
         user.setProvider(AuthProvider.local);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setEmailVerified(true);
-        user.setKhachHang(KhachHang.builder().id(user.getId()).ma("KH" + ma).hoTen(user.getName())
+        user.setKhachHang(KhachHang.builder().id(user.getId()).ma("KH" + ma).hoTen(user.getName()).sdt(user.getSdt())
                 .theThanhVien(TheThanhVien.builder().id(1L).build()).build());
 
         this.userRepository.save(user);

@@ -5,6 +5,8 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Builder
 @AllArgsConstructor
@@ -35,10 +37,19 @@ public class Phong {
     @JoinColumn(name = "id_loai_phong")
     private LoaiPhong loaiPhong;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_sale")
+    private Sale sale;
+
     @Column(name = COLUMN_GIAPHONG_NAME, precision = 18)
     private BigDecimal giaPhong;
 
     @Column(name = COLUMN_TRANGTHAI_NAME)
     private Integer trangThai;
 
+    @OneToMany(mappedBy = "phong")
+    private Set<ChiTietPhong> chiTietPhongs = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "phong")
+    private Set<DatPhong> datPhongs = new LinkedHashSet<>();
 }

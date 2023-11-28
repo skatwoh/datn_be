@@ -5,7 +5,7 @@ import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -32,11 +32,14 @@ public class HoaDon {
     @Column(name = COLUMN_ID_NAME, nullable = false)
     private Long id;
 
+    @Column(name = "ma")
+    private String ma;
+
     @Column(name = COLUMN_NGAYTAO_NAME)
-    private LocalDate ngayTao;
+    private LocalDateTime ngayTao;
 
     @Column(name = COLUMN_NGAYTHANHTOAN_NAME)
-    private LocalDate ngayThanhToan;
+    private LocalDateTime ngayThanhToan;
 
     @Column(name = COLUMN_TONGTIEN_NAME, precision = 18)
     private BigDecimal tongTien;
@@ -53,9 +56,8 @@ public class HoaDon {
     @JoinColumn(name = "id_khach_hang")
     private KhachHang khachHang;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_dat_phong")
-    private DatPhong datPhong;
+    @OneToMany(mappedBy = "hoaDon")
+    private Set<DatPhong> datPhongs = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "hoaDon")
     private Set<HoaDonChiTiet> hoaDonChiTiets = new LinkedHashSet<>();

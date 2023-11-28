@@ -20,10 +20,13 @@ public interface PhongRepository extends JpaRepository<Phong, Long> {
     @Query("select new be.bds.bdsbes.payload.PhongResponse1(p.id, p.ma, p.giaPhong, p.trangThai, l.id, l.tenLoaiPhong) from Phong p inner join p.loaiPhong l where p.id = ?1")
     PhongResponse1 get(Long id);
 
+    @Query(value = "select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id where p.trangThai = 1 and ct.trangThai = 1")
+    Page<Phong> getListRoom(Pageable pageable);
+
     @Query("select new be.bds.bdsbes.payload.PhongResponse1(p.id, p.ma, p.giaPhong, p.trangThai, l.id, l.tenLoaiPhong) from Phong p inner join p.loaiPhong l")
     List<PhongResponse1> singleListRoom();
 
-    @Query("select p from Phong p where p.ma like CONCAT('%', ?1, '%') or p.loaiPhong.tenLoaiPhong like CONCAT('%',?1, '%') order by p.ma asc")
+    @Query("select p from Phong p where p.ma like CONCAT('%', ?1, '%') or p.loaiPhong.tenLoaiPhong like CONCAT('%',?1, '%')")
     Page<Phong> searchRoom(Pageable pageable, String searchInput);
 
 
@@ -32,13 +35,23 @@ public interface PhongRepository extends JpaRepository<Phong, Long> {
     @Query("UPDATE Phong p SET p.trangThai = :trangThai WHERE p.id = :id")
     Integer updateTrangThaiById(int trangThai, Long id);
 
-    @Query("select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id " +
-            "where ct.soLuongNguoi >= :soNguoi and (p.id not in (select d.phong.id from DatPhong d where (:checkIn between d.checkIn and d.checkOut) or (:checkOut between d.checkIn and d.checkOut) )) order by p.ma asc")
-    Page<Phong> searchRoomManager(Pageable pageable, int soNguoi, LocalDateTime checkIn, LocalDateTime checkOut);
+    @Query("select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id inner join LoaiPhong l on l.id = p.loaiPhong.id " +
+            "where p.trangThai = 1 and ct.trangThai = 1 and ct.soLuongNguoi = :soLuongNguoi and l.tenLoaiPhong like :tenLoaiPhong and p.id not in (select d.phong.id from DatPhong d where (:checkIn between d.checkIn and d.checkOut) or (:checkOut between d.checkIn and d.checkOut)" +
+            "or (d.checkIn between :checkIn and :checkOut) or (d.checkOut between :checkIn and :checkOut) or :checkIn = d.checkIn or :checkIn = d.checkOut " +
+            "or :checkOut = d.checkIn or :checkOut = d.checkOut) order by p.ma asc")
+    Page<Phong> searchRoomManager(Pageable pageable, Integer soLuongNguoi, String tenLoaiPhong, LocalDateTime checkIn, LocalDateTime checkOut);
 
-    @Query("select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id " +
-            "where ct.soLuongNguoi >= :soNguoi order by p.ma asc")
-    Page<Phong> searchRoomManager2(Pageable pageable, int soNguoi);
+    @Query("select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id inner join LoaiPhong l on l.id = p.loaiPhong.id " +
+            "where p.trangThai = 1 and ct.trangThai = 1 and ct.soLuongNguoi >= :soLuongNguoi and l.tenLoaiPhong like :tenLoaiPhong and p.id not in (select d.phong.id from DatPhong d where (:checkIn between d.checkIn and d.checkOut) or (:checkOut between d.checkIn and d.checkOut)" +
+            "or (d.checkIn between :checkIn and :checkOut) or (d.checkOut between :checkIn and :checkOut) or :checkIn = d.checkIn or :checkIn = d.checkOut " +
+            "or :checkOut = d.checkIn or :checkOut = d.checkOut) order by p.ma asc")
+    Page<Phong> searchRoomManager3(Pageable pageable, Integer soLuongNguoi, String tenLoaiPhong, LocalDateTime checkIn, LocalDateTime checkOut);
 
+    @Query("select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id inner join LoaiPhong l on l.id = p.loaiPhong.id " +
+            "where p.trangThai = 1 and ct.trangThai = 1 and ct.soLuongNguoi = :soLuongNguoi and l.tenLoaiPhong like :tenLoaiPhong order by p.ma asc")
+    Page<Phong> searchRoomManager2(Pageable pageable, Integer soLuongNguoi, String tenLoaiPhong);
+
+    @Query(value = "select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id where p.trangThai = 1 and ct.trangThai = 1 and p.loaiPhong.id in (select p.loaiPhong.id from Phong p where p.id = :idPhong)")
+    Page<Phong> getListSameRoom(Pageable pageable, Long idPhong);
 
 }

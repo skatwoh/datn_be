@@ -1,22 +1,33 @@
 package be.bds.bdsbes.resource;
 
+import be.bds.bdsbes.entities.DatPhong;
 import be.bds.bdsbes.exception.ServiceException;
+import be.bds.bdsbes.repository.DatPhongRepository;
 import be.bds.bdsbes.service.IDatPhongService;
 import be.bds.bdsbes.service.dto.DatPhongDTO;
+import be.bds.bdsbes.service.dto.response.DatPhongResponse;
 import be.bds.bdsbes.service.impl.PdfGenerator;
-import be.bds.bdsbes.utils.AppConstantsUtil;
-import be.bds.bdsbes.utils.ResponseUtil;
+import be.bds.bdsbes.utils.*;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.itextpdf.text.DocumentException;
-import be.bds.bdsbes.utils.ServiceExceptionBuilderUtil;
-import be.bds.bdsbes.utils.ValidationErrorUtil;
 import be.bds.bdsbes.utils.dto.ValidationErrorResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.text.PDFTextStripper;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -24,7 +35,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,6 +53,8 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 @RestController
 @RequestMapping("/rpc/bds/dat-phong")
 public class DatPhongController {
+    @Autowired
+    private DatPhongRepository datPhongRepository;
 
     @Autowired
     IDatPhongService iDatPhongService;
@@ -57,8 +76,8 @@ public class DatPhongController {
         }
     }
 
-    @GetMapping("get-one/{id}")
-    public ResponseEntity<?> getOne(@PathVariable("id") Long id) {
+    @GetMapping("detail")
+    public ResponseEntity<?> getOne(@RequestParam(value = "id") Long id) {
         if (iDatPhongService.getOne(id) == null) {
             return ResponseEntity.badRequest().body("Không tồn tại");
         }
@@ -77,8 +96,8 @@ public class DatPhongController {
 
     }
 
-    @PutMapping("update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id, @Valid @RequestBody DatPhongDTO datPhongDTO, BindingResult result) {
+    @PutMapping("update")
+    public ResponseEntity<?> update(@RequestParam(value = "id") Long id, @Valid @RequestBody DatPhongDTO datPhongDTO, BindingResult result) {
         if (iDatPhongService.update(datPhongDTO, id) == null) {
             return ResponseEntity.badRequest().body("Không tìm thấy");
         }
@@ -117,5 +136,78 @@ public class DatPhongController {
             return new byte[0];
         }
     }
+
+    @GetMapping("/list-room-order-by-user")
+    public ResponseEntity<?> getListByUser(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "id", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) Long id,
+            @RequestParam(value = "trangThai", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) Integer trangThai) {
+        try {
+            return ResponseUtil.wrap(this.iDatPhongService.getRoomOderByUser(page, size, id, trangThai));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @GetMapping("/list-room-order-by-upper-price")
+    public ResponseEntity<?> getListRoomByUpperPrice(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "giaPhong", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE)BigDecimal giaPhong
+            ) {
+        try {
+            return ResponseUtil.wrap(this.iDatPhongService.getPhongByUpperPrice(page, size, giaPhong));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @PutMapping("update-status")
+    public ResponseEntity<?> delete(@RequestParam(value = "id") Long id) {
+        try {
+            return ResponseUtil.wrap(this.iDatPhongService.updateTrangThai(id));
+        } catch (ServiceException e) {
+            ApiError apiError = new ApiError(String.valueOf(StatusError.Failed), e.getMessage());
+            return ResponseUtil.wrap(apiError);
+        }
+    }
+
+
+    @GetMapping("/generate-bill")
+    public ResponseEntity<?> generateInvoice(@RequestParam(value = "id") Long id) {
+        try {
+            pdfGenerator.exportPdf(id);
+            FileInputStream pdfInputStream = new FileInputStream("src/main/resources/template/output/datphong.pdf");
+            // Trả về tệp PDF dưới dạng InputStreamResource
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=datphong.pdf");
+            return ResponseEntity
+                    .ok()
+                    .headers(headers)
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .body(new InputStreamResource(pdfInputStream));
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Trả về lỗi nếu có vấn đề trong quá trình tạo hóa đơn
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+//    @PutMapping("update-id-hoa-don")
+//    public ResponseEntity<?> updateHoaDonByDatPhong(@RequestParam (value = "id") Long id){
+//
+//    }
+
+//    @GetMapping("/generate-bill")
+//    public void generateInvoice(@RequestParam(value = "id") Long id) {
+//        this.pdfGenerator.exportPdf2(id);
+//    }
+
 
 }
