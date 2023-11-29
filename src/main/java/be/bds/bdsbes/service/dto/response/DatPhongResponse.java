@@ -46,4 +46,6 @@ public class DatPhongResponse {
 
     private BigDecimal tongGia;
 
+    private Long idPhong;
+
 }

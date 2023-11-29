@@ -27,7 +27,7 @@ public interface IDatPhongService {
 
     PagedResponse<DatPhongResponse> getRoomOderByUser(int page, int size, Long id, Integer trangThai) throws ServiceException;
 
-    PagedResponse<PhongResponse1> getPhongByUpperPrice(int page, int size, BigDecimal giaPhong) throws ServiceException;
+    PagedResponse<PhongResponse1> getPhongByUpperPrice(int page, int size, BigDecimal giaPhong, Long id) throws ServiceException;
 
     Integer updateTrangThai(Long id) throws ServiceException;
 

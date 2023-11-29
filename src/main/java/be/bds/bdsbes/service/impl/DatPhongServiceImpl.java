@@ -226,7 +226,7 @@ public class DatPhongServiceImpl implements IDatPhongService {
     }
 
     @Override
-    public PagedResponse<PhongResponse1> getPhongByUpperPrice(int page, int size, BigDecimal giaPhong) throws ServiceException {
+    public PagedResponse<PhongResponse1> getPhongByUpperPrice(int page, int size, BigDecimal giaPhong, Long id) throws ServiceException {
         if (page <= 0) {
             throw ServiceExceptionBuilderUtil.newBuilder()
                     .addError(new ValidationErrorResponse("page", ValidationErrorUtil.Invalid))
@@ -244,7 +244,7 @@ public class DatPhongServiceImpl implements IDatPhongService {
 
         // Retrieve all entities
         Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
-        Page<Phong> entities = datPhongRepository.getPhongByUpperPrice(pageable, giaPhong);
+        Page<Phong> entities = datPhongRepository.getPhongByUpperPrice(pageable, giaPhong, id);
 
         List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());
 

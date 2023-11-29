@@ -20,12 +20,12 @@ import java.util.List;
 public interface DatPhongRepository extends JpaRepository<DatPhong, Long> {
 
     @Query("select new be.bds.bdsbes.service.dto.response.DatPhongResponse(d.id, d.ma, k.id, k.ma, k.sdt, u.name, v.id, v.ma," +
-            " v.giamGia, d.ngayDat, d.checkIn, d.checkOut, d.soNguoi, d.ghiChu, d.trangThai, d.phong.ma, d.tongGia) " +
+            " v.giamGia, d.ngayDat, d.checkIn, d.checkOut, d.soNguoi, d.ghiChu, d.trangThai, d.phong.ma, d.tongGia, d.phong.id) " +
             "from DatPhong d join d.user u join u.khachHang k left join d.voucher v")
     List<DatPhongResponse> getAllDatPhong();
 
     @Query("select new be.bds.bdsbes.service.dto.response.DatPhongResponse(d.id, d.ma, k.id, k.ma, k.sdt, u.name, v.id, v.ma," +
-            " v.giamGia, d.ngayDat, d.checkIn, d.checkOut, d.soNguoi, d.ghiChu, d.trangThai, d.phong.ma, d.tongGia) " +
+            " v.giamGia, d.ngayDat, d.checkIn, d.checkOut, d.soNguoi, d.ghiChu, d.trangThai, d.phong.ma, d.tongGia, d.phong.id) " +
             "from DatPhong d join d.user u join u.khachHang k left join d.voucher v where d.id= :id")
     DatPhongResponse get(Long id);
 
@@ -38,8 +38,9 @@ public interface DatPhongRepository extends JpaRepository<DatPhong, Long> {
             "or cast(dp.checkIn as date) < cast(:checkIn as date) and cast(dp.checkOut as date) > cast(:checkIn as date))")
     Boolean validateCheckIn(@Param("idPhong") Long idPhong, @Param("checkIn") LocalDateTime checkIn);
 
-    @Query("Select p from Phong  p inner join ChiTietPhong ctp on p.id = ctp.phong.id where p.trangThai = 1 and ctp.trangThai = 1 and  p.giaPhong >= :giaPhong ")
-    Page<Phong> getPhongByUpperPrice(Pageable pageable, BigDecimal giaPhong);
+    @Query("Select p from Phong  p inner join ChiTietPhong ctp on p.id = ctp.phong.id where p.trangThai = 1 and ctp.trangThai = 1 and  p.giaPhong >= :giaPhong" +
+            " AND p.id <> :id  ")
+    Page<Phong> getPhongByUpperPrice(Pageable pageable, BigDecimal giaPhong, Long id);
 
 
     @Transactional
@@ -48,7 +49,7 @@ public interface DatPhongRepository extends JpaRepository<DatPhong, Long> {
     Integer updateTrangThaiById(int trangThai, Long id);
 
     @Query("select new be.bds.bdsbes.service.dto.response.DatPhongResponse(d.id, d.ma, k.id, k.ma, k.sdt, u.name, v.id, v.ma," +
-            " v.giamGia, d.ngayDat, d.checkIn, d.checkOut, d.soNguoi, d.ghiChu, d.trangThai, d.phong.ma, d.tongGia) " +
+            " v.giamGia, d.ngayDat, d.checkIn, d.checkOut, d.soNguoi, d.ghiChu, d.trangThai, d.phong.ma, d.tongGia , d.phong.id) " +
             "from DatPhong d join d.user u join u.khachHang k left join d.voucher v where d.id= :id")
     List<DatPhongResponse> getDatPhong(Long id);
 

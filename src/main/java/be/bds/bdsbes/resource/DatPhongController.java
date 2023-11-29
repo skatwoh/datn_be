@@ -156,10 +156,11 @@ public class DatPhongController {
     public ResponseEntity<?> getListRoomByUpperPrice(
             @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
             @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "id", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) Long id,
             @RequestParam(value = "giaPhong", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE)BigDecimal giaPhong
             ) {
         try {
-            return ResponseUtil.wrap(this.iDatPhongService.getPhongByUpperPrice(page, size, giaPhong));
+            return ResponseUtil.wrap(this.iDatPhongService.getPhongByUpperPrice(page, size, giaPhong, id));
         } catch (Exception ex) {
             log.error(this.getClass().getName(), ex);
             return ResponseUtil.generateErrorResponse(ex);
@@ -199,10 +200,12 @@ public class DatPhongController {
         }
     }
 
-//    @GetMapping("/generate-bill")
-//    public void generateInvoice(@RequestParam(value = "id") Long id) {
-//        this.pdfGenerator.exportPdf2(id);
-//    }
+    @PutMapping("update-room-order-change")
+    public ResponseEntity<?> updateRoomOrderChange(@RequestParam(value = "id") Long id, @Valid @RequestBody DatPhongDTO datPhongDTO, BindingResult result) {
+
+            return ResponseEntity.ok().body(iDatPhongService.update(datPhongDTO, id));
+        }
+    }
 
 
-}
+
