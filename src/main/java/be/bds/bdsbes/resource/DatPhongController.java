@@ -47,6 +47,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 
 @Slf4j
@@ -120,7 +121,7 @@ public class DatPhongController {
         String headerValue = "attachment; filename=pdf_" + currentDateTime + ".pdf";
         response.setHeader(headerKey, headerValue);
 
-        this.pdfGenerator.export(response,id);
+        this.pdfGenerator.export(response, id);
     }
 
     @GetMapping("/generateQR")
@@ -152,14 +153,16 @@ public class DatPhongController {
             throw new RuntimeException(e);
         }
     }
+
     @GetMapping("/list-room-order-by-upper-price")
     public ResponseEntity<?> getListRoomByUpperPrice(
             @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
             @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
-            @RequestParam(value = "giaPhong", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE)BigDecimal giaPhong
-            ) {
+            @RequestParam(value = "giaPhong", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) BigDecimal giaPhong,
+            @RequestParam(value = "id") Long id
+    ) {
         try {
-            return ResponseUtil.wrap(this.iDatPhongService.getPhongByUpperPrice(page, size, giaPhong));
+            return ResponseUtil.wrap(this.iDatPhongService.getPhongByUpperPrice(page, size, giaPhong, id));
         } catch (Exception ex) {
             log.error(this.getClass().getName(), ex);
             return ResponseUtil.generateErrorResponse(ex);
@@ -209,5 +212,11 @@ public class DatPhongController {
 //        this.pdfGenerator.exportPdf2(id);
 //    }
 
-
+    @PutMapping("update-dat-phong")
+    public ResponseEntity<?> updateDatPhongById(
+            @RequestParam(value = "id") Long id, @Valid @RequestBody DatPhongDTO datPhongDTO
+    ) {
+        Integer response = iDatPhongService.updateDatPhong(id, datPhongDTO);
+        return ResponseUtil.wrap(response);
+    }
 }
