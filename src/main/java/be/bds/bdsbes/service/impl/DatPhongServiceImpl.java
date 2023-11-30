@@ -132,8 +132,8 @@ public class DatPhongServiceImpl implements IDatPhongService {
         datPhong.setUser(User.builder().id(datPhongDTO.getUserId()).build());
         datPhong.setPhong(Phong.builder().id(datPhongDTO.getIdPhong()).build());
         Long idKH = khachHangRepository.findByIdKhachHang(datPhongDTO.getUserId());
-        Long idHD = hoaDonRepository.getId(idKH, LocalDate.now());
-        datPhong.setHoaDon(HoaDon.builder().id(idHD).build());
+        Long idHoaDon = hoaDonRepository.getId(idKH, LocalDate.now());
+        datPhong.setHoaDon(HoaDon.builder().id(idHoaDon).build());
         this.datPhongRepository.save(datPhong);
         return true;
     }
