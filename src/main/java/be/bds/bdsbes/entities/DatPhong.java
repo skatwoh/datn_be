@@ -76,7 +76,7 @@ public class DatPhong {
     @Column(name = "tien_coc", precision = 18)
     private BigDecimal tienCoc;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_hoa_don")
     private HoaDon hoaDon;
 

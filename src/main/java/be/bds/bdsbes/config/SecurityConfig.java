@@ -113,7 +113,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/rpc/bds/auth/**", "/rpc/bds/oauth2/**", "/rpc/bds/phong/list")
                 .permitAll()
-                .antMatchers("/rpc/bds/chi-tiet-phong/get-room")
+                .antMatchers("/rpc/bds/chi-tiet-phong/get-room", "/rpc/bds/phong/single-list-room-type", "/rpc/bds/phong/list-room")
                 .permitAll()
                 .antMatchers("/swagger-ui.html", "/swagger-resources/**", "/v2/api-docs", "/webjars/**")
                 .permitAll()
