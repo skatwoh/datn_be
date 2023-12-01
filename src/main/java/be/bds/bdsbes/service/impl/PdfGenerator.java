@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.List;
 
@@ -86,64 +87,20 @@ public class PdfGenerator {
 
         String danhSachPhong = "";
         List<DatPhong> list = datPhongRepository.getDatPhongByHoaDon(hoaDon.getId());
-        for (DatPhong d : list) {
-            danhSachPhong = danhSachPhong + d.getPhong().getMa() + ",";
+        for (int x = 0; x < list.size();x++) {
+            if (x == list.size() -1){
+                danhSachPhong = danhSachPhong + list.get(x).getPhong().getMa();
+                break;
+            }
+            danhSachPhong = danhSachPhong + list.get(x).getPhong().getMa() + ",";
         }
-        Paragraph paragraphMaPhong = new Paragraph("\nDanh sach phong: " + danhSachPhong, fontTable);
+        Paragraph paragraphMaPhong = new Paragraph("Danh sach phong: " + danhSachPhong, fontTable);
         paragraphNull.setAlignment(Paragraph.ALIGN_LEFT);
-//        Paragraph paragraphLoaiPhong = new Paragraph("\nLoai phong: " + datPhong.getPhong().getLoaiPhong().getTenLoaiPhong(), fontTable);
-//        paragraphNull.setAlignment(Paragraph.ALIGN_LEFT);
-//        Paragraph paragraphGiaPhong = new Paragraph("\nGia phong: " + String.valueOf(formatter.format(datPhong.getPhong().getGiaPhong())) + "VND/ngay", fontTable);
-//        paragraphNull.setAlignment(Paragraph.ALIGN_LEFT);
-//        Paragraph paragraphNgayNhan = new Paragraph("\nNgay nhan phong: " + sdf2.format(sdf1.parse(String.valueOf(datPhong.getCheckIn()))), fontTable);
-//        paragraphNull.setAlignment(Paragraph.ALIGN_LEFT);
-//        Paragraph paragraphNgayTra = new Paragraph("\nNgay tra phong: " + sdf2.format(sdf1.parse(String.valueOf(datPhong.getCheckOut()))), fontTable);
-//        paragraphNull.setAlignment(Paragraph.ALIGN_LEFT);
-//        Paragraph paragraphSoNgay = new Paragraph("\nSo ngay thue: " + String.valueOf(datPhong.getCheckOut().getDayOfMonth()-datPhong.getCheckIn().getDayOfMonth()) + " ngay", fontTable);
-//        paragraphNull.setAlignment(Paragraph.ALIGN_LEFT);
-//        Paragraph paragraphPhiDichVu = new Paragraph("\nPhi dich vu: " + String.valueOf(formatter.format(tongGia - tienPhong)) + "VND", fontTable);
-        paragraphNull.setAlignment(Paragraph.ALIGN_LEFT);
-//        PdfPCell headerCell2 = new PdfPCell(new Phrase("Ma so phong", fontTable));
-//        PdfPCell headerCell3 = new PdfPCell(new Phrase(datPhong.getPhong().getMa(), fontTable));
-//        PdfPCell cellGiaPhong = new PdfPCell(new Phrase("Gia phong", fontTable));
-//        PdfPCell cellGiaPhong2 = new PdfPCell(new Phrase(String.valueOf(formatter.format(datPhong.getPhong().getGiaPhong())) + "/ngay", fontTable));
-//        PdfPCell cellSoNguoi = new PdfPCell(new Phrase("So nguoi", fontTable));
-//        PdfPCell cellSoNguoi2 = new PdfPCell(new Phrase(datPhong.getSoNguoi().toString(), fontTable));
-//        PdfPCell cellCheckin = new PdfPCell(new Phrase("Ngay nhan", fontTable));
-//        PdfPCell cellCheckin2 = new PdfPCell(new Phrase(sdf2.format(sdf1.parse(String.valueOf(datPhong.getCheckIn()))), fontTable));
-//        PdfPCell cellCheckout = new PdfPCell(new Phrase("Ngay tra", fontTable));
-//        PdfPCell cellCheckout2 = new PdfPCell(new Phrase(sdf2.format(sdf1.parse(String.valueOf(datPhong.getCheckOut()))), fontTable));
-//        PdfPCell cellSoNgay = new PdfPCell(new Phrase("So ngay thue ", fontTable));
-//        PdfPCell cellSoNgay2 = new PdfPCell(new Phrase(String.valueOf(datPhong.getCheckOut().getDayOfMonth()-datPhong.getCheckIn().getDayOfMonth()), fontTable));
-//        PdfPCell cellPhiDichVu = new PdfPCell(new Phrase("Phi dich vu ", fontTable));
-//        PdfPCell cellPhiDichVu2 = new PdfPCell(new Phrase(String.valueOf(formatter.format(tongGia - tienPhong)), fontTable));
-//        cellGiaPhong.setHorizontalAlignment(Element.ALIGN_CENTER);
-//        cellGiaPhong2.setHorizontalAlignment(Element.ALIGN_CENTER);
-//        cellSoNguoi.setHorizontalAlignment(Element.ALIGN_CENTER);
-//        cellSoNguoi2.setHorizontalAlignment(Element.ALIGN_CENTER);
-//        cellCheckin.setHorizontalAlignment(Element.ALIGN_CENTER);
-//        cellCheckin2.setHorizontalAlignment(Element.ALIGN_CENTER);
-//        cellCheckout.setHorizontalAlignment(Element.ALIGN_CENTER);
-//        cellCheckout2.setHorizontalAlignment(Element.ALIGN_CENTER);
-//        cellSoNgay.setHorizontalAlignment(Element.ALIGN_CENTER);
-//        cellSoNgay2.setHorizontalAlignment(Element.ALIGN_CENTER);
-//        cellPhiDichVu.setHorizontalAlignment(Element.ALIGN_CENTER);
-//        cellPhiDichVu2.setHorizontalAlignment(Element.ALIGN_CENTER);
-//        pdfPTable.addCell(cellGiaPhong);
-//        pdfPTable.addCell(cellGiaPhong2);
-//        pdfPTable.addCell(cellSoNguoi);
-//        pdfPTable.addCell(cellSoNguoi2);
-//        pdfPTable.addCell(cellCheckin);
-//        pdfPTable.addCell(cellCheckin2);
-//        pdfPTable.addCell(cellCheckout);
-//        pdfPTable.addCell(cellCheckout2);
-//        pdfPTable.addCell(cellSoNgay);
-//        pdfPTable.addCell(cellSoNgay2);
-//        pdfPTable.addCell(cellPhiDichVu);
-//        pdfPTable.addCell(cellPhiDichVu2);
-//        pdfPTable.completeRow();
+        DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-        //
+        paragraphNull.setAlignment(Paragraph.ALIGN_LEFT);
+
+
         String formattedTongTien = formatter.format(hoaDon.getTongTien());
         Paragraph paragraphTongTien = new Paragraph("\nTong thanh toan: " + formattedTongTien + "VND", fontInfor);
         paragraphTongTien.setAlignment(Paragraph.ALIGN_LEFT);
@@ -160,12 +117,20 @@ public class PdfGenerator {
         document.add(paragraphSDT);
         document.add(paragraphNull);
         document.add(paragraphMaPhong);
-//        document.add(paragraphLoaiPhong);
-//        document.add(paragraphGiaPhong);
-//        document.add(paragraphNgayNhan);
-//        document.add(paragraphNgayTra);
-//        document.add(paragraphSoNgay);
-//        document.add(paragraphPhiDichVu);
+        for(int x = 0;x < list.size();x ++){
+            document.add(paragraphLine);
+            Paragraph paragraphThongTinPhong = new Paragraph("Ma so phong: " + list.get(x).getPhong().getMa(), fontTable);
+            Paragraph paragraphLoaiPhong = new Paragraph("Loai phong: " + list.get(x).getPhong().getLoaiPhong().getTenLoaiPhong(), fontTable);
+            Paragraph paragraphCheckIn = new Paragraph( "Ngay nhan phong: " + formatDate.format(list.get(x).getCheckIn()), fontTable);
+            Paragraph paragraphCheckOut = new Paragraph( "Ngay tra phong: " + formatDate.format(list.get(x).getCheckOut()), fontTable);
+            Paragraph paragraphTienPhong = new Paragraph( "Tong tien: " + formatter.format(list.get(x).getTongGia()) + "VND", fontTable);
+            document.add(paragraphThongTinPhong);
+            document.add(paragraphLoaiPhong);
+            document.add(paragraphCheckIn);
+            document.add(paragraphCheckOut);
+            document.add(paragraphTienPhong);
+        }
+        document.add(paragraphLine);
         document.add(paragraphTongTien);
         document.add(paragraph9);
         document.add(paragraphEnd);

@@ -31,6 +31,6 @@ public interface IDatPhongService {
 
     Integer updateTrangThai(Long id) throws ServiceException;
 
-    Integer updateDatPhong(Long id, DatPhongDTO datPhongDTO);
+    Integer updateDatPhong(Long id, DatPhongDTO datPhongDTO) throws ServiceException;
 
 }

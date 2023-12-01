@@ -148,6 +148,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
         return true;
     }
 
+    @Override
     public Boolean createOrUpdate(HoaDonDTO hoaDonDTO) throws ServiceException {
         Long idKH = khachHangRepository.findByIdKhachHang(hoaDonDTO.getIdKhachHang());
         System.out.println(idKH);
@@ -158,5 +159,20 @@ public class HoaDonServiceImpl implements IHoaDonService {
         }
         this.create(hoaDonDTO);
         return true;
+    }
+
+    @Override
+    public Boolean updateTongTien(HoaDonDTO hoaDonDTO) {
+        Long idKH = khachHangRepository.findByIdKhachHang(hoaDonDTO.getIdKhachHang());
+        HoaDonResponse hoaDonResponse = hoaDonRepository.getHoaDon(idKH, LocalDate.now());
+        if(hoaDonResponse != null){
+            HoaDon hoaDon = hoaDonRepository.findById(hoaDonResponse.getId()).get();
+            BigDecimal tongTienCu = hoaDon.getTongTien();
+            BigDecimal tongTienMoi = tongTienCu.subtract(hoaDonDTO.getTongTien());
+            hoaDon.setTongTien(tongTienMoi);
+            hoaDonRepository.save(hoaDon);
+            return true;
+        }
+        return false;
     }
 }
