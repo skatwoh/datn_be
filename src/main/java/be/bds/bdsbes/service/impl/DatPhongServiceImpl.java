@@ -128,7 +128,7 @@ public class DatPhongServiceImpl implements IDatPhongService {
         datPhong.setGhiChu(datPhongDTO.getGhiChu());
         datPhong.setTrangThai(datPhongDTO.getTrangThai());
         datPhong.setTongGia(datPhongDTO.getTongGia());
-        datPhong.setVoucher(Voucher.builder().id(1L).build());
+        datPhong.setVoucher(Voucher.builder().id(datPhongDTO.getIdVoucher()).build());
         datPhong.setUser(User.builder().id(datPhongDTO.getUserId()).build());
         datPhong.setPhong(Phong.builder().id(datPhongDTO.getIdPhong()).build());
         Long idKH = khachHangRepository.findByIdKhachHang(datPhongDTO.getUserId());
@@ -269,7 +269,7 @@ public class DatPhongServiceImpl implements IDatPhongService {
     public Integer updateTrangThai(Long id) throws ServiceException {
 
         DatPhong datPhong = datPhongRepository.findById(id).get();
-        if (datPhong.getCheckIn().toLocalDate().isBefore(LocalDate.now())) {
+        if (datPhong.getCheckIn().toLocalDate().isBefore(LocalDate.now()) || datPhong.getCheckIn().toLocalDate().equals(LocalDate.now())) {
             throw new ServiceException(ValidationErrorUtil.DeleteRoomOrder);
         }
         if (datPhong.getTrangThai() == 1 && datPhong.getCheckIn().toLocalDate().isAfter(LocalDate.now())) {
@@ -281,7 +281,23 @@ public class DatPhongServiceImpl implements IDatPhongService {
         return null;
     }
 
-    public Integer updateDatPhong(Long id, DatPhongDTO datPhongDTO) {
+    public Integer updateDatPhong(Long id, DatPhongDTO datPhongDTO) throws ServiceException {
+        if (datPhongDTO.getCheckIn().isAfter(datPhongDTO.getCheckOut())) {
+            throw ServiceExceptionBuilderUtil.newBuilder()
+                    .addError(new ValidationErrorResponse("checkIn", ValidationErrorUtil.CheckIn))
+                    .build();
+        }
+        if (datPhongDTO.getCheckIn().toLocalDate().isBefore(LocalDate.now())) {
+            throw ServiceExceptionBuilderUtil.newBuilder()
+                    .addError(new ValidationErrorResponse("checkIn", ValidationErrorUtil.CheckInBeforeDateNow))
+                    .build();
+        }
+
+        if (datPhongRepository.validateCheckIn(datPhongDTO.getIdPhong(), datPhongDTO.getCheckIn())) {
+            throw ServiceExceptionBuilderUtil.newBuilder()
+                    .addError(new ValidationErrorResponse("checkIn", ValidationErrorUtil.CheckDateBook))
+                    .build();
+        }
         return datPhongRepository.updateDatPhongById(datPhongDTO.getIdPhong(), datPhongDTO.getTongGia(), id);
     }
 }

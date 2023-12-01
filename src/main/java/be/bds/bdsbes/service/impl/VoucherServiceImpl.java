@@ -65,15 +65,15 @@ public class VoucherServiceImpl implements IVoucherService{
     @Override
     public Voucher add(VoucherDto voucherDto) {
         Voucher voucher = voucherDto.dtoVoucher(new Voucher());
-        int leftLimit = 97; // letter 'a'
-        int rightLimit = 122; // letter 'z'
-        int targetStringLength = 10;
-        Random random = new Random();
-        String generatedString = random.ints(leftLimit, rightLimit + 1)
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
-        voucher.setMa(generatedString.toUpperCase());
+//        int leftLimit = 97; // letter 'a'
+//        int rightLimit = 122; // letter 'z'
+//        int targetStringLength = 10;
+//        Random random = new Random();
+//        String generatedString = random.ints(leftLimit, rightLimit + 1)
+//                .limit(targetStringLength)
+//                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+//                .toString();
+        voucher.setMa(generateAutoCode());
         return voucherRepository.save(voucher);
     }
 
@@ -153,7 +153,21 @@ public class VoucherServiceImpl implements IVoucherService{
         );
     }
 
+    public int getNumberOfRecords() {
+        Long count = voucherRepository.count();
+        return count.intValue();
+    }
 
+
+    private String generateAutoCode() {
+        int numberOfDigits = 2;
+
+        int numberOfExistingRecords = getNumberOfRecords();
+
+        String autoCode = "V" + String.format("%0" + numberOfDigits + "d", numberOfExistingRecords + 1);
+
+        return autoCode;
+    }
 
 
 

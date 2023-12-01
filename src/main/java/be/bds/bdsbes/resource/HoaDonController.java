@@ -100,4 +100,14 @@ public class HoaDonController {
 
         this.pdfGenerator.export(response,id);
     }
+
+    @PutMapping("update-tong-tien")
+    public ResponseEntity<?> updateTongTien(@RequestBody HoaDonDTO hoaDonDTO) {
+        try {
+            return ResponseUtil.wrap(this.iHoaDonService.updateTongTien(hoaDonDTO));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        }
+    }
 }
