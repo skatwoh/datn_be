@@ -216,7 +216,12 @@ public class DatPhongController {
     public ResponseEntity<?> updateDatPhongById(
             @RequestParam(value = "id") Long id, @Valid @RequestBody DatPhongDTO datPhongDTO
     ) {
-        Integer response = iDatPhongService.updateDatPhong(id, datPhongDTO);
-        return ResponseUtil.wrap(response);
+        try {
+            Integer response = iDatPhongService.updateDatPhong(id, datPhongDTO);
+            return ResponseUtil.wrap(response);
+        } catch (ServiceException e) {
+            log.error(this.getClass().getName(), e);
+            return ResponseUtil.generateErrorResponse(e);
+        }
     }
 }
