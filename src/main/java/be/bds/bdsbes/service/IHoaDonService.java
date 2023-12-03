@@ -18,4 +18,6 @@ public interface IHoaDonService {
     Boolean update(HoaDonDTO hoaDonDTO, Long id) throws ServiceException;
 
     Boolean createOrUpdate(HoaDonDTO hoaDonDTO) throws ServiceException;
+
+    Boolean updateTongTien(HoaDonDTO hoaDonDTO);
 }

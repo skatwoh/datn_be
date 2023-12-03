@@ -7,10 +7,7 @@ import be.bds.bdsbes.entities.Phong;
 import be.bds.bdsbes.entities.Voucher;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.PhongResponse1;
-import be.bds.bdsbes.repository.DatPhongRepository;
-import be.bds.bdsbes.repository.HoaDonRepository;
-import be.bds.bdsbes.repository.KhachHangRepository;
-import be.bds.bdsbes.repository.ThongBaoRepository;
+import be.bds.bdsbes.repository.*;
 import be.bds.bdsbes.service.IDatPhongService;
 import be.bds.bdsbes.service.dto.DatPhongDTO;
 import be.bds.bdsbes.service.dto.response.DatPhongResponse;
@@ -43,6 +40,8 @@ import java.util.Optional;
 @Service
 public class DatPhongServiceImpl implements IDatPhongService {
     @Autowired
+    private PhongRepository phongRepository;
+    @Autowired
     private KhachHangRepository khachHangRepository;
     @Autowired
     private HoaDonRepository hoaDonRepository;
@@ -58,6 +57,7 @@ public class DatPhongServiceImpl implements IDatPhongService {
 
     @Autowired
     PhongMapper phongMapper;
+
     public int getNumberOfRecords() {
         Long count = datPhongRepository.count();
         return count.intValue();
@@ -92,13 +92,13 @@ public class DatPhongServiceImpl implements IDatPhongService {
     /**
      * Creates a new `DatPhong` object based on the provided `DatPhongDTO`.
      *
-     * @param  datPhongDTO  the `DatPhongDTO` object containing the data for creating the `DatPhong` object
-     * @return              the created `DatPhong` object
+     * @param datPhongDTO the `DatPhongDTO` object containing the data for creating the `DatPhong` object
+     * @return the created `DatPhong` object
      */
     @Override
     public Boolean create(DatPhongDTO datPhongDTO) throws ServiceException {
         ZoneId timeZone = ZoneId.of("Asia/Ho_Chi_Minh");
-        if(datPhongDTO.getCheckIn().isAfter(datPhongDTO.getCheckOut())){
+        if (datPhongDTO.getCheckIn().isAfter(datPhongDTO.getCheckOut())) {
             throw ServiceExceptionBuilderUtil.newBuilder()
                     .addError(new ValidationErrorResponse("checkIn", ValidationErrorUtil.CheckIn))
                     .build();
@@ -109,7 +109,7 @@ public class DatPhongServiceImpl implements IDatPhongService {
                     .build();
         }
 
-        if(datPhongRepository.validateCheckIn(datPhongDTO.getIdPhong(), datPhongDTO.getCheckIn())){
+        if (datPhongRepository.validateCheckIn(datPhongDTO.getIdPhong(), datPhongDTO.getCheckIn())) {
             throw ServiceExceptionBuilderUtil.newBuilder()
                     .addError(new ValidationErrorResponse("checkIn", ValidationErrorUtil.CheckDateBook))
                     .build();
@@ -128,7 +128,9 @@ public class DatPhongServiceImpl implements IDatPhongService {
         datPhong.setGhiChu(datPhongDTO.getGhiChu());
         datPhong.setTrangThai(datPhongDTO.getTrangThai());
         datPhong.setTongGia(datPhongDTO.getTongGia());
-        datPhong.setVoucher(Voucher.builder().id(1L).build());
+        if(datPhongDTO.getIdVoucher() != null){
+            datPhong.setVoucher(Voucher.builder().id(datPhongDTO.getIdVoucher()).build());
+        }
         datPhong.setUser(User.builder().id(datPhongDTO.getUserId()).build());
         datPhong.setPhong(Phong.builder().id(datPhongDTO.getIdPhong()).build());
         Long idKH = khachHangRepository.findByIdKhachHang(datPhongDTO.getUserId());
@@ -141,7 +143,7 @@ public class DatPhongServiceImpl implements IDatPhongService {
     @Override
     public DatPhong update(DatPhongDTO datPhongDTO, Long id) {
         Optional<DatPhong> optionalDatPhong = datPhongRepository.findById(id);
-        if(optionalDatPhong.isPresent()){
+        if (optionalDatPhong.isPresent()) {
             DatPhong datPhong = optionalDatPhong.get();
             datPhong.setNgayDat(datPhongDTO.getNgayDat());
             datPhong.setCheckIn(datPhongDTO.getCheckIn());
@@ -231,7 +233,7 @@ public class DatPhongServiceImpl implements IDatPhongService {
     }
 
     @Override
-    public PagedResponse<PhongResponse1> getPhongByUpperPrice(int page, int size, BigDecimal giaPhong) throws ServiceException {
+    public PagedResponse<PhongResponse1> getPhongByUpperPrice(int page, int size, BigDecimal giaPhong, Long id) throws ServiceException {
         if (page <= 0) {
             throw ServiceExceptionBuilderUtil.newBuilder()
                     .addError(new ValidationErrorResponse("page", ValidationErrorUtil.Invalid))
@@ -249,7 +251,7 @@ public class DatPhongServiceImpl implements IDatPhongService {
 
         // Retrieve all entities
         Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
-        Page<Phong> entities = datPhongRepository.getPhongByUpperPrice(pageable, giaPhong);
+        Page<Phong> entities = datPhongRepository.getPhongByUpperPrice(pageable, giaPhong, id);
 
         List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());
 
@@ -269,15 +271,35 @@ public class DatPhongServiceImpl implements IDatPhongService {
     public Integer updateTrangThai(Long id) throws ServiceException {
 
         DatPhong datPhong = datPhongRepository.findById(id).get();
-        if(datPhong.getCheckIn().toLocalDate().isBefore(LocalDate.now())){
+        if (datPhong.getCheckIn().toLocalDate().isBefore(LocalDate.now()) || datPhong.getCheckIn().toLocalDate().equals(LocalDate.now())) {
             throw new ServiceException(ValidationErrorUtil.DeleteRoomOrder);
         }
-        if(datPhong.getTrangThai() == 1 && datPhong.getCheckIn().toLocalDate().isAfter(LocalDate.now())){
+        if (datPhong.getTrangThai() == 1 && datPhong.getCheckIn().toLocalDate().isAfter(LocalDate.now())) {
             return datPhongRepository.updateTrangThaiById(0, id);
         }
-        if(datPhong.getTrangThai() == 0){
+        if (datPhong.getTrangThai() == 0) {
             return datPhongRepository.updateTrangThaiById(1, id);
         }
         return null;
+    }
+
+    public Integer updateDatPhong(Long id, DatPhongDTO datPhongDTO) throws ServiceException {
+        if (datPhongDTO.getCheckIn().isAfter(datPhongDTO.getCheckOut())) {
+            throw ServiceExceptionBuilderUtil.newBuilder()
+                    .addError(new ValidationErrorResponse("checkIn", ValidationErrorUtil.CheckIn))
+                    .build();
+        }
+        if (datPhongDTO.getCheckIn().toLocalDate().isBefore(LocalDate.now())) {
+            throw ServiceExceptionBuilderUtil.newBuilder()
+                    .addError(new ValidationErrorResponse("checkIn", ValidationErrorUtil.CheckInBeforeDateNow))
+                    .build();
+        }
+
+        if (datPhongRepository.validateCheckIn(datPhongDTO.getIdPhong(), datPhongDTO.getCheckIn())) {
+            throw ServiceExceptionBuilderUtil.newBuilder()
+                    .addError(new ValidationErrorResponse("checkIn", ValidationErrorUtil.CheckDateBook))
+                    .build();
+        }
+        return datPhongRepository.updateDatPhongById(datPhongDTO.getIdPhong(), datPhongDTO.getTongGia(), id);
     }
 }

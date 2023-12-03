@@ -73,7 +73,7 @@ public class ThongBaoServiceImpl implements IThongBaoService {
         }
 
         // Retrieve all entities
-        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
         Page<ThongBao> entities = thongBaoRepository.listAll(pageable, userId);
 
         List<ThongBaoResponse> dtos = this.thongBaoMapper.toDtoList(entities.getContent());
