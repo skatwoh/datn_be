@@ -128,7 +128,9 @@ public class DatPhongServiceImpl implements IDatPhongService {
         datPhong.setGhiChu(datPhongDTO.getGhiChu());
         datPhong.setTrangThai(datPhongDTO.getTrangThai());
         datPhong.setTongGia(datPhongDTO.getTongGia());
-        datPhong.setVoucher(Voucher.builder().id(datPhongDTO.getIdVoucher()).build());
+        if(datPhongDTO.getIdVoucher() != null){
+            datPhong.setVoucher(Voucher.builder().id(datPhongDTO.getIdVoucher()).build());
+        }
         datPhong.setUser(User.builder().id(datPhongDTO.getUserId()).build());
         datPhong.setPhong(Phong.builder().id(datPhongDTO.getIdPhong()).build());
         Long idKH = khachHangRepository.findByIdKhachHang(datPhongDTO.getUserId());
