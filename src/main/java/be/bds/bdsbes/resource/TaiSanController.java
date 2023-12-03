@@ -17,17 +17,17 @@ import javax.validation.Valid;
 import java.util.List;
 @Slf4j
 @RestController
-@RequestMapping("/api/tai-san")
+@RequestMapping("/rpc/bds/tai-san")
 public class TaiSanController {
     @Autowired
-    private ITaiSanService ITaiSanService = new TaiSanServiceImpl();
+    private ITaiSanService iTaiSanService;
 
     @GetMapping("/list")
     public ResponseEntity<?> getList(
             @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
             @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size) {
         try {
-            return ResponseUtil.wrap(this.ITaiSanService.getAccounts(page, size));
+            return ResponseUtil.wrap(this.iTaiSanService.getAccounts(page, size));
         } catch (Exception ex) {
             log.error(this.getClass().getName(), ex);
             return ResponseUtil.generateErrorResponse(ex);
@@ -38,15 +38,15 @@ public class TaiSanController {
 
     @GetMapping("get-page")
     public ResponseEntity<?> getPage(@RequestParam(defaultValue = "0", name = "page") Integer page){
-        return ResponseEntity.ok(ITaiSanService.getPage(page));
+        return ResponseEntity.ok(iTaiSanService.getPage(page));
     }
 
     @GetMapping("detail")
     public ResponseEntity<?> getTaiSan(@RequestParam( value = "id") Long id){
-        if(ITaiSanService.getTaiSan(id) == null){
+        if(iTaiSanService.getTaiSan(id) == null){
             return ResponseEntity.ok("Not found");
         }
-        return ResponseEntity.ok(ITaiSanService.getTaiSan(id));
+        return ResponseEntity.ok(iTaiSanService.getTaiSan(id));
     }
 
     @PostMapping("create")
@@ -55,7 +55,7 @@ public class TaiSanController {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             return ResponseEntity.ok(errorList);
         }
-        return ResponseEntity.ok(ITaiSanService.create(taiSanDTO));
+        return ResponseEntity.ok(iTaiSanService.create(taiSanDTO));
     }
 
     @PutMapping("update")
@@ -64,9 +64,9 @@ public class TaiSanController {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             return ResponseEntity.ok(errorList);
         }
-        if(ITaiSanService.update(taiSanDTO, id) == null){
+        if(iTaiSanService.update(taiSanDTO, id) == null){
             return ResponseEntity.ok("Update failed");
         }
-        return ResponseEntity.ok(ITaiSanService.update(taiSanDTO, id));
+        return ResponseEntity.ok(iTaiSanService.update(taiSanDTO, id));
     }
 }
