@@ -187,4 +187,18 @@ public class PhongController {
             return ResponseUtil.generateErrorResponse((ServiceException) ex);
         }
     }
+
+    @GetMapping("list-top-room-booking")
+    public ResponseEntity<?> getListTopRoomBooking(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size) {
+        try {
+            return ResponseUtil.wrap(this.iPhongService.getListTopRoomOrder(page, size));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

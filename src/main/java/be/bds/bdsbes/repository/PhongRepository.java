@@ -54,4 +54,12 @@ public interface PhongRepository extends JpaRepository<Phong, Long> {
     @Query(value = "select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id where p.trangThai = 1 and ct.trangThai = 1 and p.loaiPhong.id in (select p.loaiPhong.id from Phong p where p.id = :idPhong)")
     Page<Phong> getListSameRoom(Pageable pageable, Long idPhong);
 
+    @Query("select p " +
+            "from Phong p\n" +
+            "         left join ChiTietPhong ctp on p.id = ctp.phong.id \n" +
+            "         left join DatPhong dp on p.id = dp.phong.id \n" +
+            "group by p.id, p.ma, p.giaPhong, p.loaiPhong.id, p.trangThai, p.sale \n" +
+            "order by count(dp.phong.id) desc" )
+    Page<Phong> getListTopRoomOrder(Pageable pageable);
+
 }
