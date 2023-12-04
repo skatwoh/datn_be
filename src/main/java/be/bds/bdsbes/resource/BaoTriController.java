@@ -1,5 +1,6 @@
 package be.bds.bdsbes.resource;
 
+import be.bds.bdsbes.entities.BaoTri;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.service.IBaoTriService;
 import be.bds.bdsbes.service.IQuanLyDoiTacService;
@@ -50,15 +51,14 @@ public class BaoTriController {
         return ResponseEntity.ok(baoTriService.getListCTP());
     }
     @PostMapping("create")
-    public ResponseEntity<?> create(@RequestBody @Valid BaoTriDto baoTriDto, BindingResult result) {
-        if (result.hasErrors()) {
-            List<ObjectError> errorList = result.getAllErrors();
-            return ResponseEntity.badRequest().body(errorList);
+    public ResponseEntity<?> create(@RequestBody @Valid BaoTriDto baoTriDto, BindingResult result) throws ServiceException {
+        try {
+            BaoTri response = baoTriService.create(baoTriDto);
+            return ResponseUtil.wrap(response);
+        } catch (ServiceException e) {
+            log.error(this.getClass().getName(), e);
+            return ResponseUtil.generateErrorResponse(e);
         }
-        if (baoTriDto.getNgayBatDau().isAfter(baoTriDto.getNgayKetThuc())) {
-            return ResponseEntity.badRequest().body("Ngày check-in phải trước ngày check-out");
-        }
-        return ResponseEntity.ok(baoTriService.create(baoTriDto));
     }
 
     @PutMapping("update")

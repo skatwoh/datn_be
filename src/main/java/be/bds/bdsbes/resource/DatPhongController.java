@@ -153,7 +153,21 @@ public class DatPhongController {
             throw new RuntimeException(e);
         }
     }
-
+    @GetMapping("/lich-su-dat-phong")
+    public ResponseEntity<?> getLichSuDatPhong(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "id", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) Long id
+            ) {
+        try {
+            return ResponseUtil.wrap(this.iDatPhongService.getLichSuDatPhong(page, size, id));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
     @GetMapping("/list-room-order-by-upper-price")
     public ResponseEntity<?> getListRoomByUpperPrice(
             @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
