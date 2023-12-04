@@ -59,4 +59,7 @@ public interface DatPhongRepository extends JpaRepository<DatPhong, Long> {
     @Modifying
     @Query("UPDATE DatPhong d SET d.phong.id = :idPhong, d.tongGia = :tongGia WHERE d.id = :id")
     Integer updateDatPhongById(Long idPhong, BigDecimal tongGia, Long id);
+
+    @Query("select d from DatPhong d where d.user.id = :id ")
+    Page<DatPhong> getLichSuDatPhong(Pageable pageable, Long id);
 }

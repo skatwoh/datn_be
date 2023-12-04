@@ -25,7 +25,7 @@ public interface IBaoTriService {
     BaoTriResponse1 getOne(Long id);
 
     List<ChiTietPhongResponse1> getListCTP();
-    BaoTri create(BaoTriDto baoTriDto);
+    BaoTri create(BaoTriDto baoTriDto) throws ServiceException;
     PagedResponse<BaoTriResponse1> searchMaintenance(int page, int size, String searchInput) throws ServiceException;
     BaoTri update(BaoTriDto baoTriDto, Long id);
     Integer updateTrangThaiById( Long id);

@@ -33,4 +33,5 @@ public interface IDatPhongService {
 
     Integer updateDatPhong(Long id, DatPhongDTO datPhongDTO) throws ServiceException;
 
+    PagedResponse<DatPhongResponse> getLichSuDatPhong(int page, int size, Long id) throws ServiceException;
 }
