@@ -24,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -59,9 +60,18 @@ public class BaoTriServiceImpl implements IBaoTriService {
     }
 
     @Override
-    public BaoTri create(BaoTriDto baoTriDto) {
+    public BaoTri create(BaoTriDto baoTriDto) throws ServiceException {
         BaoTri baoTri = baoTriDto.dto(new BaoTri());
-
+        if(baoTriDto.getNgayBatDau().isAfter(baoTriDto.getNgayKetThuc())){
+            throw ServiceExceptionBuilderUtil.newBuilder()
+                    .addError(new ValidationErrorResponse("ngayBatDau", ValidationErrorUtil.CheckIn))
+                    .build();
+        }
+        if (baoTriDto.getNgayBatDau().isBefore(LocalDate.now())) {
+            throw ServiceExceptionBuilderUtil.newBuilder()
+                    .addError(new ValidationErrorResponse("ngayBatDau", ValidationErrorUtil.CheckInBeforeDateNow))
+                    .build();
+        }
         return baoTriRepository.save(baoTri);
     }
 

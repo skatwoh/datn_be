@@ -10,8 +10,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Setter
 public class QuanLyDoiTacDTO {
-    @NotBlank(message = "Khong duoc de trong")
-    @Length(max = 50, message = "Khong duoc vuot qua 50 ki tu")
+
     private String ma;
 
     @NotBlank(message = "Khong duoc de trong")
@@ -26,7 +25,7 @@ public class QuanLyDoiTacDTO {
 
 
     public QuanLyDoiTac dto(QuanLyDoiTac quanLyDoiTac) {
-        quanLyDoiTac.setMa(this.getMa());
+
         quanLyDoiTac.setTenCongTy(this.getTenCongTy());
         quanLyDoiTac.setGhiChu(this.getGhiChu());
         quanLyDoiTac.setTrangThai(this.getTrangThai());

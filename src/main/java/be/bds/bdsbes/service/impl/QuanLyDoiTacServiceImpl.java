@@ -51,7 +51,21 @@ public class QuanLyDoiTacServiceImpl implements IQuanLyDoiTacService {
         Pageable pageable = PageRequest.of(page, 5);
         return quanLyDoiTacRepository.findAll(pageable);
     }
+    public int getNumberOfRecords() {
+        Long count = quanLyDoiTacRepository.count();
+        return count.intValue();
+    }
 
+
+    private String generateAutoCode() {
+        int numberOfDigits = 2;
+
+        int numberOfExistingRecords = getNumberOfRecords();
+
+        String autoCode = "DT" + String.format("%0" + numberOfDigits + "d", numberOfExistingRecords + 1);
+
+        return autoCode;
+    }
     @Override
     public QuanLyDoiTac getOne(Long id) {
         Optional<QuanLyDoiTac> quanLyDoiTacOptional = quanLyDoiTacRepository.findById(id);
@@ -66,6 +80,7 @@ public class QuanLyDoiTacServiceImpl implements IQuanLyDoiTacService {
     public QuanLyDoiTac create(QuanLyDoiTacDTO quanLyDoiTacDTO) {
         QuanLyDoiTac quanLyDoiTac = quanLyDoiTacDTO.dto(new QuanLyDoiTac());
 
+        quanLyDoiTac.setMa(generateAutoCode());
         return quanLyDoiTacRepository.save(quanLyDoiTac);
     }
 
