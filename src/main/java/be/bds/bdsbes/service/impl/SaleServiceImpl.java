@@ -85,4 +85,9 @@ public class SaleServiceImpl implements ISaleService {
     public SaleResponse get(Long id) {
         return saleRepository.get(id);
     }
+
+    @Override
+    public SaleResponse getSale() {
+        return saleRepository.getSale();
+    }
 }
