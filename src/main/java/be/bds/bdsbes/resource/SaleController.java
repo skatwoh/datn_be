@@ -26,12 +26,17 @@ public class SaleController {
     }
 
     @PutMapping("/update-trang-thai")
-    public ResponseEntity<?> delete(@RequestParam(value = "id") Long id) {
-        return ResponseEntity.ok(this.iSaleService.updateTrangThai(id));
+    public ResponseEntity<?> updateStatus(@RequestParam(value = "id") Long id) {
+        return ResponseUtil.wrap(this.iSaleService.updateTrangThai(id));
     }
 
     @GetMapping("/get")
     public ResponseEntity<?> get(@RequestParam(value = "id") Long id) {
         return ResponseEntity.ok(this.iSaleService.get(id));
+    }
+
+    @GetMapping("/get-sale")
+    public ResponseEntity<?> getSale() {
+        return ResponseEntity.ok(this.iSaleService.getSale());
     }
 }

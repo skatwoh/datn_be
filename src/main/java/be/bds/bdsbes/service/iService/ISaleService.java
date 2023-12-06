@@ -10,4 +10,6 @@ public interface ISaleService {
     Integer updateTrangThai(Long id);
 
     SaleResponse get(Long id);
+
+    SaleResponse getSale();
 }
