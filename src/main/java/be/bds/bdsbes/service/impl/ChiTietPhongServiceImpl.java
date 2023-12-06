@@ -6,7 +6,7 @@ import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.ChiTietPhongResponse1;
 import be.bds.bdsbes.payload.PhongResponse1;
 import be.bds.bdsbes.repository.ChiTietPhongRepository;
-import be.bds.bdsbes.service.IChiTietPhongService;
+import be.bds.bdsbes.service.iService.IChiTietPhongService;
 import be.bds.bdsbes.service.dto.ChiTietPhongDTO;
 import be.bds.bdsbes.service.mapper.ChiTietPhongMapper;
 import be.bds.bdsbes.service.mapper.PhongMapper;

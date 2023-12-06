@@ -1,4 +1,4 @@
-package be.bds.bdsbes.service;
+package be.bds.bdsbes.service.iService;
 
 import be.bds.bdsbes.entities.ChiTietPhong;
 import be.bds.bdsbes.exception.ServiceException;

@@ -2,7 +2,7 @@ package be.bds.bdsbes.service.impl;
 
 import be.bds.bdsbes.entities.TheThanhVien;
 import be.bds.bdsbes.repository.TheThanhVienRepository;
-import be.bds.bdsbes.service.ITheThanhVienService;
+import be.bds.bdsbes.service.iService.ITheThanhVienService;
 import be.bds.bdsbes.service.dto.TheThanhVienDTO;
 import be.bds.bdsbes.service.dto.response.TheThanhVienResponse;
 import org.springframework.beans.factory.annotation.Autowired;
