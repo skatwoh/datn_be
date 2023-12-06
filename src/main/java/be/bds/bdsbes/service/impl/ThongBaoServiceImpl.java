@@ -3,9 +3,8 @@ package be.bds.bdsbes.service.impl;
 import be.bds.bdsbes.domain.User;
 import be.bds.bdsbes.entities.ThongBao;
 import be.bds.bdsbes.exception.ServiceException;
-import be.bds.bdsbes.payload.PhongResponse1;
 import be.bds.bdsbes.repository.ThongBaoRepository;
-import be.bds.bdsbes.service.IThongBaoService;
+import be.bds.bdsbes.service.iService.IThongBaoService;
 import be.bds.bdsbes.service.dto.ThongBaoDTO;
 import be.bds.bdsbes.service.dto.response.ThongBaoResponse;
 import be.bds.bdsbes.service.mapper.ThongBaoMapper;
@@ -26,7 +25,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Slf4j
 @Service("thongBaoService")

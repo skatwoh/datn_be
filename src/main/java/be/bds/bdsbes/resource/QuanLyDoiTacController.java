@@ -1,8 +1,7 @@
 package be.bds.bdsbes.resource;
 
 import be.bds.bdsbes.exception.ServiceException;
-import be.bds.bdsbes.service.IQuanLyDoiTacService;
-import be.bds.bdsbes.service.dto.KhachHangDTO;
+import be.bds.bdsbes.service.iService.IQuanLyDoiTacService;
 import be.bds.bdsbes.service.dto.QuanLyDoiTacDTO;
 import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ResponseUtil;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.UUID;
+
 @Slf4j
 @RestController
 @RequestMapping("/rpc/bds/quan-ly-doi-tac")

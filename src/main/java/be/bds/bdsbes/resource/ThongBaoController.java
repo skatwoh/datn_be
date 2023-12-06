@@ -1,13 +1,12 @@
 package be.bds.bdsbes.resource;
 
 import be.bds.bdsbes.exception.ServiceException;
-import be.bds.bdsbes.service.IThongBaoService;
+import be.bds.bdsbes.service.iService.IThongBaoService;
 import be.bds.bdsbes.service.dto.ThongBaoDTO;
 import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

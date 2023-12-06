@@ -1,7 +1,7 @@
 package be.bds.bdsbes.resource;
 
 
-import be.bds.bdsbes.service.ITheThanhVienService;
+import be.bds.bdsbes.service.iService.ITheThanhVienService;
 import be.bds.bdsbes.service.dto.TheThanhVienDTO;
 import be.bds.bdsbes.service.impl.ITheThanhVienServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

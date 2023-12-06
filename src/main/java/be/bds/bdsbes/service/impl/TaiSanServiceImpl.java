@@ -1,14 +1,11 @@
 package be.bds.bdsbes.service.impl;
 
-import be.bds.bdsbes.entities.DichVu;
 import be.bds.bdsbes.entities.TaiSan;
 import be.bds.bdsbes.exception.ServiceException;
-import be.bds.bdsbes.payload.DichVuResponse1;
 import be.bds.bdsbes.payload.TaiSanResponse1;
 import be.bds.bdsbes.repository.TaiSanRepository;
-import be.bds.bdsbes.service.ITaiSanService;
+import be.bds.bdsbes.service.iService.ITaiSanService;
 import be.bds.bdsbes.service.dto.TaiSanDTO;
-import be.bds.bdsbes.service.dto.TheThanhVienDTO;
 import be.bds.bdsbes.service.dto.response.TaiSanResponse;
 import be.bds.bdsbes.service.mapper.TaiSanMapper;
 import be.bds.bdsbes.utils.AppConstantsUtil;

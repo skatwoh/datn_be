@@ -1,7 +1,7 @@
 package be.bds.bdsbes.resource;
 
 import be.bds.bdsbes.exception.ServiceException;
-import be.bds.bdsbes.service.IDichVuService;
+import be.bds.bdsbes.service.iService.IDichVuService;
 import be.bds.bdsbes.service.dto.DichVuDTO;
 import be.bds.bdsbes.service.impl.DichVuServiceImpl;
 import be.bds.bdsbes.utils.AppConstantsUtil;

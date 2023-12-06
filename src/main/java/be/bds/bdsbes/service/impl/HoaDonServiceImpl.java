@@ -6,7 +6,7 @@ import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.HoaDonResponse;
 import be.bds.bdsbes.repository.HoaDonRepository;
 import be.bds.bdsbes.repository.KhachHangRepository;
-import be.bds.bdsbes.service.IHoaDonService;
+import be.bds.bdsbes.service.iService.IHoaDonService;
 import be.bds.bdsbes.service.dto.HoaDonDTO;
 import be.bds.bdsbes.service.mapper.HoaDonMapper;
 import be.bds.bdsbes.utils.AppConstantsUtil;
@@ -26,7 +26,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service

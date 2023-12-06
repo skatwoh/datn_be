@@ -7,7 +7,7 @@ import org.hibernate.annotations.Nationalized;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -26,17 +26,20 @@ public class Sale {
     @Column(name = "ma", length = 50)
     private String ma;
 
+    @Column(name = "ten", length = 100)
+    private String ten;
+
     @Column(name = "gia_tri", precision = 18)
     private BigDecimal giaTri;
 
     @Column(name = "ngay_bat_dau")
-    private Instant ngayBatDau;
+    private LocalDateTime ngayBatDau;
 
     @Column(name = "ngay_ket_thuc")
-    private Instant ngayKetThuc;
+    private LocalDateTime ngayKetThuc;
 
     @Column(name = "trang_thai")
-    private Boolean trangThai;
+    private Integer trangThai;
 
     @OneToMany(mappedBy = "sale")
     private Set<Phong> phongs = new LinkedHashSet<>();

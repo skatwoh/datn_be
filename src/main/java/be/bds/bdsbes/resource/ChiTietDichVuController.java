@@ -1,10 +1,8 @@
 package be.bds.bdsbes.resource;
 
 import be.bds.bdsbes.exception.ServiceException;
-import be.bds.bdsbes.service.IChiTietDichVuService;
-import be.bds.bdsbes.service.IDichVuService;
+import be.bds.bdsbes.service.iService.IChiTietDichVuService;
 import be.bds.bdsbes.service.dto.ChiTietDichVuDTO;
-import be.bds.bdsbes.service.dto.DichVuDTO;
 import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;

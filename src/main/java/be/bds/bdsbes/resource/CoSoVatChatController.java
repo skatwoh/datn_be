@@ -1,9 +1,7 @@
 package be.bds.bdsbes.resource;
 
 import be.bds.bdsbes.exception.ServiceException;
-import be.bds.bdsbes.service.IChiTietDichVuService;
-import be.bds.bdsbes.service.ICoSoVatChatService;
-import be.bds.bdsbes.service.dto.ChiTietDichVuDTO;
+import be.bds.bdsbes.service.iService.ICoSoVatChatService;
 import be.bds.bdsbes.service.dto.CoSoVatChatDTO;
 import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ResponseUtil;

@@ -1,8 +1,8 @@
 package be.bds.bdsbes.resource;
 
 import be.bds.bdsbes.exception.ServiceException;
-import be.bds.bdsbes.service.IChiTietPhongService;
-import be.bds.bdsbes.service.IPhongService;
+import be.bds.bdsbes.service.iService.IChiTietPhongService;
+import be.bds.bdsbes.service.iService.IPhongService;
 import be.bds.bdsbes.service.dto.ChiTietPhongDTO;
 import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ResponseUtil;
