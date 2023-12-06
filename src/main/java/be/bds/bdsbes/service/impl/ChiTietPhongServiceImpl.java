@@ -1,12 +1,15 @@
 package be.bds.bdsbes.service.impl;
 
 import be.bds.bdsbes.entities.ChiTietPhong;
+import be.bds.bdsbes.entities.Phong;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.ChiTietPhongResponse1;
+import be.bds.bdsbes.payload.PhongResponse1;
 import be.bds.bdsbes.repository.ChiTietPhongRepository;
 import be.bds.bdsbes.service.IChiTietPhongService;
 import be.bds.bdsbes.service.dto.ChiTietPhongDTO;
 import be.bds.bdsbes.service.mapper.ChiTietPhongMapper;
+import be.bds.bdsbes.service.mapper.PhongMapper;
 import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ServiceExceptionBuilderUtil;
 import be.bds.bdsbes.utils.ValidationErrorUtil;
@@ -22,6 +25,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +39,9 @@ public class ChiTietPhongServiceImpl implements IChiTietPhongService {
 
     @Autowired
     private ChiTietPhongMapper chiTietPhongMapper;
+
+    @Autowired
+    private PhongMapper phongMapper;
 
     @Override
     public List<ChiTietPhong> getList() {
@@ -72,7 +79,7 @@ public class ChiTietPhongServiceImpl implements IChiTietPhongService {
     @Override
     public ChiTietPhong update(ChiTietPhongDTO chiTietPhongDTO, Long id) {
         Optional<ChiTietPhong> optionalChiTietPhong = chiTietPhongRepository.findById(id);
-        if(optionalChiTietPhong.isPresent()){
+        if (optionalChiTietPhong.isPresent()) {
             ChiTietPhong chiTietPhong = chiTietPhongDTO.dto(optionalChiTietPhong.get());
             return chiTietPhongRepository.save(chiTietPhong);
         }
@@ -82,10 +89,10 @@ public class ChiTietPhongServiceImpl implements IChiTietPhongService {
     @Override
     public Integer updateTrangThai(Long id) {
         ChiTietPhong phong = chiTietPhongRepository.findById(id).get();
-        if(phong.getTrangThai() == 0){
+        if (phong.getTrangThai() == 0) {
             return chiTietPhongRepository.updateTrangThaiById(1, id);
         }
-        if(phong.getTrangThai() == 1){
+        if (phong.getTrangThai() == 1) {
             return chiTietPhongRepository.updateTrangThaiById(0, id);
         }
         return null;
@@ -145,5 +152,39 @@ public class ChiTietPhongServiceImpl implements IChiTietPhongService {
     @Override
     public ChiTietPhongResponse1 getCTP(Long idPhong) {
         return chiTietPhongRepository.getCTP(idPhong);
+    }
+
+    @Override
+    public PagedResponse<ChiTietPhongResponse1> searchRoomBySoNguoi(int page, int size, Integer soLuongNguoi, Integer soPhong) {
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
+
+        Page<ChiTietPhong> entities = chiTietPhongRepository.findPhongBySoNguoi(soLuongNguoi, pageable);
+        List<PhongResponse1> listPhong = new ArrayList<>();
+        entities.getContent().sort(Comparator.comparing(ChiTietPhong::getSoLuongNguoi).reversed());
+        int remainingPeople = soLuongNguoi;
+        for(ChiTietPhong chiTietPhong : entities.getContent()){
+            Phong phong = chiTietPhong.getPhong();
+            int availableCapacity = chiTietPhong.getSoLuongNguoi();
+            int people = Math.min(remainingPeople, availableCapacity);
+
+            if (people > 0){
+                chiTietPhong.setSoLuongNguoi(chiTietPhong.getSoLuongNguoi() - people);
+                remainingPeople-=people;
+                PhongResponse1 phongResponse1 = phongMapper.toDto(phong);
+                listPhong.add(phongResponse1);
+            }
+        }
+
+        List<Phong> dtos = entities.map(ChiTietPhong::getPhong).getContent();
+        return new PagedResponse<>(
+                listPhong,
+                page,
+                size,
+                entities.getTotalElements(),
+                entities.getTotalPages(),
+                entities.isLast(),
+                entities.getSort().toString(),
+                dtos
+        );
     }
 }
