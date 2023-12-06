@@ -4,7 +4,7 @@ import be.bds.bdsbes.entities.DuAn;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.DuAnResponse1;
 import be.bds.bdsbes.repository.DuAnRepository;
-import be.bds.bdsbes.service.IDuAnService;
+import be.bds.bdsbes.service.iService.IDuAnService;
 import be.bds.bdsbes.service.dto.DuAnDTO;
 import be.bds.bdsbes.service.mapper.DuAnMapper;
 import be.bds.bdsbes.utils.AppConstantsUtil;

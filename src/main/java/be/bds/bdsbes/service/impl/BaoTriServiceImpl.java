@@ -1,13 +1,11 @@
 package be.bds.bdsbes.service.impl;
 
 import be.bds.bdsbes.entities.BaoTri;
-import be.bds.bdsbes.entities.Phong;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.BaoTriResponse1;
 import be.bds.bdsbes.payload.ChiTietPhongResponse1;
-import be.bds.bdsbes.payload.PhongResponse1;
 import be.bds.bdsbes.repository.BaoTriRepository;
-import be.bds.bdsbes.service.IBaoTriService;
+import be.bds.bdsbes.service.iService.IBaoTriService;
 import be.bds.bdsbes.service.dto.BaoTriDto;
 import be.bds.bdsbes.service.mapper.BaoTriMapper;
 import be.bds.bdsbes.utils.AppConstantsUtil;

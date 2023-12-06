@@ -1,6 +1,6 @@
 package be.bds.bdsbes.resource;
 
-import be.bds.bdsbes.service.IChiTietDatPhongService;
+import be.bds.bdsbes.service.iService.IChiTietDatPhongService;
 import be.bds.bdsbes.service.dto.ChiTietDatPhongDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

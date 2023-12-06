@@ -2,10 +2,8 @@ package be.bds.bdsbes.resource;
 
 import be.bds.bdsbes.entities.BaoTri;
 import be.bds.bdsbes.exception.ServiceException;
-import be.bds.bdsbes.service.IBaoTriService;
-import be.bds.bdsbes.service.IQuanLyDoiTacService;
+import be.bds.bdsbes.service.iService.IBaoTriService;
 import be.bds.bdsbes.service.dto.BaoTriDto;
-import be.bds.bdsbes.service.dto.QuanLyDoiTacDTO;
 import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 @RestController

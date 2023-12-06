@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.LoginRequest;
 import be.bds.bdsbes.payload.SignUpRequest;
-import be.bds.bdsbes.service.IAuthService;
+import be.bds.bdsbes.service.iService.IAuthService;
 
 
 import javax.validation.Valid;

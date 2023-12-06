@@ -1,7 +1,7 @@
 package be.bds.bdsbes.resource;
 
 import be.bds.bdsbes.exception.ServiceException;
-import be.bds.bdsbes.service.IKhachHangService;
+import be.bds.bdsbes.service.iService.IKhachHangService;
 import be.bds.bdsbes.service.dto.KhachHangDTO;
 import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ResponseUtil;

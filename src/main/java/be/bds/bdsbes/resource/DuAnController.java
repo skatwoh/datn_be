@@ -1,7 +1,7 @@
 package be.bds.bdsbes.resource;
 
 import be.bds.bdsbes.exception.ServiceException;
-import be.bds.bdsbes.service.IDuAnService;
+import be.bds.bdsbes.service.iService.IDuAnService;
 import be.bds.bdsbes.service.dto.DuAnDTO;
 import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ResponseUtil;

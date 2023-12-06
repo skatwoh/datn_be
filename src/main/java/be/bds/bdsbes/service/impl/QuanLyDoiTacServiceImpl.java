@@ -1,16 +1,10 @@
 package be.bds.bdsbes.service.impl;
 
-import be.bds.bdsbes.entities.BaoTri;
-import be.bds.bdsbes.entities.KhachHang;
 import be.bds.bdsbes.entities.QuanLyDoiTac;
-import be.bds.bdsbes.entities.TheThanhVien;
 import be.bds.bdsbes.exception.ServiceException;
-import be.bds.bdsbes.payload.BaoTriResponse1;
-import be.bds.bdsbes.payload.KhachHangResponse1;
 import be.bds.bdsbes.payload.QuanLyDoiTacResponse1;
 import be.bds.bdsbes.repository.QuanLyDoiTacRepository;
-import be.bds.bdsbes.service.IQuanLyDoiTacService;
-import be.bds.bdsbes.service.dto.KhachHangDTO;
+import be.bds.bdsbes.service.iService.IQuanLyDoiTacService;
 import be.bds.bdsbes.service.dto.QuanLyDoiTacDTO;
 import be.bds.bdsbes.service.mapper.QuanLyDoiTacMapper;
 import be.bds.bdsbes.utils.AppConstantsUtil;
@@ -30,7 +24,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Slf4j
 @Service("quanLyDoiTacServiceImpl")

@@ -1,4 +1,4 @@
-package be.bds.bdsbes.service;
+package be.bds.bdsbes.service.iService;
 import be.bds.bdsbes.entities.Voucher;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.VoucherResponse;
