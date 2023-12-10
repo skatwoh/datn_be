@@ -31,4 +31,6 @@ public class ChiTietPhongResponse1 {
     private String maPhong;
 
     private BigDecimal giaPhong;
+
+    private String image;
 }

@@ -16,7 +16,7 @@ import java.util.UUID;
 
 public interface ChiTietPhongRepository extends JpaRepository<ChiTietPhong, Long> {
 
-    @Query("select new be.bds.bdsbes.payload.ChiTietPhongResponse1(c.id, c.tang, c.tienIch, c.dichVu, c.soLuongNguoi, c.dienTich, c.trangThai, l.id, l.ma, l.giaPhong) from ChiTietPhong c left join c.phong l where c.id = ?1")
+    @Query("select new be.bds.bdsbes.payload.ChiTietPhongResponse1(c.id, c.tang, c.tienIch, c.dichVu, c.soLuongNguoi, c.dienTich, c.trangThai, l.id, l.ma, l.giaPhong, l.image) from ChiTietPhong c left join c.phong l where c.id = ?1")
     ChiTietPhongResponse1 get(Long id);
 
     @Query("select p from ChiTietPhong p where p.tang like concat('%', ?1, '%') or p.phong.ma like concat('%', ?1, '%') " +
@@ -28,7 +28,7 @@ public interface ChiTietPhongRepository extends JpaRepository<ChiTietPhong, Long
     @Query("UPDATE ChiTietPhong p SET p.trangThai = :trangThai WHERE p.id = :id")
     Integer updateTrangThaiById(int trangThai, Long id);
 
-    @Query("select new be.bds.bdsbes.payload.ChiTietPhongResponse1(c.id, c.tang, c.tienIch, c.dichVu, c.soLuongNguoi, c.dienTich, c.trangThai, l.id, l.ma, l.giaPhong) from ChiTietPhong c left join c.phong l where l.id = ?1")
+    @Query("select new be.bds.bdsbes.payload.ChiTietPhongResponse1(c.id, c.tang, c.tienIch, c.dichVu, c.soLuongNguoi, c.dienTich, c.trangThai, l.id, l.ma, l.giaPhong, l.image) from ChiTietPhong c left join c.phong l where l.id = ?1")
     ChiTietPhongResponse1 getCTP(Long idPhong);
 
     @Query("select ctp from ChiTietPhong ctp join Phong p on p.id = ctp.phong.id where ctp.soLuongNguoi >= :soNguoi")
