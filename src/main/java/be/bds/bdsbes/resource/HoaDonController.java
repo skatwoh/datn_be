@@ -1,7 +1,7 @@
 package be.bds.bdsbes.resource;
 
 import be.bds.bdsbes.exception.ServiceException;
-import be.bds.bdsbes.service.IHoaDonService;
+import be.bds.bdsbes.service.iService.IHoaDonService;
 import be.bds.bdsbes.service.dto.HoaDonDTO;
 import be.bds.bdsbes.service.impl.PdfGenerator;
 import be.bds.bdsbes.utils.AppConstantsUtil;
@@ -17,9 +17,6 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @Slf4j

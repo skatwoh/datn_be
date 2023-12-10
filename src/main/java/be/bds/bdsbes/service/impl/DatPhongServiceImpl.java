@@ -8,7 +8,7 @@ import be.bds.bdsbes.entities.Voucher;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.PhongResponse1;
 import be.bds.bdsbes.repository.*;
-import be.bds.bdsbes.service.IDatPhongService;
+import be.bds.bdsbes.service.iService.IDatPhongService;
 import be.bds.bdsbes.service.dto.DatPhongDTO;
 import be.bds.bdsbes.service.dto.response.DatPhongResponse;
 import be.bds.bdsbes.service.mapper.DatPhongMapper;

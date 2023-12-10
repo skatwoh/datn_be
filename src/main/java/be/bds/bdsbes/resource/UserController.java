@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.security.CurrentUser;
-import be.bds.bdsbes.service.IUserService;
+import be.bds.bdsbes.service.iService.IUserService;
 
 
 @Slf4j

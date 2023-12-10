@@ -1,9 +1,8 @@
 package be.bds.bdsbes.resource;
 
 import be.bds.bdsbes.exception.ServiceException;
-import be.bds.bdsbes.payload.VoucherResponse;
 import be.bds.bdsbes.repository.VoucherRepository;
-import be.bds.bdsbes.service.IVoucherService;
+import be.bds.bdsbes.service.iService.IVoucherService;
 import be.bds.bdsbes.service.dto.VoucherDto;
 import be.bds.bdsbes.service.impl.VoucherServiceImpl;
 import be.bds.bdsbes.utils.AppConstantsUtil;
@@ -11,14 +10,11 @@ import be.bds.bdsbes.utils.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.List;
 
 @Slf4j

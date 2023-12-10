@@ -8,7 +8,7 @@ import be.bds.bdsbes.payload.PermissionResponse;
 import be.bds.bdsbes.payload.UserProfileResponse;
 import be.bds.bdsbes.repository.UserRepository;
 import be.bds.bdsbes.security.UserPrincipal;
-import be.bds.bdsbes.service.IUserService;
+import be.bds.bdsbes.service.iService.IUserService;
 import be.bds.bdsbes.service.mapper.UserMapper;
 import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ServiceExceptionBuilderUtil;

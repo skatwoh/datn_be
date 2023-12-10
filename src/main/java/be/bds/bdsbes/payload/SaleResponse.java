@@ -1,30 +1,23 @@
 package be.bds.bdsbes.payload;
 
-import be.bds.bdsbes.entities.LoaiPhong;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PhongResponse1 {
-
+public class SaleResponse {
     private Long id;
-
     private String ma;
-
-    private BigDecimal giaPhong;
-
+    private String ten;
+    private BigDecimal giaTri;
+    private LocalDateTime ngayBatDau;
+    private LocalDateTime ngayKetThuc;
     private Integer trangThai;
-
-    private Long idloaiPhong;
-
-    private String tenLoaiPhong;
-
-    private String image;
 }

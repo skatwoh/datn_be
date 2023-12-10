@@ -1,4 +1,4 @@
-package be.bds.bdsbes.service;
+package be.bds.bdsbes.service.iService;
 
 import be.bds.bdsbes.entities.TaiKhoan;
 import be.bds.bdsbes.exception.ServiceException;

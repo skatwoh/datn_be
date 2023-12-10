@@ -1,12 +1,10 @@
 package be.bds.bdsbes.service.impl;
 
 import be.bds.bdsbes.entities.ChiTietDichVu;
-import be.bds.bdsbes.entities.DichVu;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.ChiTietDichVuResponse1;
-import be.bds.bdsbes.payload.DichVuResponse1;
 import be.bds.bdsbes.repository.ChiTietDichVuRepository;
-import be.bds.bdsbes.service.IChiTietDichVuService;
+import be.bds.bdsbes.service.iService.IChiTietDichVuService;
 import be.bds.bdsbes.service.dto.ChiTietDichVuDTO;
 import be.bds.bdsbes.service.mapper.ChiTietDichVuMapper;
 import be.bds.bdsbes.utils.AppConstantsUtil;

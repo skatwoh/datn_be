@@ -1,12 +1,10 @@
 package be.bds.bdsbes.service.impl;
 
 import be.bds.bdsbes.entities.DichVu;
-import be.bds.bdsbes.entities.DuAn;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.DichVuResponse1;
-import be.bds.bdsbes.payload.DuAnResponse1;
 import be.bds.bdsbes.repository.DichVuRepository;
-import be.bds.bdsbes.service.IDichVuService;
+import be.bds.bdsbes.service.iService.IDichVuService;
 import be.bds.bdsbes.service.dto.DichVuDTO;
 import be.bds.bdsbes.service.dto.response.DichVuResponse;
 import be.bds.bdsbes.service.mapper.DichVuMapper;

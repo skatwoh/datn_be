@@ -4,7 +4,7 @@ import be.bds.bdsbes.entities.CoSoVatChat;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.CoSoVatChatResponse1;
 import be.bds.bdsbes.repository.CoSoVatChatRepository;
-import be.bds.bdsbes.service.ICoSoVatChatService;
+import be.bds.bdsbes.service.iService.ICoSoVatChatService;
 import be.bds.bdsbes.service.dto.CoSoVatChatDTO;
 import be.bds.bdsbes.service.mapper.CoSoVatChatMapper;
 import be.bds.bdsbes.utils.AppConstantsUtil;
