@@ -25,4 +25,6 @@ public class PhongResponse1 {
     private Long idloaiPhong;
 
     private String tenLoaiPhong;
+
+    private String image;
 }

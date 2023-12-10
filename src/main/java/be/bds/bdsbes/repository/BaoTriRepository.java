@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 @Repository
 public interface BaoTriRepository extends JpaRepository<BaoTri, Long> {
-    @Query("select new be.bds.bdsbes.payload.ChiTietPhongResponse1(p.id,p.tang,p.tienIch,p.dichVu,p.soLuongNguoi,p.dienTich, p.trangThai, ph.id, ph.ma, ph.giaPhong) from ChiTietPhong p inner join p.phong ph")
+    @Query("select new be.bds.bdsbes.payload.ChiTietPhongResponse1(p.id,p.tang,p.tienIch,p.dichVu,p.soLuongNguoi,p.dienTich, p.trangThai, ph.id, ph.ma, ph.giaPhong, ph.image) from ChiTietPhong p inner join p.phong ph")
     List<ChiTietPhongResponse1> singleListRoom();
     @Query("select new be.bds.bdsbes.payload.BaoTriResponse1(p.id, p.ngayBatDau, p.ngayKetThuc, p.chiPhiBaoTri,p.ghiChu,p.trangThai, l.id) from BaoTri p inner join p.chiTietPhong l where p.id = ?1")
     BaoTriResponse1 get(Long id);

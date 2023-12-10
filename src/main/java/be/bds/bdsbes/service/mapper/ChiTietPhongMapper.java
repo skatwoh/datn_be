@@ -9,6 +9,7 @@ public interface ChiTietPhongMapper extends EntityMapper<ChiTietPhongResponse1, 
 
     @Mapping(target = "maPhong", source = "phong.ma")
     @Mapping(target = "giaPhong", source = "phong.giaPhong")
+    @Mapping(target = "image", source = "phong.image")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     ChiTietPhongResponse1 toDto(ChiTietPhong chiTietPhong);
 }
