@@ -17,13 +17,13 @@ import java.util.List;
 @Repository
 public interface PhongRepository extends JpaRepository<Phong, Long> {
 
-    @Query("select new be.bds.bdsbes.payload.PhongResponse1(p.id, p.ma, p.giaPhong, p.trangThai, l.id, l.tenLoaiPhong) from Phong p inner join p.loaiPhong l where p.id = ?1")
+    @Query("select new be.bds.bdsbes.payload.PhongResponse1(p.id, p.ma, p.giaPhong, p.trangThai, l.id, l.tenLoaiPhong, p.image) from Phong p inner join p.loaiPhong l where p.id = ?1")
     PhongResponse1 get(Long id);
 
     @Query(value = "select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id where p.trangThai = 1 and ct.trangThai = 1")
     Page<Phong> getListRoom(Pageable pageable);
 
-    @Query("select new be.bds.bdsbes.payload.PhongResponse1(p.id, p.ma, p.giaPhong, p.trangThai, l.id, l.tenLoaiPhong) from Phong p inner join p.loaiPhong l")
+    @Query("select new be.bds.bdsbes.payload.PhongResponse1(p.id, p.ma, p.giaPhong, p.trangThai, l.id, l.tenLoaiPhong, p.image) from Phong p inner join p.loaiPhong l")
     List<PhongResponse1> singleListRoom();
 
     @Query("select p from Phong p where p.ma like CONCAT('%', ?1, '%') or p.loaiPhong.tenLoaiPhong like CONCAT('%',?1, '%')")
@@ -58,7 +58,7 @@ public interface PhongRepository extends JpaRepository<Phong, Long> {
             "from Phong p\n" +
             "         left join ChiTietPhong ctp on p.id = ctp.phong.id \n" +
             "         left join DatPhong dp on p.id = dp.phong.id \n" +
-            "group by p.id, p.ma, p.giaPhong, p.loaiPhong.id, p.trangThai, p.sale \n" +
+            "group by p.id, p.ma, p.giaPhong, p.loaiPhong.id, p.trangThai,p.image, p.sale \n" +
             "order by count(dp.phong.id) desc" )
     Page<Phong> getListTopRoomOrder(Pageable pageable);
 
