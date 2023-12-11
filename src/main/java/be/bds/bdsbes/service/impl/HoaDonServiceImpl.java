@@ -120,7 +120,12 @@ public class HoaDonServiceImpl implements IHoaDonService {
         hoaDon.setTrangThai(1);
         hoaDon.setGhiChu(hoaDonDTO.getGhiChu());
         Long idKhachHang = khachHangRepository.findByIdKhachHang(hoaDonDTO.getIdKhachHang());
-        hoaDon.setKhachHang(KhachHang.builder().id(idKhachHang).build());
+        if(idKhachHang == null){
+            Long idKhachHang2 = khachHangRepository.findByI(hoaDonDTO.getIdKhachHang());
+            hoaDon.setKhachHang(KhachHang.builder().id(idKhachHang2).build());
+        }else{
+            hoaDon.setKhachHang(KhachHang.builder().id(idKhachHang).build());
+        }
         hoaDonRepository.save(hoaDon);
         return true;
     }
@@ -152,7 +157,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
         Long idKH = khachHangRepository.findByIdKhachHang(hoaDonDTO.getIdKhachHang());
         System.out.println(idKH);
         HoaDonResponse hoaDonResponse = hoaDonRepository.getHoaDon(idKH, LocalDate.now());
-        if(hoaDonResponse != null){
+        if(hoaDonResponse != null && hoaDonResponse.getTrangThai() != 3){
             this.update(hoaDonDTO, hoaDonResponse.getId());
             return true;
         }
@@ -173,5 +178,21 @@ public class HoaDonServiceImpl implements IHoaDonService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public HoaDonResponse getOne(Long id) {
+        return hoaDonRepository.get(id);
+    }
+
+    @Override
+    public Integer updateTrangThai(Integer trangThai, Long id) throws ServiceException {
+        HoaDon hoaDon = hoaDonRepository.findById(id).get();
+        if(hoaDon.getTrangThai() == 1 || hoaDon.getTrangThai() == 2) {
+            hoaDon.setNgayThanhToan(LocalDateTime.now());
+            this.hoaDonRepository.save(hoaDon);
+            return hoaDonRepository.updateTrangThaiById(trangThai, id);
+        }
+        return hoaDonRepository.updateTrangThaiById(trangThai, id);
     }
 }

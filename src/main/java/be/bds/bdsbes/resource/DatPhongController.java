@@ -223,4 +223,19 @@ public class DatPhongController {
             return ResponseUtil.generateErrorResponse(e);
         }
     }
+
+    @GetMapping("/list-room-of-bill")
+    public ResponseEntity<?> getListOrderOfBill(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "userId", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) Long userId) {
+        try {
+            return ResponseUtil.wrap(this.iDatPhongService.getRoomOfBill(page, size, userId));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

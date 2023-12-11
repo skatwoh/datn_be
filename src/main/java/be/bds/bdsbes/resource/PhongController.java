@@ -119,7 +119,7 @@ public class PhongController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody @Valid PhongDTO phongDTO) throws ServiceException{
+    public ResponseEntity<?> create(@RequestBody @Valid PhongDTO phongDTO) throws ServiceException {
 //        if (result.hasErrors()) {
 //            List<ObjectError> errorList = result.getAllErrors();
 //            return ResponseEntity.badRequest().body(errorList);
@@ -164,17 +164,17 @@ public class PhongController {
             @RequestParam(value = "checkIn", defaultValue = "") String checkIn,
             @RequestParam(value = "checkOut", defaultValue = "") String checkOut) {
         try {
-            if(tenLoaiPhong.isEmpty() && (checkIn.isEmpty() && checkOut.isEmpty())){
+            if (tenLoaiPhong.isEmpty() && (checkIn.isEmpty() && checkOut.isEmpty())) {
                 return ResponseUtil.wrap(this.iPhongService.getPhong(page, size));
             }
-            if(tenLoaiPhong != null  && (checkIn.equals("") || checkOut.equals("") || checkIn == null || checkOut == null)){
+            if (tenLoaiPhong != null && (checkIn.equals("") || checkOut.equals("") || checkIn == null || checkOut == null)) {
                 return ResponseUtil.wrap(this.iPhongService.searchRoomManager2(page, size, Integer.valueOf(soLuongNguoi), tenLoaiPhong));
             }
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDateTime parsedCheckIn = LocalDate.parse(checkIn, formatter).atStartOfDay();
             LocalDateTime parsedCheckOut = LocalDate.parse(checkOut, formatter).atStartOfDay();
             System.out.println(parsedCheckOut + " " + parsedCheckIn);
-            if (Integer.valueOf(soLuongNguoi) ==4){
+            if (Integer.valueOf(soLuongNguoi) == 4) {
                 return ResponseUtil.wrap(this.iPhongService.searchRoomManager3(page, size, Integer.valueOf(soLuongNguoi), tenLoaiPhong, parsedCheckIn, parsedCheckOut));
             }
             return ResponseUtil.wrap(this.iPhongService.searchRoomManager(page, size, Integer.valueOf(soLuongNguoi), tenLoaiPhong, parsedCheckIn, parsedCheckOut));

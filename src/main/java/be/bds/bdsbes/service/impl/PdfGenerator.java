@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.List;
@@ -55,10 +57,10 @@ public class PdfGenerator {
         PdfWriter.getInstance(document, response.getOutputStream());
         document.open();
 
-        Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
+        Font fontTitle = FontFactory.getFont(FontFactory.TIMES_BOLDITALIC);
         fontTitle.setColor(BaseColor.BLACK);
         fontTitle.setSize(20);
-        Font fontDate = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
+        Font fontDate = FontFactory.getFont(FontFactory.TIMES_BOLDITALIC);
         fontTitle.setColor(BaseColor.BLACK);
         fontDate.setSize(18);
 
@@ -71,17 +73,24 @@ public class PdfGenerator {
         Chunk lineSeparator = new Chunk(new LineSeparator());
         paragraphLine.add(lineSeparator);
 
-        Font fontInfor = FontFactory.getFont(FontFactory.HELVETICA_BOLDOBLIQUE);
+        Font fontInfor = FontFactory.getFont(FontFactory.TIMES_ROMAN);
         fontInfor.setSize(15);
-        Font fontTable = FontFactory.getFont(FontFactory.HELVETICA_BOLDOBLIQUE);
+        Font fontTable = FontFactory.getFont(FontFactory.TIMES_ROMAN);
         fontTable.setSize(13);
-
+        ZoneId zoneId = ZoneId.of("Asia/Ho_Chi_Minh");
+// Tạo LocalDateTime hiện tại theo múi giờ ICT
+        LocalDateTime now = LocalDateTime.now(zoneId);
+// Hiển thị giờ Việt Nam
+        System.out.println(now.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
+        DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss");
         Paragraph paragraphMaKH = new Paragraph("Ma khach hang: " + hoaDon.getKhachHang().getMa(), fontInfor);
         paragraphMaKH.setAlignment(Paragraph.ALIGN_LEFT);
         Paragraph paragraphTenKH = new Paragraph("Ten khach hang: " + hoaDon.getKhachHang().getHoTen(), fontInfor);
         paragraphTenKH.setAlignment(Paragraph.ALIGN_LEFT);
         Paragraph paragraphSDT = new Paragraph("SDT: " + hoaDon.getKhachHang().getSdt(), fontInfor);
         paragraphSDT.setAlignment(Paragraph.ALIGN_LEFT);
+        Paragraph paragraphNgayThanhToan = new Paragraph("Ngay thanh toan: " + hoaDon.getNgayThanhToan(), fontInfor);
+        paragraphNgayThanhToan.setAlignment(Paragraph.ALIGN_LEFT);
         Paragraph paragraphNull = new Paragraph("\n", fontInfor);
         paragraphNull.setAlignment(Paragraph.ALIGN_LEFT);
 
@@ -96,7 +105,7 @@ public class PdfGenerator {
         }
         Paragraph paragraphMaPhong = new Paragraph("Danh sach phong: " + danhSachPhong, fontTable);
         paragraphNull.setAlignment(Paragraph.ALIGN_LEFT);
-        DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
 
         paragraphNull.setAlignment(Paragraph.ALIGN_LEFT);
 
@@ -115,6 +124,7 @@ public class PdfGenerator {
         document.add(paragraphMaKH);
         document.add(paragraphTenKH);
         document.add(paragraphSDT);
+        document.add(paragraphNgayThanhToan);
         document.add(paragraphNull);
         document.add(paragraphMaPhong);
         for(int x = 0;x < list.size();x ++){
@@ -124,6 +134,9 @@ public class PdfGenerator {
             Paragraph paragraphCheckIn = new Paragraph( "Ngay nhan phong: " + formatDate.format(list.get(x).getCheckIn()), fontTable);
             Paragraph paragraphCheckOut = new Paragraph( "Ngay tra phong: " + formatDate.format(list.get(x).getCheckOut()), fontTable);
             Paragraph paragraphTienPhong = new Paragraph( "Tong tien: " + formatter.format(list.get(x).getTongGia()) + "VND", fontTable);
+
+
+
             document.add(paragraphThongTinPhong);
             document.add(paragraphLoaiPhong);
             document.add(paragraphCheckIn);
