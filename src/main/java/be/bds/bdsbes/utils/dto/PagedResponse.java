@@ -1,5 +1,8 @@
 package be.bds.bdsbes.utils.dto;
 
+import be.bds.bdsbes.entities.Phong;
+import be.bds.bdsbes.payload.PhongResponse1;
+
 import java.util.List;
 
 public class PagedResponse<T> {
@@ -23,6 +26,9 @@ public class PagedResponse<T> {
         this.totalPages = totalPages;
         this.last = last;
         this.sort = sort;
+    }
+
+    public PagedResponse(List<PhongResponse1> listPhong, int page, int size, long totalElements, int totalPages, boolean last, String string, List<Phong> dtos) {
     }
 
     public List<T> getContent() {

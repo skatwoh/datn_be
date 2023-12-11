@@ -77,7 +77,7 @@ public class ChiTietPhongController {
     }
 
     @GetMapping("detail")
-    public ResponseEntity<?> getOne(@RequestParam(value = "id") Long id){
+    public ResponseEntity<?> getOne(@RequestParam(value = "id") Long id) {
 //        if(iChiTietPhongService.getOne(id) == null){
 //            return ResponseEntity.badRequest().body("Không tìm thấy");
 //        }
@@ -85,8 +85,8 @@ public class ChiTietPhongController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody @Valid ChiTietPhongDTO chiTietPhongDTO, BindingResult result){
-        if(result.hasErrors()){
+    public ResponseEntity<?> create(@RequestBody @Valid ChiTietPhongDTO chiTietPhongDTO, BindingResult result) {
+        if (result.hasErrors()) {
             List<ObjectError> errorList = result.getAllErrors();
             return ResponseEntity.badRequest().body(errorList);
         }
@@ -94,8 +94,8 @@ public class ChiTietPhongController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> create(@RequestParam(value = "id") Long id, @RequestBody @Valid ChiTietPhongDTO chiTietPhongDTO, BindingResult result){
-        if(result.hasErrors()){
+    public ResponseEntity<?> create(@RequestParam(value = "id") Long id, @RequestBody @Valid ChiTietPhongDTO chiTietPhongDTO, BindingResult result) {
+        if (result.hasErrors()) {
             List<ObjectError> errorList = result.getAllErrors();
             return ResponseEntity.badRequest().body(errorList);
         }
@@ -103,12 +103,27 @@ public class ChiTietPhongController {
     }
 
     @PutMapping("/delete")
-    public ResponseEntity<?> create(@RequestParam(value = "id") Long id){
+    public ResponseEntity<?> create(@RequestParam(value = "id") Long id) {
         return ResponseEntity.ok(iChiTietPhongService.updateTrangThai(id));
     }
 
     @GetMapping("get-room")
-    public ResponseEntity<?> getRoom(@RequestParam(value = "idPhong") Long idPhong){
+    public ResponseEntity<?> getRoom(@RequestParam(value = "idPhong") Long idPhong) {
         return ResponseEntity.ok(iChiTietPhongService.getCTP(idPhong));
+    }
+
+    @GetMapping("find-by-so-nguoi")
+    public ResponseEntity<?> findBySoNguoi(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "soNguoi") Integer soNguoi,
+            @RequestParam(value = "soPhongCan") Integer soPhongCan
+            ) {
+        try {
+            return ResponseUtil.wrap(this.iChiTietPhongService.searchRoomBySoNguoi(page, size, soNguoi, soPhongCan));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        }
     }
 }

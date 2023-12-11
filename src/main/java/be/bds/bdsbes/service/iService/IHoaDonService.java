@@ -1,5 +1,6 @@
 package be.bds.bdsbes.service.iService;
 
+import be.bds.bdsbes.entities.HoaDon;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.HoaDonResponse;
 import be.bds.bdsbes.payload.PhongResponse1;
@@ -20,4 +21,8 @@ public interface IHoaDonService {
     Boolean createOrUpdate(HoaDonDTO hoaDonDTO) throws ServiceException;
 
     Boolean updateTongTien(HoaDonDTO hoaDonDTO);
+
+    HoaDonResponse getOne(Long id);
+
+    Integer updateTrangThai(Integer trangThai, Long id) throws ServiceException;
 }

@@ -12,6 +12,7 @@ public interface DatPhongMapper extends EntityMapper<DatPhongResponse, DatPhong>
     @Mapping(target = "sdt", source = "user.sdt")
     @Mapping(target = "tenPhong", source = "phong.ma")
     @Mapping(target = "giaPhong", source = "phong.giaPhong")
+    @Mapping(target = "idHoaDon", source = "hoaDon.id")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     DatPhongResponse toDto(DatPhong datPhong);
 }

@@ -275,7 +275,11 @@ public class DatPhongServiceImpl implements IDatPhongService {
             throw new ServiceException(ValidationErrorUtil.DeleteRoomOrder);
         }
         if (datPhong.getTrangThai() == 1 && datPhong.getCheckIn().toLocalDate().isAfter(LocalDate.now())) {
-            return datPhongRepository.updateTrangThaiById(0, id);
+            this.datPhongRepository.updateTrangThaiById(0, id);
+            HoaDon hoaDon = hoaDonRepository.findById(datPhong.getHoaDon().getId()).get();
+            hoaDon.setTongTien(hoaDon.getTongTien().subtract(datPhong.getTongGia()));
+            this.hoaDonRepository.save(hoaDon);
+            return 1;
         }
         if (datPhong.getTrangThai() == 0) {
             return datPhongRepository.updateTrangThaiById(1, id);
@@ -284,6 +288,7 @@ public class DatPhongServiceImpl implements IDatPhongService {
     }
 
     public Integer updateDatPhong(Long id, DatPhongDTO datPhongDTO) throws ServiceException {
+        DatPhong datPhongCu = datPhongRepository.findById(id).get();
         if (datPhongDTO.getCheckIn().isAfter(datPhongDTO.getCheckOut())) {
             throw ServiceExceptionBuilderUtil.newBuilder()
                     .addError(new ValidationErrorResponse("checkIn", ValidationErrorUtil.CheckIn))
@@ -300,7 +305,11 @@ public class DatPhongServiceImpl implements IDatPhongService {
                     .addError(new ValidationErrorResponse("checkIn", ValidationErrorUtil.CheckDateBook))
                     .build();
         }
-        return datPhongRepository.updateDatPhongById(datPhongDTO.getIdPhong(), datPhongDTO.getTongGia(), id);
+        this.datPhongRepository.updateDatPhongById(datPhongDTO.getIdPhong(), datPhongDTO.getTongGia(), id);
+        HoaDon hoaDon = hoaDonRepository.findById(datPhongCu.getHoaDon().getId()).get();
+        hoaDon.setTongTien(hoaDon.getTongTien().add(datPhongDTO.getTongGia()).subtract(datPhongCu.getTongGia()));
+        this.hoaDonRepository.save(hoaDon);
+        return 1;
     }
 
     @Override
@@ -323,6 +332,41 @@ public class DatPhongServiceImpl implements IDatPhongService {
         // Retrieve all entities
         Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
         Page<DatPhong> entities = datPhongRepository.getLichSuDatPhong(pageable, id);
+
+        List<DatPhongResponse> dtos = this.datPhongMapper.toDtoList(entities.getContent());
+
+        return new PagedResponse<>(
+                dtos,
+                page,
+                size,
+                entities.getTotalElements(),
+                entities.getTotalPages(),
+                entities.isLast(),
+                entities.getSort().toString()
+        );
+    }
+
+    @Override
+    public PagedResponse<DatPhongResponse> getRoomOfBill(int page, int size, Long userId) throws ServiceException {
+        if (page <= 0) {
+            throw ServiceExceptionBuilderUtil.newBuilder()
+                    .addError(new ValidationErrorResponse("page", ValidationErrorUtil.Invalid))
+                    .build();
+        }
+
+        if (size > AppConstantsUtil.MAX_PAGE_SIZE) {
+            List<KeyValue> params = new ArrayList<>();
+            params.add(new KeyValue("max", String.valueOf(AppConstantsUtil.MAX_PAGE_SIZE)));
+
+            throw ServiceExceptionBuilderUtil.newBuilder()
+                    .addError(new ValidationErrorResponse("pageSize", ValidationErrorUtil.Invalid, params))
+                    .build();
+        }
+
+        // Retrieve all entities
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
+        Long idKH = khachHangRepository.findByIdKhachHang(userId);
+        Page<DatPhong> entities = datPhongRepository.getRoomByHoaDon(pageable, idKH);
 
         List<DatPhongResponse> dtos = this.datPhongMapper.toDtoList(entities.getContent());
 
