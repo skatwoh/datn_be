@@ -15,6 +15,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -162,13 +163,18 @@ public class PhongController {
             @RequestParam(value = "soLuongNguoi", defaultValue = "") String soLuongNguoi,
             @RequestParam(value = "input", defaultValue = "") String tenLoaiPhong,
             @RequestParam(value = "checkIn", defaultValue = "") String checkIn,
-            @RequestParam(value = "checkOut", defaultValue = "") String checkOut) {
+            @RequestParam(value = "checkOut", defaultValue = "") String checkOut,
+            @RequestParam(value = "minGia", defaultValue = "") BigDecimal minGia,
+            @RequestParam(value = "maxGia", defaultValue = "") BigDecimal maxGia) {
         try {
             if (tenLoaiPhong.isEmpty() && (checkIn.isEmpty() && checkOut.isEmpty())) {
                 return ResponseUtil.wrap(this.iPhongService.getPhong(page, size));
             }
-            if (tenLoaiPhong != null && (checkIn.equals("") || checkOut.equals("") || checkIn == null || checkOut == null)) {
+            if (tenLoaiPhong != null && Integer.valueOf(soLuongNguoi) == 4 && (checkIn.equals("") || checkOut.equals("") || checkIn == null || checkOut == null)) {
                 return ResponseUtil.wrap(this.iPhongService.searchRoomManager2(page, size, Integer.valueOf(soLuongNguoi), tenLoaiPhong));
+            }
+            if (tenLoaiPhong != null && Integer.valueOf(soLuongNguoi) < 4 && (checkIn.equals("") || checkOut.equals("") || checkIn == null || checkOut == null)) {
+                return ResponseUtil.wrap(this.iPhongService.searchRoomManager4(page, size, Integer.valueOf(soLuongNguoi), tenLoaiPhong));
             }
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDateTime parsedCheckIn = LocalDate.parse(checkIn, formatter).atStartOfDay();
@@ -183,6 +189,16 @@ public class PhongController {
 
             return ResponseUtil.generateErrorResponse((ServiceException) ex);
         }
+    }
+
+    @GetMapping("get-room-by-price")
+    public ResponseEntity<?> getListByPrice(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "minGia", defaultValue = "") BigDecimal minGia,
+            @RequestParam(value = "maxGia", defaultValue = "") BigDecimal maxGia) {
+        return ResponseUtil.wrap(this.iPhongService.searchRoomManagerByPrice(page, size, minGia, maxGia));
+
     }
 
     @GetMapping("list-top-room-booking")

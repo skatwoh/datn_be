@@ -40,6 +40,10 @@ public interface IPhongService {
 
     PagedResponse<PhongResponse1> searchRoomManager2(int page, int size, Integer soLuongNguoi, String tenLoaiPhong);
 
+    PagedResponse<PhongResponse1> searchRoomManager4(int page, int size, Integer soLuongNguoi, String tenLoaiPhong);
+
+    PagedResponse<PhongResponse1> searchRoomManagerByPrice(int page, int size, BigDecimal minGia, BigDecimal maxGia);
+
     PagedResponse<PhongResponse1> getListTopRoomOrder(int page, int size) throws ServiceException;
 
 }
