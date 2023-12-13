@@ -1,6 +1,5 @@
 package be.bds.bdsbes.payload;
 
-import be.bds.bdsbes.entities.LoaiPhong;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,8 +11,7 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PhongResponse1 {
-
+public class RoomMappingChiTietPhong {
     private Long id;
 
     private String ma;
@@ -22,9 +20,10 @@ public class PhongResponse1 {
 
     private Integer trangThai;
 
-    private Long idLoaiPhong;
-
     private String tenLoaiPhong;
 
-    private String image;
+    private String tang;
+
+    private Integer soLuong;
+
 }

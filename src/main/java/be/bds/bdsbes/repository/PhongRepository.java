@@ -2,6 +2,7 @@ package be.bds.bdsbes.repository;
 
 import be.bds.bdsbes.entities.Phong;
 import be.bds.bdsbes.payload.PhongResponse1;
+import be.bds.bdsbes.payload.RoomMappingChiTietPhong;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -69,5 +70,8 @@ public interface PhongRepository extends JpaRepository<Phong, Long> {
             "group by p.id, p.ma, p.giaPhong, p.loaiPhong.id, p.trangThai,p.image, p.sale \n" +
             "order by count(dp.phong.id) desc" )
     Page<Phong> getListTopRoomOrder(Pageable pageable);
+
+    @Query("select p from Phong p join ChiTietPhong ctp on p.id = ctp.phong.id" )
+    Page<Phong> getListRoomOfFloar(Pageable pageable);
 
 }

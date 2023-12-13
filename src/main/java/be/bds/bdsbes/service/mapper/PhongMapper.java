@@ -11,7 +11,7 @@ import org.mapstruct.*;
 public interface PhongMapper extends EntityMapper<PhongResponse1, Phong>{
 
     @Mapping(target = "tenLoaiPhong", source = "loaiPhong.tenLoaiPhong")
-    @Mapping(target = "idloaiPhong", source = "loaiPhong.id")
+    @Mapping(target = "idLoaiPhong", source = "loaiPhong.id")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     PhongResponse1 toDto(Phong phong);
 }
