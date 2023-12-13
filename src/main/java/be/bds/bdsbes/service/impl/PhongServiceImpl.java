@@ -21,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -87,6 +88,7 @@ public class PhongServiceImpl implements IPhongService {
             phong.setTrangThai(1);
             return phongRepository.save(phong);
         }
+
         if(phongDTO.getIdLoaiPhong().doubleValue() < 0) {
             throw ServiceExceptionBuilderUtil.newBuilder()
                     .addError(new ValidationErrorResponse("giaPhong", ValidationErrorUtil.Max))
@@ -298,6 +300,40 @@ public class PhongServiceImpl implements IPhongService {
     public PagedResponse<PhongResponse1> searchRoomManager2(int page, int size, Integer soLuongNguoi, String tenLoaiPhong) {
         Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
         Page<Phong> entities = phongRepository.searchRoomManager2(pageable, soLuongNguoi, tenLoaiPhong);
+
+        List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());
+        return new PagedResponse<>(
+                dtos,
+                page,
+                size,
+                entities.getTotalElements(),
+                entities.getTotalPages(),
+                entities.isLast(),
+                entities.getSort().toString()
+        );
+    }
+
+    @Override
+    public PagedResponse<PhongResponse1> searchRoomManager4(int page, int size, Integer soLuongNguoi, String tenLoaiPhong) {
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
+        Page<Phong> entities = phongRepository.searchRoomManager4(pageable, soLuongNguoi, tenLoaiPhong);
+
+        List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());
+        return new PagedResponse<>(
+                dtos,
+                page,
+                size,
+                entities.getTotalElements(),
+                entities.getTotalPages(),
+                entities.isLast(),
+                entities.getSort().toString()
+        );
+    }
+
+    @Override
+    public PagedResponse<PhongResponse1> searchRoomManagerByPrice(int page, int size, BigDecimal minGia, BigDecimal maxGia) {
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
+        Page<Phong> entities = phongRepository.searchRoomManagerByPrice(pageable, minGia, maxGia);
 
         List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());
         return new PagedResponse<>(
