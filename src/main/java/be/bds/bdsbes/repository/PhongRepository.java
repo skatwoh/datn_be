@@ -2,6 +2,7 @@ package be.bds.bdsbes.repository;
 
 import be.bds.bdsbes.entities.Phong;
 import be.bds.bdsbes.payload.PhongResponse1;
+import be.bds.bdsbes.payload.RoomMappingChiTietPhong;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -51,6 +52,14 @@ public interface PhongRepository extends JpaRepository<Phong, Long> {
             "where p.trangThai = 1 and ct.trangThai = 1 and ct.soLuongNguoi >= :soLuongNguoi and l.tenLoaiPhong like :tenLoaiPhong order by p.ma asc")
     Page<Phong> searchRoomManager2(Pageable pageable, Integer soLuongNguoi, String tenLoaiPhong);
 
+    @Query("select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id inner join LoaiPhong l on l.id = p.loaiPhong.id " +
+            "where p.trangThai = 1 and ct.trangThai = 1 and ct.soLuongNguoi = :soLuongNguoi and l.tenLoaiPhong like :tenLoaiPhong order by p.ma asc")
+    Page<Phong> searchRoomManager4(Pageable pageable, Integer soLuongNguoi, String tenLoaiPhong);
+
+    @Query("select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id inner join LoaiPhong l on l.id = p.loaiPhong.id " +
+            "where p.trangThai = 1 and ct.trangThai = 1 and (p.giaPhong between :minGia and :maxGia) order by p.ma asc")
+    Page<Phong> searchRoomManagerByPrice(Pageable pageable, BigDecimal minGia, BigDecimal maxGia);
+
     @Query(value = "select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id where p.trangThai = 1 and ct.trangThai = 1 and p.loaiPhong.id in (select p.loaiPhong.id from Phong p where p.id = :idPhong)")
     Page<Phong> getListSameRoom(Pageable pageable, Long idPhong);
 
@@ -61,5 +70,8 @@ public interface PhongRepository extends JpaRepository<Phong, Long> {
             "group by p.id, p.ma, p.giaPhong, p.loaiPhong.id, p.trangThai,p.image, p.sale \n" +
             "order by count(dp.phong.id) desc" )
     Page<Phong> getListTopRoomOrder(Pageable pageable);
+
+    @Query("select p from Phong p join ChiTietPhong ctp on p.id = ctp.phong.id" )
+    Page<Phong> getListRoomOfFloar(Pageable pageable);
 
 }

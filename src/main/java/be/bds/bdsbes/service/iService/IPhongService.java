@@ -3,6 +3,7 @@ package be.bds.bdsbes.service.iService;
 import be.bds.bdsbes.entities.Phong;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.PhongResponse1;
+import be.bds.bdsbes.payload.RoomMappingChiTietPhong;
 import be.bds.bdsbes.service.dto.PhongDTO;
 import be.bds.bdsbes.service.dto.response.PhongResponse;
 import be.bds.bdsbes.utils.dto.PagedResponse;
@@ -40,5 +41,12 @@ public interface IPhongService {
 
     PagedResponse<PhongResponse1> searchRoomManager2(int page, int size, Integer soLuongNguoi, String tenLoaiPhong);
 
+    PagedResponse<PhongResponse1> searchRoomManager4(int page, int size, Integer soLuongNguoi, String tenLoaiPhong);
+
+    PagedResponse<PhongResponse1> searchRoomManagerByPrice(int page, int size, BigDecimal minGia, BigDecimal maxGia);
+
     PagedResponse<PhongResponse1> getListTopRoomOrder(int page, int size) throws ServiceException;
+
+    PagedResponse<RoomMappingChiTietPhong> getListRoomOfFloar(int page, int size) throws ServiceException;
+
 }

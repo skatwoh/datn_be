@@ -4,8 +4,10 @@ import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.service.iService.IHoaDonService;
 import be.bds.bdsbes.service.dto.HoaDonDTO;
 import be.bds.bdsbes.service.impl.PdfGenerator;
+import be.bds.bdsbes.utils.ApiError;
 import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ResponseUtil;
+import be.bds.bdsbes.utils.StatusError;
 import com.itextpdf.text.DocumentException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,6 +107,24 @@ public class HoaDonController {
         } catch (Exception ex) {
             log.error(this.getClass().getName(), ex);
             return ResponseUtil.generateErrorResponse(ex);
+        }
+    }
+
+    @GetMapping("detail")
+    public ResponseEntity<?> getOne(@RequestParam(value = "id") Long id) {
+        if (iHoaDonService.getOne(id) == null) {
+            return ResponseEntity.badRequest().body("Không tồn tại");
+        }
+        return ResponseEntity.ok(iHoaDonService.getOne(id));
+    }
+
+    @PutMapping("update-status")
+    public ResponseEntity<?> delete(@RequestParam(value = "id") Long id, @RequestBody Integer trangThai) {
+        try {
+            return ResponseUtil.wrap(this.iHoaDonService.updateTrangThai(trangThai, id));
+        } catch (ServiceException e) {
+            ApiError apiError = new ApiError(String.valueOf(StatusError.Failed), e.getMessage());
+            return ResponseUtil.wrap(apiError);
         }
     }
 }

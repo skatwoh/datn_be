@@ -50,4 +50,5 @@ public class DatPhongResponse {
 
     private BigDecimal giaPhong;
 
+    private Long idHoaDon;
 }
