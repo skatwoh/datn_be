@@ -74,4 +74,7 @@ public interface PhongRepository extends JpaRepository<Phong, Long> {
     @Query("select p from Phong p join ChiTietPhong ctp on p.id = ctp.phong.id" )
     Page<Phong> getListRoomOfFloar(Pageable pageable);
 
+    @Query("select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id inner join LoaiPhong l on l.id = p.loaiPhong.id " +
+            "where p.trangThai = 1 and ct.trangThai = 1 and (ct.tienIch like concat('%', :searchInput,'%') or l.tenLoaiPhong like concat('%', :searchInput, '%') or ct.dichVu like concat('%', :searchInput,'%')) ")
+    Page<Phong> searchRoomByString(Pageable pageable, String searchInput);
 }

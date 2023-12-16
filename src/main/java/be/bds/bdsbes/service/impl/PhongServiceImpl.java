@@ -336,6 +336,23 @@ public class PhongServiceImpl implements IPhongService {
     }
 
     @Override
+    public PagedResponse<PhongResponse1> searchRoomByString(int page, int size, String searchInput) {
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
+        Page<Phong> entities = phongRepository.searchRoomByString(pageable, searchInput);
+
+        List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());
+        return new PagedResponse<>(
+                dtos,
+                page,
+                size,
+                entities.getTotalElements(),
+                entities.getTotalPages(),
+                entities.isLast(),
+                entities.getSort().toString()
+        );
+    }
+
+    @Override
     public PagedResponse<PhongResponse1> searchRoomManagerByPrice(int page, int size, BigDecimal minGia, BigDecimal maxGia) {
         Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
         Page<Phong> entities = phongRepository.searchRoomManagerByPrice(pageable, minGia, maxGia);
