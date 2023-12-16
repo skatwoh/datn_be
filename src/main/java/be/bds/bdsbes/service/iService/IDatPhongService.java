@@ -36,4 +36,5 @@ public interface IDatPhongService {
     PagedResponse<DatPhongResponse> getLichSuDatPhong(int page, int size, Long id) throws ServiceException;
 
     PagedResponse<DatPhongResponse> getRoomOfBill(int page, int size, Long userId) throws ServiceException;
+    Boolean createListRoom(List<DatPhongDTO> datPhongDTOList) throws ServiceException;
 }

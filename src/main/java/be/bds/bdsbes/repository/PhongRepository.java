@@ -2,16 +2,17 @@ package be.bds.bdsbes.repository;
 
 import be.bds.bdsbes.entities.Phong;
 import be.bds.bdsbes.payload.PhongResponse1;
-import be.bds.bdsbes.payload.RoomMappingChiTietPhong;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -74,4 +75,19 @@ public interface PhongRepository extends JpaRepository<Phong, Long> {
     @Query("select p from Phong p join ChiTietPhong ctp on p.id = ctp.phong.id" )
     Page<Phong> getListRoomOfFloar(Pageable pageable);
 
+
+    @Query(value = "SELECT * FROM phong p " +
+            "LEFT JOIN chi_tiet_phong ctp ON p.id = ctp.id_phong " +
+            "WHERE p.trang_thai = 1 AND ctp.trang_thai = 1 " +
+            "AND NOT EXISTS (" +
+            "    SELECT 1 " +
+            "    FROM dat_phong dp " +
+            "    WHERE p.id = dp.id_phong " +
+            "      AND dp.trang_thai = 1 " +
+            "      AND (" +
+            "            (CAST(:checkIn AS DATE) BETWEEN CAST(dp.check_in AS DATE) AND DATEADD(DAY, -1, CAST(dp.check_out AS DATE))) " +
+            "            OR (CAST(:checkIn AS DATE) < CAST(dp.check_in AS DATE) AND CAST(:checkIn AS DATE) < DATEADD(DAY, -1, CAST(dp.check_out AS DATE))) " +
+            "        )" +
+            ")", nativeQuery = true)
+    Page<Phong> getListRoomActive(Pageable pageable, @Param("checkIn") LocalDate checkIn);
 }

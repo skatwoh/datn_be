@@ -228,4 +228,19 @@ public class PhongController {
             throw new RuntimeException(e);
         }
     }
+
+    @GetMapping("list-room-active")
+    public ResponseEntity<?> getListRoomActive(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "checkIn", defaultValue = "") LocalDate checkIn) {
+        try {
+            return ResponseUtil.wrap(this.iPhongService.getListRoomActive(page, size, checkIn));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

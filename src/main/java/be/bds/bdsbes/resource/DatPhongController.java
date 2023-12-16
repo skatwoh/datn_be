@@ -238,4 +238,15 @@ public class DatPhongController {
             throw new RuntimeException(e);
         }
     }
+
+    @PostMapping("create-list-room-order")
+    public ResponseEntity<?> createListRoom(@Valid @RequestBody List<DatPhongDTO> datPhongDTOList) {
+        try {
+            Boolean response = iDatPhongService.createListRoom(datPhongDTOList);
+            return ResponseUtil.wrap(response);
+        } catch (ServiceException e) {
+            log.error(this.getClass().getName(), e);
+            return ResponseUtil.generateErrorResponse(e);
+        }
+    }
 }
