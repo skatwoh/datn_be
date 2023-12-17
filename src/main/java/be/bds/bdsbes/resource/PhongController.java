@@ -241,4 +241,23 @@ public class PhongController {
             return ResponseUtil.generateErrorResponse(ex);
         }
     }
+
+    @GetMapping("list-room-active")
+    public ResponseEntity<?> getListRoomActive(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "checkIn", defaultValue = "") String checkIn,
+            @RequestParam(value = "checkOut", defaultValue = "") String checkOut) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDateTime parsedCheckIn = LocalDate.parse(checkIn, formatter).atStartOfDay();
+            LocalDateTime parsedCheckOut = LocalDate.parse(checkOut, formatter).atStartOfDay();
+            return ResponseUtil.wrap(this.iPhongService.getListRoomActive(page, size, parsedCheckIn, parsedCheckOut));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

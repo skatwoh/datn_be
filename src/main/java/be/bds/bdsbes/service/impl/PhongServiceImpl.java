@@ -49,7 +49,7 @@ public class PhongServiceImpl implements IPhongService {
 
     @Override
     public PagedResponse<PhongResponse1> searchRoom(int page, int size, String searchInput) throws ServiceException {
-        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
         Page<Phong> entities = phongRepository.searchRoom(pageable, searchInput);
 
         List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());
@@ -144,7 +144,7 @@ public class PhongServiceImpl implements IPhongService {
         }
 
         // Retrieve all entities
-        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
         Page<Phong> entities = phongRepository.findAll(pageable);
 
         List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());
@@ -337,7 +337,7 @@ public class PhongServiceImpl implements IPhongService {
 
     @Override
     public PagedResponse<PhongResponse1> searchRoomByString(int page, int size, String searchInput) {
-        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
         Page<Phong> entities = phongRepository.searchRoomByString(pageable, searchInput);
 
         List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());
@@ -354,7 +354,7 @@ public class PhongServiceImpl implements IPhongService {
 
     @Override
     public PagedResponse<PhongResponse1> searchRoomManagerByPrice(int page, int size, BigDecimal minGia, BigDecimal maxGia) {
-        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
         Page<Phong> entities = phongRepository.searchRoomManagerByPrice(pageable, minGia, maxGia);
 
         List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());
@@ -421,6 +421,38 @@ public class PhongServiceImpl implements IPhongService {
 
         Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
         Page<Phong> entities = phongRepository.getListRoomOfFloar(pageable);
+
+        List<RoomMappingChiTietPhong> dtos = this.roomMappingCTPMapper.toDtoList(entities.getContent());
+        return new PagedResponse<>(
+                dtos,
+                page,
+                size,
+                entities.getTotalElements(),
+                entities.getTotalPages(),
+                entities.isLast(),
+                entities.getSort().toString()
+        );
+    }
+
+    @Override
+    public PagedResponse<RoomMappingChiTietPhong> getListRoomActive(int page, int size, LocalDateTime checkIn, LocalDateTime checkOut) throws ServiceException {
+        if (page <= 0) {
+            throw ServiceExceptionBuilderUtil.newBuilder()
+                    .addError(new ValidationErrorResponse("page", ValidationErrorUtil.Invalid))
+                    .build();
+        }
+
+        if (size > AppConstantsUtil.MAX_PAGE_SIZE) {
+            List<KeyValue> params = new ArrayList<>();
+            params.add(new KeyValue("max", String.valueOf(AppConstantsUtil.MAX_PAGE_SIZE)));
+
+            throw ServiceExceptionBuilderUtil.newBuilder()
+                    .addError(new ValidationErrorResponse("pageSize", ValidationErrorUtil.Invalid, params))
+                    .build();
+        }
+
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
+        Page<Phong> entities = phongRepository.getListRoomActive(pageable, checkIn, checkOut);
 
         List<RoomMappingChiTietPhong> dtos = this.roomMappingCTPMapper.toDtoList(entities.getContent());
         return new PagedResponse<>(

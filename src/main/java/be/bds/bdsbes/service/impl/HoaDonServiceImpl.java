@@ -58,7 +58,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
         }
 
         // Retrieve all entities
-        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
         Page<HoaDonResponse> entities = hoaDonRepository.getList(pageable);
 
         List<HoaDonResponse> dtos = entities.toList();
