@@ -1,12 +1,9 @@
 package be.bds.bdsbes.service.impl;
 
-import be.bds.bdsbes.entities.DatPhong;
-import be.bds.bdsbes.entities.Phong;
 import be.bds.bdsbes.entities.Sale;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.SaleResponse;
 import be.bds.bdsbes.repository.SaleRepository;
-import be.bds.bdsbes.service.dto.response.DatPhongResponse;
 import be.bds.bdsbes.service.iService.ISaleService;
 import be.bds.bdsbes.service.mapper.SaleMapper;
 import be.bds.bdsbes.utils.AppConstantsUtil;
@@ -14,6 +11,7 @@ import be.bds.bdsbes.utils.ServiceExceptionBuilderUtil;
 import be.bds.bdsbes.utils.ValidationErrorUtil;
 import be.bds.bdsbes.utils.dto.KeyValue;
 import be.bds.bdsbes.utils.dto.PagedResponse;
+import be.bds.bdsbes.utils.dto.SaleDto;
 import be.bds.bdsbes.utils.dto.ValidationErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,5 +87,34 @@ public class SaleServiceImpl implements ISaleService {
     @Override
     public SaleResponse getSale() {
         return saleRepository.getSale();
+    }
+
+    @Override
+    public Boolean create(SaleDto saleDto) throws ServiceException {
+        Sale sale = new Sale();
+        sale.setMa(generateAutoCode());
+        sale.setTen(saleDto.getTen());
+        sale.setGiaTri(saleDto.getGiaTri());
+        sale.setNgayBatDau(saleDto.getNgayBatDau());
+        sale.setNgayKetThuc(saleDto.getNgayKetThuc());
+        sale.setTrangThai(0);
+        saleRepository.save(sale);
+        return true;
+    }
+
+    public int getNumberOfRecords() {
+        Long count = saleRepository.count();
+        return count.intValue();
+    }
+
+
+    private String generateAutoCode() {
+        int numberOfDigits = 4;
+
+        int numberOfExistingRecords = getNumberOfRecords();
+
+        String autoCode = "SALE" + String.format("%0" + numberOfDigits + "d", numberOfExistingRecords + 1);
+
+        return autoCode;
     }
 }
