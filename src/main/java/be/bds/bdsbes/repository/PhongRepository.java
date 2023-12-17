@@ -97,6 +97,6 @@ public interface PhongRepository extends JpaRepository<Phong, Long> {
     @Query("select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id inner join LoaiPhong l on l.id = p.loaiPhong.id " +
             "where p.trangThai = 1 and ct.trangThai = 1 and p.id not in (select d.phong.id from DatPhong d where ((cast(:checkIn as date) between cast(d.checkIn as date) and cast(d.checkOut as date)) or (cast(:checkOut as date) between cast(d.checkIn as date) and cast(d.checkOut as date))" +
             "or (cast(d.checkIn as date) between cast(:checkIn as date) and cast(:checkOut as date)) or (cast(d.checkOut as date) between cast(:checkIn as date) and cast(:checkOut as date)) or cast(:checkIn as date) = cast(d.checkIn as date) or cast(:checkIn as date) = cast(d.checkOut as date) " +
-            "or cast(:checkOut as date) = cast(d.checkIn as date) or cast(:checkOut as date) = cast(d.checkOut as date)) and (d.trangThai = 0 or d.trangThai = 3)) order by p.ma asc")
+            "or cast(:checkOut as date) = cast(d.checkIn as date) or cast(:checkOut as date) = cast(d.checkOut as date)) and (d.trangThai = 1 or d.trangThai = 2)) order by p.ma asc")
     Page<Phong> getListRoomActive(Pageable pageable, LocalDateTime checkIn, LocalDateTime checkOut);
 }
