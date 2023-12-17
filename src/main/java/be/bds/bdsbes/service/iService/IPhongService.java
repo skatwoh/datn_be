@@ -43,10 +43,13 @@ public interface IPhongService {
 
     PagedResponse<PhongResponse1> searchRoomManager4(int page, int size, Integer soLuongNguoi, String tenLoaiPhong);
 
+    PagedResponse<PhongResponse1> searchRoomByString(int page, int size, String searchInput);
+
+
     PagedResponse<PhongResponse1> searchRoomManagerByPrice(int page, int size, BigDecimal minGia, BigDecimal maxGia);
 
     PagedResponse<PhongResponse1> getListTopRoomOrder(int page, int size) throws ServiceException;
 
     PagedResponse<RoomMappingChiTietPhong> getListRoomOfFloar(int page, int size) throws ServiceException;
-
+    PagedResponse<RoomMappingChiTietPhong> getListRoomActive(int page, int size, LocalDateTime checkIn, LocalDateTime checkOut) throws ServiceException;
 }

@@ -31,9 +31,14 @@ public interface IDatPhongService {
 
     Integer updateTrangThai(Long id) throws ServiceException;
 
+    Integer updateStatus(Integer trangThai, Long id) throws ServiceException;
+
     Integer updateDatPhong(Long id, DatPhongDTO datPhongDTO) throws ServiceException;
 
     PagedResponse<DatPhongResponse> getLichSuDatPhong(int page, int size, Long id) throws ServiceException;
 
     PagedResponse<DatPhongResponse> getRoomOfBill(int page, int size, Long userId) throws ServiceException;
+    Boolean createListRoom(List<DatPhongDTO> datPhongDTOList) throws ServiceException;
+
+    PagedResponse<DatPhongResponse> getDatPhongByHoaDon(int page, int size, Long id) throws ServiceException;
 }

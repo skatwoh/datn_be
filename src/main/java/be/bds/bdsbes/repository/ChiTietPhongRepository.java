@@ -34,4 +34,7 @@ public interface ChiTietPhongRepository extends JpaRepository<ChiTietPhong, Long
     @Query("select ctp from ChiTietPhong ctp join Phong p on p.id = ctp.phong.id where ctp.soLuongNguoi >= :soNguoi")
     Page<ChiTietPhong> findPhongBySoNguoi(@Param("soNguoi") Integer songuoi, Pageable pageable);
 
+    @Query("select ctp.id from ChiTietPhong ctp join Phong p on ctp.phong.id = p.id where p.id = ?1")
+    Long findByIdCTP(Long id);
+
 }

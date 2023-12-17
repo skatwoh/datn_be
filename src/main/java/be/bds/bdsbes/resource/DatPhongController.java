@@ -180,6 +180,16 @@ public class DatPhongController {
         }
     }
 
+    @PutMapping("update-stt")
+    public ResponseEntity<?> updateStatus(@RequestParam(value = "id") Long id, @RequestBody Integer trangThai) {
+        try {
+            return ResponseUtil.wrap(this.iDatPhongService.updateStatus(trangThai, id));
+        } catch (ServiceException e) {
+            ApiError apiError = new ApiError(String.valueOf(StatusError.Failed), e.getMessage());
+            return ResponseUtil.wrap(apiError);
+        }
+    }
+
 
     @GetMapping("/generate-bill")
     public ResponseEntity<?> generateInvoice(@RequestParam(value = "id") Long id) {
@@ -236,6 +246,32 @@ public class DatPhongController {
             return ResponseUtil.generateErrorResponse(ex);
         } catch (ServiceException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/list-order-of-bill")
+    public ResponseEntity<?> getDatPhongByHoaDon(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "id", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) Long id) {
+        try {
+            return ResponseUtil.wrap(this.iDatPhongService.getDatPhongByHoaDon(page, size, id));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @PostMapping("create-list-room-order")
+    public ResponseEntity<?> createListRoom(@Valid @RequestBody List<DatPhongDTO> datPhongDTOList) {
+        try {
+            Boolean response = iDatPhongService.createListRoom(datPhongDTOList);
+            return ResponseUtil.wrap(response);
+        } catch (ServiceException e) {
+            log.error(this.getClass().getName(), e);
+            return ResponseUtil.generateErrorResponse(e);
         }
     }
 }

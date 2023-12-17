@@ -1,16 +1,13 @@
 package be.bds.bdsbes.service.dto.response;
 
-public interface FeedbackResponse {
+import lombok.Getter;
+import lombok.Setter;
 
-    Long getId();
+@Getter
+@Setter
+public class FeedbackResponse {
 
-    Integer getId_chi_tiet_phong();
-
-    Integer getId_khach_hang();
-
-    String getMo_ta();
-
-    Integer getTrang_Thai();
-
-
+    private String tenKhachHang;
+    private String moTa;
+    private Integer trangThai;
 }

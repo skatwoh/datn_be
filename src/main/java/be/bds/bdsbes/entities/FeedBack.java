@@ -25,11 +25,11 @@ public class FeedBack {
     @Column(name = COLUMN_ID_NAME, nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_chi_tiet_phong")
     private ChiTietPhong chiTietPhong;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_khach_hang")
     private KhachHang khachHang;
 
