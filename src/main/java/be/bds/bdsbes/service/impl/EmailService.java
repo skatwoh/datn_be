@@ -26,7 +26,7 @@ public class EmailService {
 
         String emailContent = "<html><body>"
                 + "<h2>Password Reset</h2>"
-                + "<img src='https://i.pinimg.com/736x/40/92/2d/40922d9d7483c4bc90763d1cd5b8c756.jpg' alt='Your Logo' />"
+                + "<img src='https://designmodo.com/wp-content/uploads/2021/01/reset-password-preview.jpg' alt='Your Logo' />"
                 + "<p>Your new password is: <strong>" + newPassword + "</strong></p>"
                 + "<p>Click <a href=\"https://www.yourwebsite.com/login\">here</a> to log in.</p>"
                 + "</body></html>";
