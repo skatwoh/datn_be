@@ -19,13 +19,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @Service
+@EnableScheduling
 public class SaleServiceImpl implements ISaleService {
 
     @Autowired
@@ -33,6 +37,19 @@ public class SaleServiceImpl implements ISaleService {
 
     @Autowired
     SaleMapper saleMapper;
+
+    @Scheduled(cron = "0 0 0 * * ?") // Trong cron expression "0 0 0 * * ?", giá trị thứ ba là 0 (giờ),
+    // giá trị thứ tư là 0 (phút), và giá trị thứ năm là 0 (giây). Điều này đặt cron expression để chạy lúc 00:00:00 hàng ngày.
+    public void expireVouchers() {
+        LocalDate today = LocalDate.now();
+
+        List<Sale> expiredSales = saleRepository.findByExpiryDateBeforeAndStatus(today , 1);
+
+        for (Sale sale : expiredSales) {
+            sale.setTrangThai(0);
+        }
+        saleRepository.saveAll(expiredSales);
+    }
 
     @Override
     public PagedResponse<SaleResponse> getSale(int page, int size) throws ServiceException {
