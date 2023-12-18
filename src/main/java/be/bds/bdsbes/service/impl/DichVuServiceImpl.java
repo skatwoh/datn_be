@@ -33,6 +33,22 @@ public class DichVuServiceImpl implements IDichVuService {
     @Autowired
     private DichVuMapper dichVuMapper;
 
+    public int getNumberOfRecords() {
+        Long count = dichVuRepository.count();
+        return count.intValue();
+    }
+
+
+    private String generateAutoCode() {
+        int numberOfDigits = 2;
+
+        int numberOfExistingRecords = getNumberOfRecords();
+
+        String autoCode = "DV" + String.format("%0" + numberOfDigits + "d", numberOfExistingRecords + 1);
+
+        return autoCode;
+    }
+
     @Override
     public List<DichVuResponse> getList() {
         return dichVuRepository.getAllDv();
@@ -41,6 +57,7 @@ public class DichVuServiceImpl implements IDichVuService {
     public DichVuResponse1 getDichVu(Long id) {
         return dichVuRepository.getDichVu(id);
     }
+
 
     @Override
     public Page<DichVu> getPage(Integer page) {
@@ -52,6 +69,7 @@ public class DichVuServiceImpl implements IDichVuService {
     @Override
     public DichVu create(DichVuDTO dichVuDTO) {
         DichVu dichVu = dichVuDTO.dto(new DichVu());
+        dichVu.setMa(generateAutoCode());
         return dichVuRepository.save(dichVu);
     }
     @Override

@@ -1,14 +1,22 @@
 package be.bds.bdsbes.service.impl;
 
 import be.bds.bdsbes.entities.DatPhong;
+import be.bds.bdsbes.entities.DichVu;
 import be.bds.bdsbes.entities.HoaDon;
 import be.bds.bdsbes.repository.DatPhongRepository;
+import be.bds.bdsbes.repository.DichVuRepository;
 import be.bds.bdsbes.repository.HoaDonRepository;
 import be.bds.bdsbes.service.dto.response.DatPhongResponse;
 import com.itextpdf.text.*;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
+import fr.opensagres.xdocreport.core.XDocReportException;
+import fr.opensagres.xdocreport.document.IXDocReport;
+import fr.opensagres.xdocreport.document.registry.XDocReportRegistry;
+import fr.opensagres.xdocreport.template.IContext;
+import fr.opensagres.xdocreport.template.TemplateEngineKind;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -17,14 +25,13 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,6 +45,10 @@ import java.util.List;
 public class PdfGenerator {
 
     private final DatPhongRepository datPhongRepository;
+
+
+    @Autowired
+    private DichVuRepository dichVuRepository;
 
     @Autowired
     private HoaDonRepository hoaDonRepository;
@@ -180,21 +191,20 @@ public class PdfGenerator {
     }
 
     public void exportPdf(Long id) throws IOException {
-        FileInputStream fis = new FileInputStream("src/main/resources/template/hoa_don.docx");
+        FileInputStream fis = new FileInputStream("src/main/resources/template/HoaDonThanhToan.docx");
         XWPFDocument document = new XWPFDocument(fis);
 
-        List<DatPhongResponse> dataList = datPhongRepository.getDatPhong(id);
-        for (DatPhongResponse data : dataList) {
-            for (XWPFParagraph paragraph : document.getParagraphs()) {
-                List<XWPFRun> runs = paragraph.getRuns();
-                for (XWPFRun run : runs) {
-                    String text = run.getText(0);
-                    // Thay thế trường dữ liệu trong cặp {{}}
-                    text = text.replace("{{ma}}", data.getMa());
-                    run.setText(text, 0);
-                }
-            }
-        }
+        DatPhong datPhong = datPhongRepository.findById(id).get();
+        XWPFParagraph paragraph = document.createParagraph();
+        XWPFRun run = paragraph.createRun();
+        run.setText("Name: " + datPhong.getGhiChu());
+        run.addBreak();
+        run.setText("Mã khách hàng: " + datPhong.getUser().getName()
+        );
+
+// Add further paragraphs and formatting for other required data based on your structure and template
+
+        XWPFTable table = document.createTable();
 
         try (FileOutputStream out = new FileOutputStream("src/main/resources/template/output/datphong.pdf")) {
             PDDocument pdfDocument = new PDDocument();
@@ -207,5 +217,91 @@ public class PdfGenerator {
         }
     }
 
+    public void exportDV(HttpServletResponse response, Long id) throws IOException, DocumentException, ParseException {
+        DichVu dichVu = dichVuRepository.findById(id).get();
+        response.setContentType("application/pdf");
+        response.setCharacterEncoding("UTF-8");
+        NumberFormat formatter = NumberFormat.getInstance(Locale.US);
+        Document document = new Document(PageSize.A4);
+        PdfWriter.getInstance(document, response.getOutputStream());
+        document.open();
 
+        Font fontTitle = FontFactory.getFont(FontFactory.TIMES_BOLDITALIC);
+        fontTitle.setColor(BaseColor.BLACK);
+        fontTitle.setSize(20);
+        Font fontDate = FontFactory.getFont(FontFactory.TIMES_BOLDITALIC);
+        fontTitle.setColor(BaseColor.BLACK);
+        fontDate.setSize(18);
+        String formattedGiaDichVu = formatter.format(dichVu.getGiaDichVu());
+        Paragraph paragraph = new Paragraph(new String("HÓA ĐƠN THANH TOÁN".getBytes("UTF-8")), fontTitle);
+        paragraph.setAlignment(Paragraph.ALIGN_CENTER);
+        Paragraph paragraphLine = new Paragraph("", fontTitle);
+        paragraph.setAlignment(Paragraph.ALIGN_CENTER);
+        Chunk lineSeparator = new Chunk(new LineSeparator());
+        paragraphLine.add(lineSeparator);
+        Paragraph paragraphDichVu = new Paragraph("Ten dich vu: " + dichVu.getTenDichVu(), fontDate);
+        paragraphDichVu.setAlignment(Paragraph.ALIGN_LEFT);
+        Paragraph paragraphGia = new Paragraph("Gia dich vu: " + formattedGiaDichVu, fontDate);
+        paragraphGia.setAlignment(Paragraph.ALIGN_LEFT);
+        Paragraph paragraphGhiChu = new Paragraph("Ghi chu: " + dichVu.getGhiChu(), fontDate);
+        paragraphGhiChu.setAlignment(Paragraph.ALIGN_LEFT);
+        Font fontInfor = FontFactory.getFont(FontFactory.TIMES_ROMAN);
+        fontInfor.setSize(15);
+        Font fontTable = FontFactory.getFont(FontFactory.TIMES_ROMAN);
+        fontTable.setSize(13);
+
+
+        String formattedTongTien = formatter.format(dichVu.getGiaDichVu());
+        Paragraph paragraphTongTien = new Paragraph("\nTong thanh toan: " + formattedTongTien + "VND", fontInfor);
+        paragraphTongTien.setAlignment(Paragraph.ALIGN_LEFT);
+        Paragraph paragraph9 = new Paragraph("\n", fontInfor);
+        paragraph9.setAlignment(Paragraph.ALIGN_LEFT);
+        paragraph9.add(lineSeparator);
+        Paragraph paragraphEnd = new Paragraph("\nCAM ON QUY KHACH DA SU DUNG \nDICH VU CUA CHUNG TOI!", fontTitle);
+        paragraphEnd.setAlignment(Paragraph.ALIGN_CENTER);
+
+
+        document.add(paragraph);
+        document.add(paragraphLine);
+        document.add(paragraphDichVu);
+        document.add(paragraphGia);
+        document.add(paragraphGhiChu);
+        document.add(paragraphLine);
+        document.add(paragraphTongTien);
+        document.add(paragraph9);
+        document.add(paragraphEnd);
+        document.close();
+    }
+
+    public void export2(HttpServletResponse response, Long id) throws IOException, XDocReportException, ParseException {
+        HoaDon hoaDon = hoaDonRepository.findById(id).get();
+        response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        response.setHeader("Content-Disposition", "attachment; filename=HoaDonThanhToan.docx");
+        try (InputStream in = getClass().getResourceAsStream("src/main/resources/template/HoaDonThanhToan.docx")) {
+            IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Freemarker);
+            IContext context = report.createContext();
+            context.put("hoaDon", hoaDon);
+            context.put("datPhongs", datPhongRepository.getDatPhongByHoaDon(hoaDon.getId()));
+            try (OutputStream out = response.getOutputStream()) {
+                report.process(context, out);
+            }
+        }
+    }
+
+    public void export3(HttpServletResponse response, Long id) throws IOException, XDocReportException, ParseException {
+        HoaDon hoaDon = hoaDonRepository.findById(id).get();
+        // Load the template
+        InputStream templateStream = getClass().getResourceAsStream("src/main/resources/template/HoaDonThanhToan.docx");
+        IXDocReport report = XDocReportRegistry.getRegistry().loadReport(templateStream, TemplateEngineKind.Velocity);
+        // Create a context for your data
+        IContext context = report.createContext();
+        context.put("hoaDon", hoaDon);  // Assuming you have a getter in your HoaDon class for each field
+        // Create a new OutputStream
+        OutputStream out = response.getOutputStream();
+        // Set the response headers for Word document
+        response.setContentType("application/msword");
+        response.setHeader("Content-Disposition", "attachment; filename=your_document.docx");
+        // Generate the report
+        report.process(context, out);
+    }
 }

@@ -109,7 +109,7 @@ public class DatPhongServiceImpl implements IDatPhongService {
                     .build();
         }
 
-        if (datPhongRepository.validateCheckIn(datPhongDTO.getIdPhong(), datPhongDTO.getCheckIn())) {
+        if (datPhongRepository.validateCheckIn(datPhongDTO.getIdPhong(), datPhongDTO.getCheckIn(), datPhongDTO.getCheckOut())) {
             throw ServiceExceptionBuilderUtil.newBuilder()
                     .addError(new ValidationErrorResponse("checkIn", ValidationErrorUtil.CheckDateBook))
                     .build();
@@ -305,7 +305,7 @@ public class DatPhongServiceImpl implements IDatPhongService {
                     .build();
         }
 
-        if (datPhongRepository.validateCheckIn(datPhongDTO.getIdPhong(), datPhongDTO.getCheckIn())) {
+        if (datPhongRepository.validateCheckIn(datPhongDTO.getIdPhong(), datPhongDTO.getCheckIn(), datPhongDTO.getCheckOut())) {
             throw ServiceExceptionBuilderUtil.newBuilder()
                     .addError(new ValidationErrorResponse("checkIn", ValidationErrorUtil.CheckDateBook))
                     .build();
@@ -434,7 +434,7 @@ public class DatPhongServiceImpl implements IDatPhongService {
                         .build();
             }
 
-            if (datPhongRepository.validateCheckIn(datPhongDTO.getIdPhong(), datPhongDTO.getCheckIn())) {
+            if (datPhongRepository.validateCheckIn(datPhongDTO.getIdPhong(), datPhongDTO.getCheckIn(), datPhongDTO.getCheckOut())) {
                 throw ServiceExceptionBuilderUtil.newBuilder()
                         .addError(new ValidationErrorResponse("checkIn", ValidationErrorUtil.CheckDateBook))
                         .build();
