@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -35,9 +36,10 @@ public interface DatPhongRepository extends JpaRepository<DatPhong, Long> {
     @Query("SELECT CASE WHEN COUNT(dp) > 0 THEN true ELSE false END " +
             "FROM DatPhong dp " +
             "WHERE dp.phong.id = :idPhong and (dp.trangThai = 1 or dp.trangThai = 2) and (cast(dp.checkIn as date) = cast(:checkIn as date) " +
-            "or cast(dp.checkIn as date) < cast(:checkIn as date) and cast(dp.checkOut as date) > cast(:checkIn as date)" +
-            "or cast(dp.checkIn as date) > cast(:checkIn as date) and cast(dp.checkOut as date) > cast(:checkIn as date))")
-    Boolean validateCheckIn(@Param("idPhong") Long idPhong, @Param("checkIn") LocalDateTime checkIn);
+            "or (cast(dp.checkIn as date) < cast(:checkIn as date) and cast(dp.checkOut as date) > cast(:checkIn as date))" +
+            "or (cast(dp.checkIn as date) >=" +
+            " cast(:checkIn as date) and cast(dp.checkOut as date) <= cast(:checkOut as date)) )")
+    Boolean validateCheckIn(@Param("idPhong") Long idPhong, @Param("checkIn") LocalDateTime checkIn, LocalDateTime checkOut);
 
     @Query("Select p from Phong  p inner join ChiTietPhong ctp on p.id = ctp.phong.id where p.trangThai = 1 and ctp.trangThai = 1 and  p.giaPhong >= :giaPhong and p.id <> :id")
     Page<Phong> getPhongByUpperPrice(Pageable pageable, BigDecimal giaPhong, Long id);

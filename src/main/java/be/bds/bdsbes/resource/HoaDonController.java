@@ -4,11 +4,13 @@ import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.service.iService.IHoaDonService;
 import be.bds.bdsbes.service.dto.HoaDonDTO;
 import be.bds.bdsbes.service.impl.PdfGenerator;
+import be.bds.bdsbes.service.impl.Test;
 import be.bds.bdsbes.utils.ApiError;
 import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ResponseUtil;
 import be.bds.bdsbes.utils.StatusError;
 import com.itextpdf.text.DocumentException;
+import fr.opensagres.xdocreport.core.XDocReportException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,9 @@ public class HoaDonController {
 
     @Autowired
     PdfGenerator pdfGenerator;
+
+    @Autowired
+    Test test;
 
     @GetMapping("list")
     public ResponseEntity<?> getList(
@@ -87,7 +92,7 @@ public class HoaDonController {
     }
 
     @GetMapping("/generate-hoa-don")
-    public void generatePDF(@RequestParam(value = "id") Long id, HttpServletResponse response) throws IOException, DocumentException, ParseException {
+    public void generatePDF(@RequestParam(value = "id") Long id, HttpServletResponse response) throws Exception {
         response.setContentType("application/pdf");
         response.setCharacterEncoding("UTF-8");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss");
@@ -97,7 +102,7 @@ public class HoaDonController {
         String headerValue = "attachment; filename=pdf_" + currentDateTime + ".pdf";
         response.setHeader(headerKey, headerValue);
 
-        this.pdfGenerator.export(response,id);
+        this.test.handleSimpleDoc();
     }
 
     @PutMapping("update-tong-tien")
