@@ -7,10 +7,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
@@ -37,4 +39,7 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
     @Modifying
     @Query("UPDATE HoaDon h SET h.trangThai = :trangThai WHERE h.id = :id")
     Integer updateTrangThaiById(int trangThai, Long id);
+
+    @Query(value = "SELECT * FROM hoa_don v WHERE v.trang_thai = :status", nativeQuery = true)
+    List<HoaDon> findByStatus(@Param("status") Integer status);
 }

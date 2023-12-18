@@ -1,13 +1,16 @@
 package be.bds.bdsbes.service.impl;
 
+import be.bds.bdsbes.domain.User;
 import be.bds.bdsbes.entities.HoaDon;
 import be.bds.bdsbes.entities.KhachHang;
+import be.bds.bdsbes.entities.ThongBao;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.HoaDonResponse;
 import be.bds.bdsbes.repository.HoaDonRepository;
 import be.bds.bdsbes.repository.KhachHangRepository;
-import be.bds.bdsbes.service.iService.IHoaDonService;
+import be.bds.bdsbes.repository.ThongBaoRepository;
 import be.bds.bdsbes.service.dto.HoaDonDTO;
+import be.bds.bdsbes.service.iService.IHoaDonService;
 import be.bds.bdsbes.service.mapper.HoaDonMapper;
 import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ServiceExceptionBuilderUtil;
@@ -20,6 +23,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -29,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@EnableScheduling
 public class HoaDonServiceImpl implements IHoaDonService {
 
     @Autowired
@@ -40,6 +46,37 @@ public class HoaDonServiceImpl implements IHoaDonService {
     @Autowired
     HoaDonMapper hoaDonMapper;
 
+    @Autowired
+    private ThongBaoRepository thongBaoRepository;
+
+    @Scheduled(cron = "0 0/1 * * * ?")
+    public void expireStatus() {
+        List<HoaDon> expiredHoaDons = hoaDonRepository.findByStatus(2);
+
+        for (HoaDon hoaDon : expiredHoaDons) {
+            ThongBao thongBao = new ThongBao();
+            Long idUser = khachHangRepository.findByIdUser(hoaDon.getKhachHang().getId());
+            thongBao.setUser(User.builder().id(idUser).build());
+            thongBao.setNoiDung("Vui lòng thanh toán hóa đơn để xác nhận đặt phòng!");
+            thongBao.setTimestamp(LocalDateTime.now());
+            thongBaoRepository.save(thongBao);
+        }
+        hoaDonRepository.saveAll(expiredHoaDons);
+    }
+    public int getNumberOfRecords() {
+        Long count = hoaDonRepository.count();
+        return count.intValue();
+    }
+
+    private String generateAutoCode() {
+        int numberOfDigits = 4;
+
+        int numberOfExistingRecords = getNumberOfRecords();
+
+        String autoCode = "HD" + String.format("%0" + numberOfDigits + "d", numberOfExistingRecords + 1);
+
+        return autoCode;
+    }
     @Override
     public PagedResponse<HoaDonResponse> getHoaDon(int page, int size) throws ServiceException {
         if (page <= 0) {
@@ -114,6 +151,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
     @Override
     public Boolean create(HoaDonDTO hoaDonDTO) throws ServiceException {
         HoaDon hoaDon =new HoaDon();
+        hoaDon.setMa(generateAutoCode());
         hoaDon.setNgayTao(LocalDateTime.now());
         hoaDon.setNgayThanhToan(hoaDonDTO.getNgayThanhToan());
         hoaDon.setTongTien(hoaDonDTO.getTongTien());
