@@ -11,4 +11,7 @@ public interface KhachHangRepository extends JpaRepository<KhachHang, Long> {
 
     @Query("select kh.id from KhachHang kh join User u on kh.id = u.khachHang.id where u.id = ?1")
     Long findByI(Long id);
+
+    @Query("select u.id from KhachHang kh join User u on kh.id = u.khachHang.id where kh.id = ?1")
+    Long findByIdUser(Long id);
 }
