@@ -51,7 +51,9 @@ public class HoaDonServiceImpl implements IHoaDonService {
 
     @Scheduled(cron = "0 0/1 * * * ?")
     public void expireStatus() {
+        LocalDate date = LocalDate.now();
         List<HoaDon> expiredHoaDons = hoaDonRepository.findByStatus(2);
+        List<HoaDon> expiredHoaDon = hoaDonRepository.findByExpiryDateBeforeAndStatus(date,1);
 
         for (HoaDon hoaDon : expiredHoaDons) {
             ThongBao thongBao = new ThongBao();
@@ -61,7 +63,18 @@ public class HoaDonServiceImpl implements IHoaDonService {
             thongBao.setTimestamp(LocalDateTime.now());
             thongBaoRepository.save(thongBao);
         }
-        hoaDonRepository.saveAll(expiredHoaDons);
+
+        for (HoaDon hoaDon : expiredHoaDon) {
+            hoaDon.setTrangThai(3);
+            ThongBao thongBao = new ThongBao();
+            Long idUser = khachHangRepository.findByIdUser(hoaDon.getKhachHang().getId());
+            thongBao.setUser(User.builder().id(idUser).build());
+            thongBao.setNoiDung("Hóa đơn quá thời gian thanh toán, hệ thống tự động hủy hóa đơn!");
+            thongBao.setTimestamp(LocalDateTime.now());
+            thongBaoRepository.save(thongBao);
+            hoaDonRepository.saveAll(expiredHoaDons);
+        }
+
     }
     public int getNumberOfRecords() {
         Long count = hoaDonRepository.count();

@@ -1,6 +1,7 @@
 package be.bds.bdsbes.repository;
 
 import be.bds.bdsbes.entities.HoaDon;
+import be.bds.bdsbes.entities.Sale;
 import be.bds.bdsbes.payload.HoaDonResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,4 +43,7 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
 
     @Query(value = "SELECT * FROM hoa_don v WHERE v.trang_thai = :status", nativeQuery = true)
     List<HoaDon> findByStatus(@Param("status") Integer status);
+
+    @Query(value = "SELECT * FROM hoa_don v WHERE v.ngay_tao < :date AND v.trang_thai = :status", nativeQuery = true)
+    List<HoaDon> findByExpiryDateBeforeAndStatus(@Param("date") LocalDate date, @Param("status") Integer status);
 }
