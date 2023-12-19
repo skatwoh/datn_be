@@ -7,7 +7,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:sqlserver://MSI\\SQLEXPRESS:1433;databaseName=Hotel_Manager;encrypt=true;trustServerCertificate=true
+    url: jdbc:sqlserver://localhost:1433;databaseName=Hotel_v6;encrypt=true;trustServerCertificate=true
     username: sa
     password: 123456
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
