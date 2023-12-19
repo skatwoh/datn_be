@@ -233,7 +233,7 @@ public class PdfGenerator {
         fontTitle.setColor(BaseColor.BLACK);
         fontDate.setSize(18);
         String formattedGiaDichVu = formatter.format(dichVu.getGiaDichVu());
-        Paragraph paragraph = new Paragraph(new String("HÓA ĐƠN THANH TOÁN".getBytes("UTF-8")), fontTitle);
+        Paragraph paragraph = new Paragraph(new String("HOA DON THANH TOAN".getBytes("UTF-8")), fontTitle);
         paragraph.setAlignment(Paragraph.ALIGN_CENTER);
         Paragraph paragraphLine = new Paragraph("", fontTitle);
         paragraph.setAlignment(Paragraph.ALIGN_CENTER);

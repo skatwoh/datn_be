@@ -6,6 +6,7 @@ import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.ChiTietPhongResponse1;
 import be.bds.bdsbes.payload.PhongResponse1;
 import be.bds.bdsbes.repository.ChiTietPhongRepository;
+import be.bds.bdsbes.repository.PhongRepository;
 import be.bds.bdsbes.service.iService.IChiTietPhongService;
 import be.bds.bdsbes.service.dto.ChiTietPhongDTO;
 import be.bds.bdsbes.service.mapper.ChiTietPhongMapper;
@@ -43,6 +44,9 @@ public class ChiTietPhongServiceImpl implements IChiTietPhongService {
     @Autowired
     private PhongMapper phongMapper;
 
+    @Autowired
+    PhongRepository phongRepository;
+
     @Override
     public List<ChiTietPhong> getList() {
         return chiTietPhongRepository.findAll();
@@ -73,6 +77,8 @@ public class ChiTietPhongServiceImpl implements IChiTietPhongService {
     @Override
     public ChiTietPhong create(ChiTietPhongDTO chiTietPhongDTO) {
         ChiTietPhong chiTietPhong = chiTietPhongDTO.dto(new ChiTietPhong());
+        Phong phong = phongRepository.findById(chiTietPhongDTO.getIdPhong()).get();
+        chiTietPhong.setTang(String.valueOf(Integer.valueOf(phong.getMa().substring(0, 1))));
         return chiTietPhongRepository.save(chiTietPhong);
     }
 
@@ -162,14 +168,14 @@ public class ChiTietPhongServiceImpl implements IChiTietPhongService {
         List<PhongResponse1> listPhong = new ArrayList<>();
         entities.getContent().sort(Comparator.comparing(ChiTietPhong::getSoLuongNguoi).reversed());
         int remainingPeople = soLuongNguoi;
-        for(ChiTietPhong chiTietPhong : entities.getContent()){
+        for (ChiTietPhong chiTietPhong : entities.getContent()) {
             Phong phong = chiTietPhong.getPhong();
             int availableCapacity = chiTietPhong.getSoLuongNguoi();
             int people = Math.min(remainingPeople, availableCapacity);
 
-            if (people > 0){
+            if (people > 0) {
                 chiTietPhong.setSoLuongNguoi(chiTietPhong.getSoLuongNguoi() - people);
-                remainingPeople-=people;
+                remainingPeople -= people;
                 PhongResponse1 phongResponse1 = phongMapper.toDto(phong);
                 listPhong.add(phongResponse1);
             }

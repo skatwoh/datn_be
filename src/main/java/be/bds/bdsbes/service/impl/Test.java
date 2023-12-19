@@ -20,12 +20,16 @@ import java.util.stream.Stream;
 public class Test {
 
 //    public static String logo = "logo-leaf.png";
-    public static String paragraph1 = "be/bds/bdsbes/template/abc1.txt";
-    public static String paragraph2 = "be/bds/bdsbes/template/abc1.txt";
-    public static String paragraph3 = "be/bds/bdsbes/template/abc1.txt";
+    public static String
+
+
+        paragraph1 = "be/bds/bdsbes/template/a111.docx";
+    public static String paragraph2 = "be/bds/bdsbes/template/a111.docx";
+    public static String paragraph3 = "be/bds/bdsbes/template/a111.docx";
     public static String output = "be/bds/bdsbes/template/a111.docx";
 
-    public void handleSimpleDoc() throws Exception {
+    public void
+    handleSimpleDoc() throws Exception {
         XWPFDocument document = new XWPFDocument();
 
         XWPFParagraph title = document.createParagraph();
