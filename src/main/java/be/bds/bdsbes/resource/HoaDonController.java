@@ -102,7 +102,7 @@ public class HoaDonController {
         String headerValue = "attachment; filename=pdf_" + currentDateTime + ".pdf";
         response.setHeader(headerKey, headerValue);
 
-        this.test.handleSimpleDoc();
+        this.pdfGenerator.export(response, id);
     }
 
     @PutMapping("update-tong-tien")
