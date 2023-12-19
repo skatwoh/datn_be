@@ -23,6 +23,8 @@ public class PhongDTO {
 
     private Integer trangThai;
 
+    private String image;
+
     public Phong dto(Phong phong){
         phong.setGiaPhong(this.getGiaPhong());
         phong.setTrangThai(this.getTrangThai());
