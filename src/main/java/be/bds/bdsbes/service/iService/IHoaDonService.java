@@ -12,6 +12,9 @@ public interface IHoaDonService {
 
     PagedResponse<HoaDonResponse> getHoaDon(int page, int size) throws ServiceException;
 
+    PagedResponse<HoaDonResponse> getHoaDonBySearch(int page, int size, String searchInput) throws ServiceException;
+
+
     PagedResponse<HoaDonResponse> getHoaDonByCustomer(int page, int size,String hoTen, String sdt) throws ServiceException;
 
     Boolean create(HoaDonDTO hoaDonDTO) throws ServiceException;
@@ -25,4 +28,6 @@ public interface IHoaDonService {
     HoaDonResponse getOne(Long id);
 
     Integer updateTrangThai(Integer trangThai, Long id) throws ServiceException;
+
+    Boolean deleteHoaDon(HoaDonDTO hoaDonDTO);
 }

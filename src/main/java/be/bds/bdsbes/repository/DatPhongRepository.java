@@ -38,7 +38,8 @@ public interface DatPhongRepository extends JpaRepository<DatPhong, Long> {
             "WHERE dp.phong.id = :idPhong and (dp.trangThai = 1 or dp.trangThai = 2) and (cast(dp.checkIn as date) = cast(:checkIn as date) " +
             "or (cast(dp.checkIn as date) < cast(:checkIn as date) and cast(dp.checkOut as date) > cast(:checkIn as date))" +
             "or (cast(dp.checkIn as date) >=" +
-            " cast(:checkIn as date) and cast(dp.checkOut as date) <= cast(:checkOut as date)) )")
+            " cast(:checkIn as date) and cast(dp.checkOut as date) <= cast(:checkOut as date)) " +
+            ")")
     Boolean validateCheckIn(@Param("idPhong") Long idPhong, @Param("checkIn") LocalDateTime checkIn, LocalDateTime checkOut);
 
     @Query("Select p from Phong  p inner join ChiTietPhong ctp on p.id = ctp.phong.id where p.trangThai = 1 and ctp.trangThai = 1 and  p.giaPhong >= :giaPhong and p.id <> :id")
@@ -55,7 +56,7 @@ public interface DatPhongRepository extends JpaRepository<DatPhong, Long> {
             "from DatPhong d join d.user u join u.khachHang k left join d.voucher v where d.id= :id")
     List<DatPhongResponse> getDatPhong(Long id);
 
-    @Query("select p from DatPhong p where p.hoaDon.id = :id and p.trangThai = 1")
+    @Query("select p from DatPhong p where p.hoaDon.id = :id and p.trangThai = 1 or p.trangThai = 2 or p.trangThai = 3")
     List<DatPhong> getDatPhongByHoaDon(Long id);
 
     @Transactional
@@ -71,4 +72,7 @@ public interface DatPhongRepository extends JpaRepository<DatPhong, Long> {
 
     @Query("select p from DatPhong p where p.hoaDon.id = :id")
     Page<DatPhong> getPageDatPhongByHoaDon(Pageable pageable, Long id);
+
+    @Query("select d from DatPhong d join HoaDon h on d.hoaDon.id = h.id where d.hoaDon.id = :id")
+    List<DatPhong> getRoomByHoaDon0(Long id);
 }

@@ -39,6 +39,20 @@ public class VoucherController {
 
     }
 
+    @GetMapping("list-active")
+    public ResponseEntity<?> getListActive(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size) {
+        try {
+            return ResponseUtil.wrap(this.iVoucherService.getVouchersByTrangThai(page, size));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Autowired
     private VoucherRepository voucherRepository;
 

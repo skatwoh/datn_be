@@ -102,7 +102,7 @@ public class HoaDonController {
         String headerValue = "attachment; filename=pdf_" + currentDateTime + ".pdf";
         response.setHeader(headerKey, headerValue);
 
-        this.test.handleSimpleDoc();
+        this.pdfGenerator.export(response, id);
     }
 
     @PutMapping("update-tong-tien")
@@ -130,6 +130,26 @@ public class HoaDonController {
         } catch (ServiceException e) {
             ApiError apiError = new ApiError(String.valueOf(StatusError.Failed), e.getMessage());
             return ResponseUtil.wrap(apiError);
+        }
+    }
+
+    @PostMapping("delete")
+    public ResponseEntity<?> deleteHD(@RequestBody HoaDonDTO hoaDonDTO) {
+        return ResponseUtil.wrap(this.iHoaDonService.deleteHoaDon(hoaDonDTO));
+    }
+
+    @GetMapping("list-by-search")
+    public ResponseEntity<?> getListbySearch(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "input", defaultValue = "") String searchInput) {
+        try {
+            return ResponseUtil.wrap(this.iHoaDonService.getHoaDonBySearch(page, size, searchInput));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
         }
     }
 }
