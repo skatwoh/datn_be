@@ -37,11 +37,8 @@ public class KhachHangController {
         }
     }
 
-    @GetMapping("detail/{id}")
-    public ResponseEntity<?> getOne(@PathVariable("id") Long id){
-        if(khachHangService.getOne(id) == null){
-            return ResponseEntity.badRequest().body("Không tìm thấy");
-        }
+    @GetMapping("detail")
+    public ResponseEntity<?> getOne(@RequestParam(value = "id") Long id){
         return ResponseEntity.ok(khachHangService.getOne(id));
     }
 
@@ -54,8 +51,8 @@ public class KhachHangController {
         return ResponseEntity.ok(khachHangService.create(khachHangDTO));
     }
 
-    @PutMapping("update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody @Valid KhachHangDTO khachHangDTO, BindingResult result){
+    @PutMapping("update")
+    public ResponseEntity<?> update(@RequestParam(value = "id") Long id, @RequestBody @Valid KhachHangDTO khachHangDTO, BindingResult result){
         if(result.hasErrors()){
             List<ObjectError> errorList = result.getAllErrors();
             return ResponseEntity.badRequest().body(errorList);

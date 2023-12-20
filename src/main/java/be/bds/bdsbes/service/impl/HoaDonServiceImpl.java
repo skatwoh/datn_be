@@ -1,11 +1,13 @@
 package be.bds.bdsbes.service.impl;
 
 import be.bds.bdsbes.domain.User;
+import be.bds.bdsbes.entities.DatPhong;
 import be.bds.bdsbes.entities.HoaDon;
 import be.bds.bdsbes.entities.KhachHang;
 import be.bds.bdsbes.entities.ThongBao;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.HoaDonResponse;
+import be.bds.bdsbes.repository.DatPhongRepository;
 import be.bds.bdsbes.repository.HoaDonRepository;
 import be.bds.bdsbes.repository.KhachHangRepository;
 import be.bds.bdsbes.repository.ThongBaoRepository;
@@ -41,6 +43,9 @@ public class HoaDonServiceImpl implements IHoaDonService {
     HoaDonRepository hoaDonRepository;
 
     @Autowired
+    DatPhongRepository datPhongRepository;
+
+    @Autowired
     KhachHangRepository khachHangRepository;
 
     @Autowired
@@ -49,9 +54,11 @@ public class HoaDonServiceImpl implements IHoaDonService {
     @Autowired
     private ThongBaoRepository thongBaoRepository;
 
-    @Scheduled(cron = "0 0/1 * * * ?")
+    @Scheduled(cron = "0 0 0 * * ?")
     public void expireStatus() {
+        LocalDate date = LocalDate.now();
         List<HoaDon> expiredHoaDons = hoaDonRepository.findByStatus(2);
+        List<HoaDon> expiredHoaDon = hoaDonRepository.findByExpiryDateBeforeAndStatus(date,1);
 
         for (HoaDon hoaDon : expiredHoaDons) {
             ThongBao thongBao = new ThongBao();
@@ -61,7 +68,18 @@ public class HoaDonServiceImpl implements IHoaDonService {
             thongBao.setTimestamp(LocalDateTime.now());
             thongBaoRepository.save(thongBao);
         }
-        hoaDonRepository.saveAll(expiredHoaDons);
+
+        for (HoaDon hoaDon : expiredHoaDon) {
+            hoaDon.setTrangThai(3);
+            ThongBao thongBao = new ThongBao();
+            Long idUser = khachHangRepository.findByIdUser(hoaDon.getKhachHang().getId());
+            thongBao.setUser(User.builder().id(idUser).build());
+            thongBao.setNoiDung("Hóa đơn quá thời gian thanh toán, hệ thống tự động hủy hóa đơn!");
+            thongBao.setTimestamp(LocalDateTime.now());
+            thongBaoRepository.save(thongBao);
+            hoaDonRepository.saveAll(expiredHoaDons);
+        }
+
     }
     public int getNumberOfRecords() {
         Long count = hoaDonRepository.count();
@@ -97,6 +115,24 @@ public class HoaDonServiceImpl implements IHoaDonService {
         // Retrieve all entities
         Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
         Page<HoaDonResponse> entities = hoaDonRepository.getList(pageable);
+
+        List<HoaDonResponse> dtos = entities.toList();
+        return new PagedResponse<>(
+                dtos,
+                page,
+                size,
+                entities.getTotalElements(),
+                entities.getTotalPages(),
+                entities.isLast(),
+                entities.getSort().toString()
+        );
+    }
+
+    @Override
+    public PagedResponse<HoaDonResponse> getHoaDonBySearch(int page, int size, String searchInput) throws ServiceException {
+        // Retrieve all entities
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
+        Page<HoaDonResponse> entities = hoaDonRepository.getListBySearch(pageable, searchInput);
 
         List<HoaDonResponse> dtos = entities.toList();
         return new PagedResponse<>(
@@ -193,7 +229,6 @@ public class HoaDonServiceImpl implements IHoaDonService {
     @Override
     public Boolean createOrUpdate(HoaDonDTO hoaDonDTO) throws ServiceException {
         Long idKH = khachHangRepository.findByIdKhachHang(hoaDonDTO.getIdKhachHang());
-        System.out.println(idKH);
         HoaDonResponse hoaDonResponse = hoaDonRepository.getHoaDon(idKH, LocalDate.now());
         if(hoaDonResponse != null && hoaDonResponse.getTrangThai() != 3){
             this.update(hoaDonDTO, hoaDonResponse.getId());
@@ -226,11 +261,33 @@ public class HoaDonServiceImpl implements IHoaDonService {
     @Override
     public Integer updateTrangThai(Integer trangThai, Long id) throws ServiceException {
         HoaDon hoaDon = hoaDonRepository.findById(id).get();
-        if(hoaDon.getTrangThai() == 1 || hoaDon.getTrangThai() == 2) {
+        if(trangThai == 0) {
             hoaDon.setNgayThanhToan(LocalDateTime.now());
             this.hoaDonRepository.save(hoaDon);
             return hoaDonRepository.updateTrangThaiById(trangThai, id);
         }
+        if (trangThai == 4) {
+            for (DatPhong datPhong : datPhongRepository.findAll()){
+                if(datPhong.getHoaDon().getId() == hoaDon.getId()){
+                    datPhong.setTrangThai(0);
+                    this.datPhongRepository.save(datPhong);
+                }
+            }
+            return hoaDonRepository.updateTrangThaiById(trangThai, id);
+        }
         return hoaDonRepository.updateTrangThaiById(trangThai, id);
+    }
+
+    @Override
+    public Boolean deleteHoaDon(HoaDonDTO hoaDonDTO) {
+        Long idKH = khachHangRepository.findByIdKhachHang(hoaDonDTO.getIdKhachHang());
+        HoaDonResponse hoaDonResponse = hoaDonRepository.getHoaDon(idKH, LocalDate.now());
+        System.out.println(hoaDonResponse.getId());
+        List<DatPhong> list = datPhongRepository.getRoomByHoaDon0(hoaDonResponse.getId());
+        if(list.size() == 0){
+            this.hoaDonRepository.delete(hoaDonRepository.findById(hoaDonResponse.getId()).get());
+            return true;
+        }
+        return false;
     }
 }

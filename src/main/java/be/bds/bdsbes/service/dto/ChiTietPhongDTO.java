@@ -13,8 +13,6 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class ChiTietPhongDTO {
 
-    @NotNull(message = "Not allow null")
-    @NotBlank(message = "Không được để trống")
     private String tang;
 
     @NotNull(message = "Not allow null")
@@ -37,7 +35,6 @@ public class ChiTietPhongDTO {
     private Long idPhong;
 
     public ChiTietPhong dto(ChiTietPhong chiTietPhong){
-        chiTietPhong.setTang(this.getTang());
         chiTietPhong.setDichVu(this.getDichVu());
         chiTietPhong.setTienIch(this.getTienIch());
         chiTietPhong.setSoLuongNguoi(this.getSoLuongNguoi());

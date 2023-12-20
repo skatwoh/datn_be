@@ -26,9 +26,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -80,6 +78,7 @@ public class PhongServiceImpl implements IPhongService {
                         .build();
             }
             phong.setMa(String.valueOf(101));
+            phong.setImage(phongDTO.getImage());
             phong.setTrangThai(1);
             return phongRepository.save(phong);
         }
@@ -90,6 +89,7 @@ public class PhongServiceImpl implements IPhongService {
                         .build();
             }
             phong.setMa(String.valueOf(Integer.valueOf(listP.get(listP.size() - 1).getMa()) + 91));
+            phong.setImage(phongDTO.getImage());
             phong.setTrangThai(1);
             return phongRepository.save(phong);
         }
@@ -100,6 +100,7 @@ public class PhongServiceImpl implements IPhongService {
                     .build();
         }
         phong.setMa(String.valueOf(Integer.valueOf(listP.get(listP.size() - 1).getMa()) + 1));
+        phong.setImage(phongDTO.getImage());
         phong.setTrangThai(1);
         return phongRepository.save(phong);
     }

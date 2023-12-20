@@ -13,6 +13,7 @@ import java.time.LocalDate;
 public class KhachHangDTO {
 
     private String ma;
+    private String hoTen;
     private LocalDate ngaySinh;
     private Boolean gioiTinh;
     private String diaChi;
@@ -21,11 +22,12 @@ public class KhachHangDTO {
     private Long idTheThanhVien;
 
     public KhachHang dto(KhachHang khachHang){
-        khachHang.setMa(this.getMa());
+//        khachHang.setMa(this.getMa());
+        khachHang.setHoTen(this.getHoTen());
         khachHang.setSdt(this.getSdt());
-        khachHang.setDiaChi(this.getDiaChi());
-        khachHang.setNgaySinh(this.getNgaySinh());
-        khachHang.setTheThanhVien(TheThanhVien.builder().id(this.getIdTheThanhVien()).build());
+//        khachHang.setDiaChi(this.getDiaChi());
+//        khachHang.setNgaySinh(this.getNgaySinh());
+//        khachHang.setTheThanhVien(TheThanhVien.builder().id(this.getIdTheThanhVien()).build());
         return khachHang;
     }
 }

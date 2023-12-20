@@ -180,7 +180,7 @@ public class PhongController {
             LocalDateTime parsedCheckIn = LocalDate.parse(checkIn, formatter).atStartOfDay();
             LocalDateTime parsedCheckOut = LocalDate.parse(checkOut, formatter).atStartOfDay();
             System.out.println(parsedCheckOut + " " + parsedCheckIn);
-            if (Integer.valueOf(soLuongNguoi) == 4) {
+           if (Integer.valueOf(soLuongNguoi) == 4) {
                 return ResponseUtil.wrap(this.iPhongService.searchRoomManager3(page, size, Integer.valueOf(soLuongNguoi), tenLoaiPhong, parsedCheckIn, parsedCheckOut));
             }
             return ResponseUtil.wrap(this.iPhongService.searchRoomManager(page, size, Integer.valueOf(soLuongNguoi), tenLoaiPhong, parsedCheckIn, parsedCheckOut));
