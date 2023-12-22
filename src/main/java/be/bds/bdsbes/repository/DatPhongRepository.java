@@ -39,7 +39,7 @@ public interface DatPhongRepository extends JpaRepository<DatPhong, Long> {
             "or (cast(dp.checkIn as date) < cast(:checkIn as date) and cast(dp.checkOut as date) > cast(:checkIn as date))" +
             "or (cast(dp.checkIn as date) >=" +
             " cast(:checkIn as date) and cast(dp.checkOut as date) <= cast(:checkOut as date)) " +
-            "or (cast(dp.checkIn as date) > cast(:checkIn as date) and cast(dp.checkOut as date) > cast(:checkOut as date))" +
+            "or (cast(dp.checkIn as date) > cast(:checkIn as date) and cast(dp.checkOut as date) > cast(:checkOut as date) and cast(dp.checkIn as date) < cast(:checkOut as date))  " +
             ")")
     Boolean validateCheckIn(@Param("idPhong") Long idPhong, @Param("checkIn") LocalDateTime checkIn, LocalDateTime checkOut);
 
