@@ -42,16 +42,12 @@ public class DatPhong {
     private String ma;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_phong")
     private Phong phong;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "id_voucher")
-    private Voucher voucher;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_khach_hang")
+    private KhachHang khachHang;
 
     @Column(name = COLUMN_NGAYDAT_NAME)
     private LocalDateTime ngayDat;
