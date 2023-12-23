@@ -23,6 +23,8 @@ public interface IVoucherService {
     Integer updateTrangThai(Long id);
 
     PagedResponse<VoucherResponse> getVouchers(int page, int size) throws ServiceException;
+
+    PagedResponse<VoucherResponse> getVouchersByTrangThai(int page, int size) throws ServiceException;
     PagedResponse<VoucherResponse> searchVoucher(int page, int size, String searchInput) throws ServiceException;
 
 

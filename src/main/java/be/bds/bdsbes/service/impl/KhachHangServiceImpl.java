@@ -1,10 +1,12 @@
 package be.bds.bdsbes.service.impl;
 
+import be.bds.bdsbes.domain.User;
 import be.bds.bdsbes.entities.KhachHang;
 import be.bds.bdsbes.entities.TheThanhVien;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.KhachHangResponse1;
 import be.bds.bdsbes.repository.KhachHangRepository;
+import be.bds.bdsbes.repository.UserRepository;
 import be.bds.bdsbes.service.iService.IKhachHangService;
 import be.bds.bdsbes.service.dto.KhachHangDTO;
 import be.bds.bdsbes.service.dto.TheThanhVienDTO;
@@ -33,6 +35,10 @@ public class KhachHangServiceImpl implements IKhachHangService {
 
     @Autowired
     KhachHangRepository khachHangRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
     @Autowired
     private KhachHangMapper khachHangMapper;
 
@@ -50,13 +56,8 @@ public class KhachHangServiceImpl implements IKhachHangService {
     }
 
     @Override
-    public KhachHang getOne(Long id) {
-        Optional<KhachHang> khachHangOptional = khachHangRepository.findById(id);
-        if(khachHangOptional.isPresent()){
-            KhachHang khachHang = khachHangOptional.get();
-            return khachHang;
-        }
-        return null;
+    public KhachHangResponse1 getOne(Long id) {
+        return khachHangRepository.get(id);
     }
 
     @Override
@@ -71,6 +72,10 @@ public class KhachHangServiceImpl implements IKhachHangService {
         Optional<KhachHang> khachHangOptional = khachHangRepository.findById(id);
         if(khachHangOptional.isPresent()){
             KhachHang khachHang = khachHangDTO.dto(khachHangOptional.get());
+            User user = userRepository.getUserByKhachHang(khachHang.getId());
+            user.setSdt(khachHangDTO.getSdt());
+            user.setName(khachHangDTO.getHoTen());
+            this.userRepository.save(user);
             return khachHangRepository.save(khachHang);
         }
         return null;

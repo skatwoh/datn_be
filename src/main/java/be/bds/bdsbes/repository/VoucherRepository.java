@@ -21,6 +21,9 @@ public interface VoucherRepository extends JpaRepository<Voucher, Long> {
     @Query("select new be.bds.bdsbes.payload.VoucherResponse( vcher.id, vcher.ma, vcher.moTa, vcher.giamGia, vcher.ngayBatDau, vcher.ngayKetThuc, vcher.trangThai, vcher.soLuong) from Voucher vcher where vcher.id = ?1")
     VoucherResponse getVoucher(Long id);
 
+    @Query("select v from Voucher v where v.trangThai = 1 and v.soLuong > 0")
+    Page<Voucher> getAllByTrangThai(Pageable pageable);
+
     @Query("select d from Voucher d where d.ma like CONCAT('%', ?1, '%') or d.moTa like CONCAT('%',?1, '%') order by d.ma desc")
     Page<Voucher> searchVoucher(Pageable pageable, String searchInput);
 

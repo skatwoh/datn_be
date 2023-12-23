@@ -132,4 +132,24 @@ public class HoaDonController {
             return ResponseUtil.wrap(apiError);
         }
     }
+
+    @PostMapping("delete")
+    public ResponseEntity<?> deleteHD(@RequestBody HoaDonDTO hoaDonDTO) {
+        return ResponseUtil.wrap(this.iHoaDonService.deleteHoaDon(hoaDonDTO));
+    }
+
+    @GetMapping("list-by-search")
+    public ResponseEntity<?> getListbySearch(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "input", defaultValue = "") String searchInput) {
+        try {
+            return ResponseUtil.wrap(this.iHoaDonService.getHoaDonBySearch(page, size, searchInput));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

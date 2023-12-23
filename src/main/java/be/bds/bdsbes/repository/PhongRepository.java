@@ -25,7 +25,7 @@ public interface PhongRepository extends JpaRepository<Phong, Long> {
     @Query(value = "select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id where p.trangThai = 1 and ct.trangThai = 1")
     Page<Phong> getListRoom(Pageable pageable);
 
-    @Query("select new be.bds.bdsbes.payload.PhongResponse1(p.id, p.ma, p.giaPhong, p.trangThai, l.id, l.tenLoaiPhong, p.image) from Phong p inner join p.loaiPhong l")
+    @Query("select new be.bds.bdsbes.payload.PhongResponse1(p.id, p.ma, p.giaPhong, p.trangThai, l.id, l.tenLoaiPhong, p.image) from Phong p inner join p.loaiPhong l where p.id not in (select ct.phong.id from ChiTietPhong ct)")
     List<PhongResponse1> singleListRoom();
 
     @Query("select p from Phong p where p.ma like CONCAT('%', ?1, '%') or p.loaiPhong.tenLoaiPhong like CONCAT('%',?1, '%')")
@@ -72,7 +72,7 @@ public interface PhongRepository extends JpaRepository<Phong, Long> {
             "order by count(dp.phong.id) desc" )
     Page<Phong> getListTopRoomOrder(Pageable pageable);
 
-    @Query("select p from Phong p join ChiTietPhong ctp on p.id = ctp.phong.id" )
+    @Query("select p from Phong p join ChiTietPhong ctp on p.id = ctp.phong.id where p.trangThai = 1 and ctp.trangThai = 1" )
     Page<Phong> getListRoomOfFloar(Pageable pageable);
 
     @Query("select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id inner join LoaiPhong l on l.id = p.loaiPhong.id " +

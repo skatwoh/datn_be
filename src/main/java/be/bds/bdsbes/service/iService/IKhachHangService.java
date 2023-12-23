@@ -15,7 +15,7 @@ public interface IKhachHangService {
 
     Page<KhachHang> getPage(Integer page);
 
-    KhachHang getOne(Long id);
+    KhachHangResponse1 getOne(Long id);
 
     KhachHang create(KhachHangDTO khachHangDTO);
 
