@@ -98,6 +98,8 @@ public class PdfGenerator {
         paragraphMaKH.setAlignment(Paragraph.ALIGN_LEFT);
         Paragraph paragraphTenKH = new Paragraph("Ten khach hang: " + hoaDon.getKhachHang().getHoTen(), fontInfor);
         paragraphTenKH.setAlignment(Paragraph.ALIGN_LEFT);
+        Paragraph paragraphTenKHTQ = new Paragraph("Ten khach hang: " + "Khach hang tai quay", fontInfor);
+        paragraphTenKHTQ.setAlignment(Paragraph.ALIGN_LEFT);
         Paragraph paragraphSDT = new Paragraph("SDT: " + hoaDon.getKhachHang().getSdt(), fontInfor);
         paragraphSDT.setAlignment(Paragraph.ALIGN_LEFT);
         Paragraph paragraphNgayThanhToan = new Paragraph("Ngay thanh toan: " + hoaDon.getNgayThanhToan(), fontInfor);
@@ -133,8 +135,14 @@ public class PdfGenerator {
         document.add(paragraphDate);
         document.add(paragraphLine);
         document.add(paragraphMaKH);
-        document.add(paragraphTenKH);
-        document.add(paragraphSDT);
+        if(hoaDon.getKhachHang().getSdt().equals("") || hoaDon.getKhachHang().getSdt() == null){
+            document.add(paragraphTenKHTQ);
+        } else if(!hoaDon.getKhachHang().getSdt().equals("") || hoaDon.getKhachHang().getSdt() != null){
+            document.add(paragraphTenKH);
+        }
+        if(!(hoaDon.getKhachHang().getSdt().trim().equals("")) || hoaDon.getKhachHang().getSdt() != null){
+            document.add(paragraphSDT);
+        }
         document.add(paragraphNgayThanhToan);
         document.add(paragraphNull);
         document.add(paragraphMaPhong);
@@ -199,7 +207,7 @@ public class PdfGenerator {
         XWPFRun run = paragraph.createRun();
         run.setText("Name: " + datPhong.getGhiChu());
         run.addBreak();
-        run.setText("Mã khách hàng: " + datPhong.getUser().getName()
+        run.setText("Mã khách hàng: " + datPhong.getKhachHang().getHoTen()
         );
 
 // Add further paragraphs and formatting for other required data based on your structure and template
