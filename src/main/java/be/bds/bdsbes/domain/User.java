@@ -75,7 +75,7 @@ public class User extends DateAudit {
     private Set<Role> roles = new HashSet<>();
 
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "khachHang")
     private Set<DatPhong> datPhongs = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

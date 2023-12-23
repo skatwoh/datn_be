@@ -7,9 +7,9 @@ import org.mapstruct.*;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface DatPhongMapper extends EntityMapper<DatPhongResponse, DatPhong> {
 
-    @Mapping(target = "maKhachHang", source = "user.khachHang.ma")
-    @Mapping(target = "name", source = "user.name")
-    @Mapping(target = "sdt", source = "user.sdt")
+    @Mapping(target = "maKhachHang", source = "khachHang.ma")
+    @Mapping(target = "hoTen", source = "khachHang.hoTen")
+    @Mapping(target = "sdt", source = "khachHang.sdt")
     @Mapping(target = "tenPhong", source = "phong.ma")
     @Mapping(target = "giaPhong", source = "phong.giaPhong")
     @Mapping(target = "idHoaDon", source = "hoaDon.id")

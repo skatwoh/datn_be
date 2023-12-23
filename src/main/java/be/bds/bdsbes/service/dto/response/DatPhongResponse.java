@@ -20,15 +20,9 @@ public class DatPhongResponse {
 
     private String maKhachHang;
 
-    private String name;
+    private String hoTen;
 
     private String sdt;
-
-    private Long idVoucher;
-
-    private String maVoucher;
-
-    private BigDecimal giamGia;
 
     private LocalDateTime ngayDat;
 

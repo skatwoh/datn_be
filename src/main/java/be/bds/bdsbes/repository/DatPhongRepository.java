@@ -20,17 +20,17 @@ import java.util.List;
 @Repository("datPhongRepository")
 public interface DatPhongRepository extends JpaRepository<DatPhong, Long> {
 
-    @Query("select new be.bds.bdsbes.service.dto.response.DatPhongResponse(d.id, d.ma, k.id, k.ma, k.sdt, u.name, v.id, v.ma," +
-            " v.giamGia, d.ngayDat, d.checkIn, d.checkOut, d.soNguoi, d.ghiChu, d.trangThai, d.phong.ma, d.tongGia, d.phong.id, d.phong.giaPhong, d.hoaDon.id) " +
-            "from DatPhong d join d.user u join u.khachHang k left join d.voucher v")
+    @Query("select new be.bds.bdsbes.service.dto.response.DatPhongResponse(d.id, d.ma, u.id, u.ma, u.sdt, u.hoTen" +
+            ",d.ngayDat, d.checkIn, d.checkOut, d.soNguoi, d.ghiChu, d.trangThai, d.phong.ma, d.tongGia, d.phong.id, d.phong.giaPhong, d.hoaDon.id) " +
+            "from DatPhong d join d.khachHang u")
     List<DatPhongResponse> getAllDatPhong();
 
-    @Query("select new be.bds.bdsbes.service.dto.response.DatPhongResponse(d.id, d.ma, k.id, k.ma, k.sdt, u.name, v.id, v.ma," +
-            " v.giamGia, d.ngayDat, d.checkIn, d.checkOut, d.soNguoi, d.ghiChu, d.trangThai, d.phong.ma, d.tongGia, d.phong.id, d.phong.giaPhong, d.hoaDon.id) " +
-            "from DatPhong d join d.user u join u.khachHang k left join d.voucher v where d.id= :id")
+    @Query("select new be.bds.bdsbes.service.dto.response.DatPhongResponse(d.id, d.ma, u.id, u.ma, u.sdt, u.hoTen," +
+            "d.ngayDat, d.checkIn, d.checkOut, d.soNguoi, d.ghiChu, d.trangThai, d.phong.ma, d.tongGia, d.phong.id, d.phong.giaPhong, d.hoaDon.id) " +
+            "from DatPhong d join d.khachHang u where d.id= :id")
     DatPhongResponse get(Long id);
 
-    @Query("select d from DatPhong d where d.user.id = :id and d.trangThai = :trangThai")
+    @Query("select d from DatPhong d where d.khachHang.id = :id and d.trangThai = :trangThai")
     Page<DatPhong> getAllDatPhongByUser(Pageable pageable, Long id, Integer trangThai);
 
     @Query("SELECT CASE WHEN COUNT(dp) > 0 THEN true ELSE false END " +
@@ -52,9 +52,9 @@ public interface DatPhongRepository extends JpaRepository<DatPhong, Long> {
     @Query("UPDATE DatPhong d SET d.trangThai = :trangThai WHERE d.id = :id")
     Integer updateTrangThaiById(int trangThai, Long id);
 
-    @Query("select new be.bds.bdsbes.service.dto.response.DatPhongResponse(d.id, d.ma, k.id, k.ma, k.sdt, u.name, v.id, v.ma," +
-            " v.giamGia, d.ngayDat, d.checkIn, d.checkOut, d.soNguoi, d.ghiChu, d.trangThai, d.phong.ma, d.tongGia, d.phong.id, d.phong.giaPhong, d.hoaDon.id) " +
-            "from DatPhong d join d.user u join u.khachHang k left join d.voucher v where d.id= :id")
+    @Query("select new be.bds.bdsbes.service.dto.response.DatPhongResponse(d.id, d.ma, u.id, u.ma, u.sdt, u.hoTen," +
+            "d.ngayDat, d.checkIn, d.checkOut, d.soNguoi, d.ghiChu, d.trangThai, d.phong.ma, d.tongGia, d.phong.id, d.phong.giaPhong, d.hoaDon.id) " +
+            "from DatPhong d join d.khachHang u where d.id= :id")
     List<DatPhongResponse> getDatPhong(Long id);
 
     @Query("select p from DatPhong p where p.hoaDon.id = :id and p.trangThai = 1 or p.trangThai = 2 or p.trangThai = 3")
@@ -65,7 +65,7 @@ public interface DatPhongRepository extends JpaRepository<DatPhong, Long> {
     @Query("UPDATE DatPhong d SET d.phong.id = :idPhong, d.tongGia = :tongGia WHERE d.id = :id")
     Integer updateDatPhongById(Long idPhong, BigDecimal tongGia, Long id);
 
-    @Query("select d from DatPhong d where d.user.id = :id ")
+    @Query("select d from DatPhong d where d.khachHang.id = :id ")
     Page<DatPhong> getLichSuDatPhong(Pageable pageable, Long id);
 
     @Query("select d from DatPhong d join HoaDon h on d.hoaDon.id = h.id where h.trangThai = 1 and h.khachHang.id = :idKH and d.trangThai = 1")
