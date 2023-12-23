@@ -45,7 +45,7 @@ public class DatPhong {
     @JoinColumn(name = "id_phong")
     private Phong phong;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_khach_hang")
     private KhachHang khachHang;
 
