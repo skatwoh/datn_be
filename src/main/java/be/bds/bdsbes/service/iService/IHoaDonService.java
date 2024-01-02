@@ -8,6 +8,9 @@ import be.bds.bdsbes.service.dto.DatPhongDTO;
 import be.bds.bdsbes.service.dto.HoaDonDTO;
 import be.bds.bdsbes.utils.dto.PagedResponse;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 public interface IHoaDonService {
 
     PagedResponse<HoaDonResponse> getHoaDon(int page, int size) throws ServiceException;
@@ -30,4 +33,14 @@ public interface IHoaDonService {
     Integer updateTrangThai(Integer trangThai, Long id) throws ServiceException;
 
     Boolean deleteHoaDon(HoaDonDTO hoaDonDTO);
+
+    BigDecimal getDoanhThuByDay(LocalDate checkIn, LocalDate checkOut);
+
+    BigDecimal getDoanhThuByToDay(int day, int month, int year);
+
+    BigDecimal getDoanhThuByMonth(int month, int year);
+
+    BigDecimal getDoanhThuByYear(int year);
+
+    BigDecimal getAllDoanhThu();
 }
