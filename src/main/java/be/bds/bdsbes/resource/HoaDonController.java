@@ -21,6 +21,9 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @Slf4j
@@ -163,5 +166,32 @@ public class HoaDonController {
         } catch (ServiceException e) {
             throw new RuntimeException(e);
         }
+    }
+    @GetMapping("doanh-thu-by-day")
+    public ResponseEntity<?> doanhthubyday(@RequestParam(value = "checkIn") String checkIn,@RequestParam(value = "checkOut") String checkOut) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate parsedCheckIn = LocalDate.parse(checkIn, formatter);
+        LocalDate parsedCheckOut = LocalDate.parse(checkOut, formatter);
+        return ResponseUtil.wrap(this.iHoaDonService.getDoanhThuByDay(parsedCheckIn,parsedCheckOut));
+    }
+
+    @GetMapping("doanh-thu-by-to-day")
+    public ResponseEntity<?> doanhThuByTime(@RequestParam(value = "year") int year,@RequestParam(value = "month") int month,@RequestParam(value = "day") int day) {
+        return ResponseUtil.wrap(this.iHoaDonService.getDoanhThuByToDay(day, month, year));
+    }
+
+    @GetMapping("doanh-thu-by-month")
+    public ResponseEntity<?> doanhThuByMonth(@RequestParam(value = "year") int year,@RequestParam(value = "month") int month) {
+        return ResponseUtil.wrap(this.iHoaDonService.getDoanhThuByMonth(month, year));
+    }
+
+    @GetMapping("doanh-thu-by-year")
+    public ResponseEntity<?> doanhThuByYear(@RequestParam(value = "year") int year) {
+        return ResponseUtil.wrap(this.iHoaDonService.getDoanhThuByYear(year));
+    }
+
+    @GetMapping("all-doanh-thu")
+    public ResponseEntity<?> getAllDoanhThu() {
+        return ResponseUtil.wrap(this.iHoaDonService.getAllDoanhThu());
     }
 }

@@ -12,6 +12,7 @@ import be.bds.bdsbes.service.dto.response.PhongResponse;
 import be.bds.bdsbes.utils.dto.PagedResponse;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IDatPhongService {
@@ -44,4 +45,6 @@ public interface IDatPhongService {
     PagedResponse<DatPhongResponse> getDatPhongByHoaDon(int page, int size, Long id) throws ServiceException;
 
     Boolean datPhongTaiQuay(DatPhongDTO datPhongDTO) throws ServiceException;
+
+    int getSoPhongDaDat(LocalDate CheckIn, LocalDate CheckOut);
 }

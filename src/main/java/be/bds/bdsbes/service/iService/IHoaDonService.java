@@ -5,6 +5,9 @@ import be.bds.bdsbes.payload.HoaDonResponse;
 import be.bds.bdsbes.service.dto.HoaDonDTO;
 import be.bds.bdsbes.utils.dto.PagedResponse;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 public interface IHoaDonService {
 
     PagedResponse<HoaDonResponse> getHoaDon(int page, int size) throws ServiceException;
@@ -33,4 +36,14 @@ public interface IHoaDonService {
     Boolean updateTaiQuay(HoaDonDTO hoaDonDTO, Long id) throws ServiceException;
 
     Boolean createOrUpdateTaiQuay(HoaDonDTO hoaDonDTO) throws ServiceException;
+
+    BigDecimal getDoanhThuByDay(LocalDate checkIn, LocalDate checkOut);
+
+    BigDecimal getDoanhThuByToDay(int day, int month, int year);
+
+    BigDecimal getDoanhThuByMonth(int month, int year);
+
+    BigDecimal getDoanhThuByYear(int year);
+
+    BigDecimal getAllDoanhThu();
 }
