@@ -57,6 +57,12 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
             "where k.id = :idKhachHang and cast(p.ngayTao as date) = cast(:ngayTao as date) and p.trangThai = 1")
     HoaDonResponse getHoaDon0(Long idKhachHang, LocalDate ngayTao);
 
+    @Query("select h.id from HoaDon h where h.khachHang.id = :idKH and cast(h.ngayTao as date) = cast(:ngayTao as date) and (h.trangThai = 1 or h.trangThai = 3)")
+    Long getIdTaiQuay(Long idKH, LocalDate ngayTao);
+    @Query("select new be.bds.bdsbes.payload.HoaDonResponse(p.id, p.ngayTao, p.ngayThanhToan, p.tongTien, p.trangThai, p.ghiChu, k.id, k.hoTen) from HoaDon p inner join p.khachHang k " +
+            "where k.id = :idKhachHang and cast(p.ngayTao as date) = cast(:ngayTao as date) and (p.trangThai = 3 or p.trangThai = 1)")
+    HoaDonResponse getHoaDonTaiQuay(Long idKhachHang, LocalDate ngayTao);
+
     @Query("select sum(h.tongTien) from HoaDon h where h.trangThai = 0 and (h.ngayThanhToan between cast(:checkIn as date) and cast(:checkOut as date) )")
     BigDecimal getDoanhThuByDay(LocalDate checkIn, LocalDate checkOut);
 

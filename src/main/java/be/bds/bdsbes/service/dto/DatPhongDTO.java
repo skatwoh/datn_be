@@ -31,6 +31,8 @@ public class DatPhongDTO implements Serializable {
 
     Long userId;
 
+    Long idKhachHang;
+
     Long idPhong;
 
     Long idVoucher;

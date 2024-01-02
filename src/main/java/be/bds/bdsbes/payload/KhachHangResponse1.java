@@ -27,4 +27,7 @@ public class KhachHangResponse1 {
     private String diaChi;
 
     private String sdt;
+
+    private String cccd;
+
 }
