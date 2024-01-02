@@ -428,6 +428,8 @@ public class DatPhongServiceImpl implements IDatPhongService {
         );
     }
 
+
+
     @Override
     public Boolean createListRoom(List<DatPhongDTO> datPhongDTOList) throws ServiceException {
         for (DatPhongDTO datPhongDTO : datPhongDTOList) {
@@ -475,6 +477,11 @@ public class DatPhongServiceImpl implements IDatPhongService {
         }
 
         return true;
+    }
+
+    @Override
+    public int getSoPhongDaDat(LocalDate CheckIn, LocalDate CheckOut) {
+        return datPhongRepository.getSoPhongDaDat(CheckIn, CheckOut);
     }
 
 }

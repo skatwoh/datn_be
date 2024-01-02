@@ -30,6 +30,8 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -273,5 +275,13 @@ public class DatPhongController {
             log.error(this.getClass().getName(), e);
             return ResponseUtil.generateErrorResponse(e);
         }
+    }
+
+    @GetMapping("so-phong-da-dat")
+    public ResponseEntity<?> sophongdadat(@RequestParam(value = "checkIn") String checkIn,@RequestParam(value = "checkOut") String checkOut) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate parsedCheckIn = LocalDate.parse(checkIn, formatter);
+        LocalDate parsedCheckOut = LocalDate.parse(checkOut, formatter);
+        return ResponseUtil.wrap(this.iDatPhongService.getSoPhongDaDat(parsedCheckIn,parsedCheckOut));
     }
 }

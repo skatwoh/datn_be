@@ -290,4 +290,29 @@ public class HoaDonServiceImpl implements IHoaDonService {
         }
         return false;
     }
+
+    @Override
+    public BigDecimal getDoanhThuByDay(LocalDate checkIn, LocalDate checkOut) {
+        return hoaDonRepository.getDoanhThuByDay(checkIn, checkOut);
+    }
+
+    @Override
+    public BigDecimal getDoanhThuByToDay(int day, int month, int year) {
+        return hoaDonRepository.getDoanhThuByToDay(day, month, year);
+    }
+
+    @Override
+    public BigDecimal getDoanhThuByMonth(int month, int year) {
+        return hoaDonRepository.getDoanhThuByMonth(month, year);
+    }
+
+    @Override
+    public BigDecimal getDoanhThuByYear(int year) {
+        return hoaDonRepository.getDoanhThuByYear(year);
+    }
+
+    @Override
+    public BigDecimal getAllDoanhThu() {
+        return hoaDonRepository.getAllDoanhThu();
+    }
 }
