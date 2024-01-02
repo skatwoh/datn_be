@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Slf4j
 @Service("khachHangServiceImpl")
@@ -62,7 +63,15 @@ public class KhachHangServiceImpl implements IKhachHangService {
 
     @Override
     public KhachHang create(KhachHangDTO khachHangDTO) {
+        Random random = new Random();
+        int min = 1;
+        int max = Integer.MAX_VALUE;
+        int ma = random.nextInt(max - min + 1) + min;
         KhachHang khachHang = khachHangDTO.dto(new KhachHang());
+        khachHang.setMa("KH" + ma);
+        khachHang.setHoTen(khachHangDTO.getHoTen());
+        khachHang.setCccd(khachHangDTO.getCccd());
+        khachHang.setSdt(khachHangDTO.getSdt());
         khachHang.setTheThanhVien(TheThanhVien.builder().id(Long.parseLong("1")).build());
         return khachHangRepository.save(khachHang);
     }
@@ -112,5 +121,35 @@ public class KhachHangServiceImpl implements IKhachHangService {
                 entities.isLast(),
                 entities.getSort().toString()
         );
+    }
+
+    @Override
+    public Boolean createOrUpdate(KhachHangDTO khachHangDTO) throws ServiceException{
+        for(KhachHang kh: khachHangRepository.findAll()){
+            if(kh.getCccd().trim().equals(khachHangDTO.getCccd().trim())){
+                kh.setSdt(khachHangDTO.getSdt());
+                kh.setHoTen(khachHangDTO.getHoTen());
+                kh.setCccd(khachHangDTO.getCccd());
+                this.khachHangRepository.save(kh);
+                return true;
+            }
+        }
+        Random random = new Random();
+        int min = 1;
+        int max = Integer.MAX_VALUE;
+        int ma = random.nextInt(max - min + 1) + min;
+        KhachHang khachHang = khachHangDTO.dto(new KhachHang());
+        khachHang.setMa("KH" + ma);
+        khachHang.setHoTen(khachHangDTO.getHoTen());
+        khachHang.setCccd(khachHangDTO.getCccd());
+        khachHang.setSdt(khachHangDTO.getSdt());
+        khachHang.setTheThanhVien(TheThanhVien.builder().id(Long.parseLong("1")).build());
+        this.khachHangRepository.save(khachHang);
+        return true;
+    }
+
+    @Override
+    public Long findIdByCCCD(String cccd) {
+        return khachHangRepository.findIdByCccd(cccd);
     }
 }

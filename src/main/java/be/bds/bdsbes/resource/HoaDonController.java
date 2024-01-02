@@ -152,4 +152,16 @@ public class HoaDonController {
             throw new RuntimeException(e);
         }
     }
+
+    @PostMapping("create-or-update-tai-quay")
+    public ResponseEntity<?> createOrUpdateTaiQuay(@RequestBody HoaDonDTO hoaDonDTO) {
+        try {
+            return ResponseUtil.wrap(this.iHoaDonService.createOrUpdateTaiQuay(hoaDonDTO));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

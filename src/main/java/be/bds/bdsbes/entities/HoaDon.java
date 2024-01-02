@@ -52,7 +52,7 @@ public class HoaDon {
     @Column(name = COLUMN_GHICHU_NAME)
     private String ghiChu;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_khach_hang")
     private KhachHang khachHang;
 
