@@ -260,4 +260,17 @@ public class PhongController {
             throw new RuntimeException(e);
         }
     }
+    @GetMapping("get-room-by-tienIch")
+    public ResponseEntity<?> getRoombyTienIch(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "searchInput", defaultValue = "") List<String> tienIch)
+    {
+        try {
+            return ResponseUtil.wrap(this.iPhongService.getListRoomByTienIch(page, size,tienIch));
+        } catch (Exception | ServiceException ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse((ServiceException) ex);
+        }
+    }
 }
