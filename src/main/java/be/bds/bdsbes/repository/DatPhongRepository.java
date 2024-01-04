@@ -76,4 +76,9 @@ public interface DatPhongRepository extends JpaRepository<DatPhong, Long> {
 
     @Query("select d from DatPhong d join HoaDon h on d.hoaDon.id = h.id where d.hoaDon.id = :id")
     List<DatPhong> getRoomByHoaDon0(Long id);
+
+    @Query("select count (dp.phong.id) from DatPhong dp where dp.trangThai = 1 and (cast(dp.ngayDat as date) between cast(:checkIn as date) and cast(:checkOut as date) )")
+    int getSoPhongDaDat(LocalDate checkIn, LocalDate checkOut);
+
+
 }

@@ -18,10 +18,10 @@ public class KhachHangDTO {
     private Boolean gioiTinh;
     private String diaChi;
     private String sdt;
-
+    private String cccd;
     private Long idTheThanhVien;
 
-    public KhachHang dto(KhachHang khachHang){
+    public KhachHang dto(KhachHang khachHang) {
 //        khachHang.setMa(this.getMa());
         khachHang.setHoTen(this.getHoTen());
         khachHang.setSdt(this.getSdt());

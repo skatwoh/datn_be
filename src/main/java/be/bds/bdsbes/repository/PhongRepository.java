@@ -102,4 +102,6 @@ public interface PhongRepository extends JpaRepository<Phong, Long> {
 
     @Query("select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id where ct.tienIch in :tienIch  ")
     Page<Phong> getListRoomByTienIch(Pageable pageable, @Param("tienIch") List<String> tienIch);
+
+
 }
