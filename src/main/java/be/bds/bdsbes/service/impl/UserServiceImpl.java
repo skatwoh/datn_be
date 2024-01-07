@@ -42,7 +42,7 @@ public class UserServiceImpl implements IUserService {
     public UserProfileResponse getCurrentUser(UserPrincipal userPrincipal) {
         User user = this.userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
         if (null != user) {
-            return new UserProfileResponse(user.getId(), user.getName(), user.getEmail(), user.getImageUrl(), user.getEmailVerified(), user.getCreatedAt(), user.getUpdatedAt(), user.getRole());
+            return new UserProfileResponse(user.getId(), user.getName(), user.getEmail(), user.getImageUrl(), user.getEmailVerified(), user.getCreatedAt(), user.getUpdatedAt(), user.getRole(), user.getSdt());
         }
         return null;
     }
@@ -102,6 +102,8 @@ public class UserServiceImpl implements IUserService {
             UserProfileResponse userProfileResponse = new UserProfileResponse();
             userProfileResponse.setId(user.getId());
             userProfileResponse.setName(user.getName());
+            userProfileResponse.setEmail(user.getEmail());
+            userProfileResponse.setSdt(user.getSdt());
 
             return userProfileResponse;
         } else {
