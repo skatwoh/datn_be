@@ -54,4 +54,7 @@ public interface IPhongService {
     PagedResponse<RoomMappingChiTietPhong> getListRoomActive(int page, int size, LocalDateTime checkIn, LocalDateTime checkOut) throws ServiceException;
 
     PagedResponse<PhongResponse1> getListRoomByTienIch(int page, int size, List<String> tienIch) throws ServiceException;
+    PagedResponse<PhongResponse1> getListRoomByTienIch1(int page, int size, List<String> tienIch,int soLuongNguoi) throws ServiceException;
+    PagedResponse<PhongResponse1> getListRoomByTienIch2(int page, int size, List<String> tienIch, String tenLoaiPhong) throws ServiceException;
+    PagedResponse<PhongResponse1> getListRoomByTienIch3(int page, int size, List<String> tienIch, String tenLoaiPhong, int soLuongNguoi) throws ServiceException;
 }
