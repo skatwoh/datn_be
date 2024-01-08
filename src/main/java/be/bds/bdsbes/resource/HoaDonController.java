@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -194,4 +195,10 @@ public class HoaDonController {
     public ResponseEntity<?> getAllDoanhThu() {
         return ResponseUtil.wrap(this.iHoaDonService.getAllDoanhThu());
     }
+
+    @PutMapping("tinh-tien-dich-vu")
+    public ResponseEntity<?> tinhTienDichVu(@RequestParam(value = "id") Long id, @RequestBody BigDecimal tongTien) throws ServiceException {
+        return ResponseUtil.wrap(this.iHoaDonService.updateTienDichVu(tongTien, id));
+    }
+
 }

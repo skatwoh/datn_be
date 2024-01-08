@@ -229,6 +229,16 @@ public class HoaDonServiceImpl implements IHoaDonService {
     }
 
     @Override
+    public Boolean updateTienDichVu(BigDecimal tienDichVu, Long id) throws ServiceException {
+        HoaDon hoaDon = hoaDonRepository.findById(id).get();
+        BigDecimal tongTienCu = hoaDon.getTongTien();
+        BigDecimal tongTienMoi = tienDichVu.add(tongTienCu);
+        hoaDon.setTongTien(tongTienMoi);
+        hoaDonRepository.save(hoaDon);
+        return true;
+    }
+
+    @Override
     public Boolean createOrUpdate(HoaDonDTO hoaDonDTO) throws ServiceException {
         Long idKH = khachHangRepository.findByIdKhachHang(hoaDonDTO.getIdKhachHang());
         HoaDonResponse hoaDonResponse = hoaDonRepository.getHoaDon(idKH, LocalDate.now());

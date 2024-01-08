@@ -14,8 +14,9 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class ChiTietDichVuResponse1 {
     private Long id;
-    private DichVu idDichVu;
-    private DatPhong idDatPhong;
+    private Long idDichVu;
+    private String tenDichVu;
+    private Long idDatPhong;
     private String ghiChu;
     private BigDecimal giaDichVu;
     private Integer trangThai;
