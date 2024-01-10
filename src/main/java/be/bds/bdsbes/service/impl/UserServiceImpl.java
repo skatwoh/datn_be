@@ -1,11 +1,14 @@
 package be.bds.bdsbes.service.impl;
 
 import be.bds.bdsbes.domain.User;
+import be.bds.bdsbes.entities.KhachHang;
 import be.bds.bdsbes.exception.ResourceNotFoundException;
 import be.bds.bdsbes.exception.ServiceException;
+import be.bds.bdsbes.payload.CustomerReponse;
 import be.bds.bdsbes.payload.ManualActiveUserResponse;
 import be.bds.bdsbes.payload.PermissionResponse;
 import be.bds.bdsbes.payload.UserProfileResponse;
+import be.bds.bdsbes.repository.KhachHangRepository;
 import be.bds.bdsbes.repository.UserRepository;
 import be.bds.bdsbes.security.UserPrincipal;
 import be.bds.bdsbes.service.iService.IUserService;
@@ -32,6 +35,8 @@ import java.util.Optional;
 @Slf4j
 @Service("userServiceImpl")
 public class UserServiceImpl implements IUserService {
+    @Autowired
+    private KhachHangRepository khachHangRepository;
     @Autowired
     private UserRepository userRepository;
 
@@ -94,18 +99,25 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserProfileResponse getUsersDetail(String email) throws ServiceException {
+    public CustomerReponse getUsersDetail(String email) throws ServiceException {
         Optional<User> userOptional = userRepository.findByEmail(email);
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            UserProfileResponse userProfileResponse = new UserProfileResponse();
-            userProfileResponse.setId(user.getId());
-            userProfileResponse.setName(user.getName());
-            userProfileResponse.setEmail(user.getEmail());
-            userProfileResponse.setSdt(user.getSdt());
+            Long idKH = user.getKhachHang().getId();
+            Optional<KhachHang> khachHangOptional = khachHangRepository.findById(idKH);
+            KhachHang khachHang = khachHangOptional.get();
 
-            return userProfileResponse;
+            CustomerReponse customerReponse = new CustomerReponse();
+            customerReponse.setId(user.getId());
+            customerReponse.setName(user.getName());
+            customerReponse.setEmail(user.getEmail());
+            customerReponse.setSdt(user.getSdt());
+            customerReponse.setDiaChi(khachHang.getDiaChi());
+            customerReponse.setGioiTinh(khachHang.getGioiTinh());
+            customerReponse.setNgaySinh(khachHang.getNgaySinh());
+
+            return customerReponse;
         } else {
             throw new ServiceException("Không tìm thấy người dùng với Email " + email);
         }
