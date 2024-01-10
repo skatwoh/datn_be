@@ -26,4 +26,6 @@ public interface IKhachHangService {
     Boolean createOrUpdate(KhachHangDTO khachHangDTO) throws ServiceException;
 
     Long findIdByCCCD(String cccd);
+
+    KhachHang updateKH(KhachHangDTO khachHangDTO, Long id);
 }
