@@ -154,20 +154,19 @@ public class KhachHangServiceImpl implements IKhachHangService {
     }
 
     @Override
-    public KhachHang updateKH(KhachHangDTO khachHangDTO, Long id) {
+    public Boolean updateKH(KhachHangDTO khachHangDTO, Long id) {
         Long idKH = khachHangRepository.findByI(id);
         Optional<KhachHang> khachHangOptional = khachHangRepository.findById(idKH);
-        if(khachHangOptional.isPresent()){
-            KhachHang khachHang = khachHangDTO.dto(khachHangOptional.get());
-            khachHang.setHoTen(khachHangDTO.getHoTen());
-            khachHang.setCccd(khachHangDTO.getCccd());
-            khachHang.setSdt(khachHangDTO.getSdt());
-            khachHang.setGioiTinh(khachHangDTO.getGioiTinh());
-            khachHang.setNgaySinh(khachHangDTO.getNgaySinh());
-            khachHang.setGhiChu(khachHangDTO.getGhiChu());
-            return khachHangRepository.save(khachHang);
-        }
-        return null;
+        KhachHang khachHang = khachHangDTO.dto(khachHangOptional.get());
+        khachHang.setHoTen(khachHangDTO.getHoTen());
+        khachHang.setCccd(khachHangDTO.getCccd());
+        khachHang.setSdt(khachHangDTO.getSdt());
+        khachHang.setGioiTinh(khachHangDTO.getGioiTinh());
+        khachHang.setNgaySinh(khachHangDTO.getNgaySinh());
+        khachHang.setDiaChi(khachHangDTO.getDiaChi());
+        khachHang.setGhiChu(khachHangDTO.getGhiChu());
+        khachHangRepository.save(khachHang);
+        return true;
     }
 
 

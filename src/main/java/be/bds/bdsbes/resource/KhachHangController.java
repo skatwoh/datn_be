@@ -79,6 +79,6 @@ public class KhachHangController {
             List<ObjectError> errorList = result.getAllErrors();
             return ResponseEntity.badRequest().body(errorList);
         }
-        return ResponseEntity.ok(khachHangService.updateKH(khachHangDTO, id));
+        return ResponseUtil.wrap(khachHangService.updateKH(khachHangDTO, id));
     }
 }
