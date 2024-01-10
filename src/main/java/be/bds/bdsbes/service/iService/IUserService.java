@@ -1,6 +1,7 @@
 package be.bds.bdsbes.service.iService;
 
 import be.bds.bdsbes.exception.ServiceException;
+import be.bds.bdsbes.payload.CustomerReponse;
 import be.bds.bdsbes.payload.PermissionResponse;
 import be.bds.bdsbes.payload.UserProfileResponse;
 import be.bds.bdsbes.security.UserPrincipal;
@@ -18,7 +19,7 @@ public interface IUserService {
     public ManualActiveUserResponse manualActiveUser(String email);
 
     public PagedResponse<UserProfileResponse> getUsers(int page, int size) throws ServiceException;
-    public UserProfileResponse getUsersDetail(String email) throws ServiceException;
+    public CustomerReponse getUsersDetail(String email) throws ServiceException;
 
     public PermissionResponse setPermissionUser(String email);
     public PermissionResponse setPermissionAdmin(String email);
