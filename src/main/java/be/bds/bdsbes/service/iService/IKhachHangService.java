@@ -27,5 +27,5 @@ public interface IKhachHangService {
 
     Long findIdByCCCD(String cccd);
 
-    KhachHang updateKH(KhachHangDTO khachHangDTO, Long id);
+    Boolean updateKH(KhachHangDTO khachHangDTO, Long id);
 }
