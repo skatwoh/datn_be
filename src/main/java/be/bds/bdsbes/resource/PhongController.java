@@ -170,17 +170,30 @@ public class PhongController {
             if (tenLoaiPhong.isEmpty() && (checkIn.isEmpty() && checkOut.isEmpty())) {
                 return ResponseUtil.wrap(this.iPhongService.getPhong(page, size));
             }
-            if (tenLoaiPhong != null && Integer.valueOf(soLuongNguoi) == 4 && (checkIn.equals("") || checkOut.equals("") || checkIn == null || checkOut == null)) {
+            if (tenLoaiPhong != null && !soLuongNguoi.isEmpty() && Integer.valueOf(soLuongNguoi) == 4 && (checkIn.equals("") || checkOut.equals("") || checkIn == null || checkOut == null)) {
                 return ResponseUtil.wrap(this.iPhongService.searchRoomManager2(page, size, Integer.valueOf(soLuongNguoi), tenLoaiPhong));
             }
-            if (tenLoaiPhong != null && Integer.valueOf(soLuongNguoi) < 4 && (checkIn.equals("") || checkOut.equals("") || checkIn == null || checkOut == null)) {
+            if (tenLoaiPhong != null && !soLuongNguoi.isEmpty() && Integer.valueOf(soLuongNguoi) < 4 && (checkIn.equals("") || checkOut.equals("") || checkIn == null || checkOut == null)) {
                 return ResponseUtil.wrap(this.iPhongService.searchRoomManager4(page, size, Integer.valueOf(soLuongNguoi), tenLoaiPhong));
+            }
+            if(soLuongNguoi.isEmpty() && tenLoaiPhong.isEmpty() && !checkIn.isEmpty() && !checkOut.isEmpty()){
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDateTime parsedCheckIn = LocalDate.parse(checkIn, formatter).atStartOfDay();
+                LocalDateTime parsedCheckOut = LocalDate.parse(checkOut, formatter).atStartOfDay();
+                return ResponseUtil.wrap(this.iPhongService.getListRoomByCheckDate(page, size, parsedCheckIn, parsedCheckOut));
+            }
+            if(soLuongNguoi.isEmpty() && !tenLoaiPhong.isEmpty() && !checkIn.isEmpty() && !checkOut.isEmpty()){
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDateTime parsedCheckIn = LocalDate.parse(checkIn, formatter).atStartOfDay();
+                LocalDateTime parsedCheckOut = LocalDate.parse(checkOut, formatter).atStartOfDay();
+                return ResponseUtil.wrap(this.iPhongService.getListRoomByCheckDateandLoaiPhong(page, size, tenLoaiPhong, parsedCheckIn, parsedCheckOut));
             }
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDateTime parsedCheckIn = LocalDate.parse(checkIn, formatter).atStartOfDay();
             LocalDateTime parsedCheckOut = LocalDate.parse(checkOut, formatter).atStartOfDay();
             System.out.println(parsedCheckOut + " " + parsedCheckIn);
-            if (Integer.valueOf(soLuongNguoi) == 4) {
+            if (!soLuongNguoi.isEmpty() &&
+                    Integer.valueOf(soLuongNguoi) == 4) {
                 return ResponseUtil.wrap(this.iPhongService.searchRoomManager3(page, size, Integer.valueOf(soLuongNguoi), tenLoaiPhong, parsedCheckIn, parsedCheckOut));
             }
             return ResponseUtil.wrap(this.iPhongService.searchRoomManager(page, size, Integer.valueOf(soLuongNguoi), tenLoaiPhong, parsedCheckIn, parsedCheckOut));
@@ -272,7 +285,40 @@ public class PhongController {
             @RequestParam(value = "checkOut", defaultValue = "") String checkOut) {
 
         try {
+            if(tienIch.size() <= 0 && (checkIn.equals("") || checkOut.equals("")) && !tenLoaiPhong.isEmpty()){
+                System.out.println("check1");
+                return ResponseUtil.wrap(this.iPhongService.getListRoomByLoaiPhong(page, size, tenLoaiPhong));
+            }
+            if(tienIch.size() <= 0 && (!checkIn.equals("") || !checkOut.equals("")) && tenLoaiPhong.isEmpty()){
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDateTime parsedCheckIn = LocalDate.parse(checkIn, formatter).atStartOfDay();
+                LocalDateTime parsedCheckOut = LocalDate.parse(checkOut, formatter).atStartOfDay();
+                System.out.println("check2");
+                return ResponseUtil.wrap(this.iPhongService.getListRoomByCheckDate(page, size, parsedCheckIn, parsedCheckOut));
+            }
+            if(tienIch.size() <= 0 && (!checkIn.equals("") || !checkOut.equals("")) && !tenLoaiPhong.isEmpty()){
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDateTime parsedCheckIn = LocalDate.parse(checkIn, formatter).atStartOfDay();
+                LocalDateTime parsedCheckOut = LocalDate.parse(checkOut, formatter).atStartOfDay();
+                System.out.println("check2");
+                return ResponseUtil.wrap(this.iPhongService.getListRoomByCheckDateandLoaiPhong(page, size, tenLoaiPhong, parsedCheckIn, parsedCheckOut));
+            }
+            if(tienIch.size() > 0 && (!checkIn.equals("") || !checkOut.equals("")) && tenLoaiPhong.isEmpty()){
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDateTime parsedCheckIn = LocalDate.parse(checkIn, formatter).atStartOfDay();
+                LocalDateTime parsedCheckOut = LocalDate.parse(checkOut, formatter).atStartOfDay();
+                System.out.println("check2");
+                return ResponseUtil.wrap(this.iPhongService.getListRoomByCheckDateandTienIch(page, size, tienIch, parsedCheckIn, parsedCheckOut));
+            }
+            if(tienIch.size() > 0 && (!checkIn.equals("") || !checkOut.equals("")) && !tenLoaiPhong.isEmpty()){
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDateTime parsedCheckIn = LocalDate.parse(checkIn, formatter).atStartOfDay();
+                LocalDateTime parsedCheckOut = LocalDate.parse(checkOut, formatter).atStartOfDay();
+                System.out.println("check2");
+                return ResponseUtil.wrap(this.iPhongService.getListRoomByCheckDateandAll(page, size, tienIch, tenLoaiPhong, parsedCheckIn, parsedCheckOut));
+            }
             if ((checkIn.equals("") || checkOut.equals("")) && soLuongNguoi.equals("") && tenLoaiPhong.isEmpty()){
+                System.out.println("check3");
                 return ResponseUtil.wrap(this.iPhongService.getListRoomByTienIch(page, size, tienIch));
             }
             if ((checkIn.equals("") || checkOut.equals("")) && tenLoaiPhong.isEmpty() && !soLuongNguoi.isEmpty()){

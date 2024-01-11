@@ -154,6 +154,11 @@ public class KhachHangServiceImpl implements IKhachHangService {
     }
 
     @Override
+    public KhachHangResponse1 getKhachHangbyUser(Long id){
+        return khachHangRepository.getKhachHangByUser(id);
+    }
+
+    @Override
     public Boolean updateKH(KhachHangDTO khachHangDTO, Long id) {
         Long idKH = khachHangRepository.findByI(id);
         Optional<KhachHang> khachHangOptional = khachHangRepository.findById(idKH);

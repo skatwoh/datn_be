@@ -1,16 +1,10 @@
 package be.bds.bdsbes.service.impl;
 
 import be.bds.bdsbes.domain.User;
-import be.bds.bdsbes.entities.DatPhong;
-import be.bds.bdsbes.entities.HoaDon;
-import be.bds.bdsbes.entities.KhachHang;
-import be.bds.bdsbes.entities.ThongBao;
+import be.bds.bdsbes.entities.*;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.HoaDonResponse;
-import be.bds.bdsbes.repository.DatPhongRepository;
-import be.bds.bdsbes.repository.HoaDonRepository;
-import be.bds.bdsbes.repository.KhachHangRepository;
-import be.bds.bdsbes.repository.ThongBaoRepository;
+import be.bds.bdsbes.repository.*;
 import be.bds.bdsbes.service.dto.HoaDonDTO;
 import be.bds.bdsbes.service.iService.IHoaDonService;
 import be.bds.bdsbes.service.mapper.HoaDonMapper;
@@ -371,4 +365,28 @@ public class HoaDonServiceImpl implements IHoaDonService {
     public BigDecimal getAllDoanhThu() {
         return hoaDonRepository.getAllDoanhThu();
     }
+
+    @Override
+    public Integer updateRankKhachHang(Long id, Long idTheThanhVien) {
+//        BigDecimal tongTien = hoaDonRepository.getTongTienByKhachHang(id);
+//        if(Integer.parseInt(tongTien.toString()) >=  100000000 ){
+//            this.khachHangRepository.updateTheThanhVien(id , Long.parseLong("4"));
+//             return true;
+//        } else if(Integer.parseInt(tongTien.toString()) >= 60000000){
+//            this.khachHangRepository.updateTheThanhVien(id , Long.parseLong("3"));
+//            return true;
+//        }else if(Integer.parseInt(tongTien.toString()) >= 20000000){
+//            this.khachHangRepository.updateTheThanhVien(id , Long.parseLong("2"));
+//            return true;
+//        }
+        this.khachHangRepository.updateTheThanhVien(id, idTheThanhVien);
+        return 1;
+    }
+
+    @Override
+    public BigDecimal getTongTienByKhachHang(Long id) {
+        return hoaDonRepository.getTongTienByKhachHang(id);
+    }
+
+
 }

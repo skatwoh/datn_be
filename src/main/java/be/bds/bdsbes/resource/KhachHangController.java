@@ -73,6 +73,11 @@ public class KhachHangController {
         return ResponseEntity.ok(khachHangService.findIdByCCCD(cccd));
     }
 
+    @GetMapping("get-khach-hang-by-user")
+    public ResponseEntity<?> getKhachHangByUser(@RequestParam( value = "id") Long id){
+        return ResponseEntity.ok(khachHangService.getKhachHangbyUser(id));
+    }
+
     @PutMapping("update-customer")
     public ResponseEntity<?> updateCustomer(@RequestParam(value = "id") Long id, @RequestBody @Valid KhachHangDTO khachHangDTO, BindingResult result){
         if(result.hasErrors()){
