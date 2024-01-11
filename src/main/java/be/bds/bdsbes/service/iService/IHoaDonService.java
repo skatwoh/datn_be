@@ -46,4 +46,8 @@ public interface IHoaDonService {
     BigDecimal getDoanhThuByYear(int year);
 
     BigDecimal getAllDoanhThu();
+
+    Integer updateRankKhachHang(Long id , Long idTheThanhVien);
+
+    BigDecimal getTongTienByKhachHang(Long id);
 }

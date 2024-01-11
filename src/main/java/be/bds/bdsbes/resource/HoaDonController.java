@@ -194,4 +194,18 @@ public class HoaDonController {
     public ResponseEntity<?> getAllDoanhThu() {
         return ResponseUtil.wrap(this.iHoaDonService.getAllDoanhThu());
     }
+
+    @PostMapping("up-rank-customer")
+    public ResponseEntity<?> updateRankCustomer(@RequestParam(value = "id") Long id, @RequestBody Long idTheThanhVien) {
+         return ResponseUtil.wrap(
+                 this.iHoaDonService.updateRankKhachHang(id , idTheThanhVien)
+         );
+    }
+
+    @GetMapping("get-tong-tien-by-customer")
+    public ResponseEntity<?> getTongTienByCustomer(@RequestParam(value = "id") Long id) {
+        return ResponseUtil.wrap(
+                this.iHoaDonService.getTongTienByKhachHang(id)
+        );
+    }
 }
