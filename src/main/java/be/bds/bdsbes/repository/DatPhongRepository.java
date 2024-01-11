@@ -68,7 +68,7 @@ public interface DatPhongRepository extends JpaRepository<DatPhong, Long> {
     @Query("select d from DatPhong d where d.khachHang.id = :id ")
     Page<DatPhong> getLichSuDatPhong(Pageable pageable, Long id);
 
-    @Query("select d from DatPhong d join HoaDon h on d.hoaDon.id = h.id where h.trangThai = 1 and h.khachHang.id = :idKH and d.trangThai = 1")
+    @Query("select d from DatPhong d join HoaDon h on d.hoaDon.id = h.id where h.trangThai = 1 and h.khachHang.id = :idKH and d.trangThai = 2")
     Page<DatPhong> getRoomByHoaDon(Pageable pageable, Long idKH);
 
     @Query("select p from DatPhong p where p.hoaDon.id = :id")

@@ -157,4 +157,22 @@ public class KhachHangServiceImpl implements IKhachHangService {
     public KhachHangResponse1 getKhachHangbyUser(Long id){
         return khachHangRepository.getKhachHangByUser(id);
     }
+
+    @Override
+    public Boolean updateKH(KhachHangDTO khachHangDTO, Long id) {
+        Long idKH = khachHangRepository.findByI(id);
+        Optional<KhachHang> khachHangOptional = khachHangRepository.findById(idKH);
+        KhachHang khachHang = khachHangDTO.dto(khachHangOptional.get());
+        khachHang.setHoTen(khachHangDTO.getHoTen());
+        khachHang.setCccd(khachHangDTO.getCccd());
+        khachHang.setSdt(khachHangDTO.getSdt());
+        khachHang.setGioiTinh(khachHangDTO.getGioiTinh());
+        khachHang.setNgaySinh(khachHangDTO.getNgaySinh());
+        khachHang.setDiaChi(khachHangDTO.getDiaChi());
+        khachHang.setGhiChu(khachHangDTO.getGhiChu());
+        khachHangRepository.save(khachHang);
+        return true;
+    }
+
+
 }
