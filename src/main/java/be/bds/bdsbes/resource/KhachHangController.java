@@ -72,4 +72,9 @@ public class KhachHangController {
     public ResponseEntity<?> findByCCCD(@RequestParam(value = "cccd") String cccd){
         return ResponseEntity.ok(khachHangService.findIdByCCCD(cccd));
     }
+
+    @GetMapping("get-khach-hang-by-user")
+    public ResponseEntity<?> getKhachHangByUser(@RequestParam( value = "id") Long id){
+        return ResponseEntity.ok(khachHangService.getKhachHangbyUser(id));
+    }
 }

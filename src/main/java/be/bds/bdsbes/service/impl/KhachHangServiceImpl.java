@@ -152,4 +152,9 @@ public class KhachHangServiceImpl implements IKhachHangService {
     public Long findIdByCCCD(String cccd) {
         return khachHangRepository.findIdByCccd(cccd);
     }
+
+    @Override
+    public KhachHangResponse1 getKhachHangbyUser(Long id){
+        return khachHangRepository.getKhachHangByUser(id);
+    }
 }

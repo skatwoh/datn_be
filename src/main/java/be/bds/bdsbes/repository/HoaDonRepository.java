@@ -77,4 +77,8 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
 
     @Query("select sum(h.tongTien) from HoaDon h where h.trangThai = 0")
     BigDecimal getAllDoanhThu();
+
+    @Query ("select sum(h.tongTien) from HoaDon h join KhachHang k on h.khachHang.id = k.id group by k.id, h.trangThai having k.id = :id and h.trangThai = 0")
+    BigDecimal getTongTienByKhachHang(Long id);
+
 }
