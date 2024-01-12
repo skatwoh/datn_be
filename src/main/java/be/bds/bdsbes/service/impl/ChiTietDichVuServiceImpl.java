@@ -1,9 +1,11 @@
 package be.bds.bdsbes.service.impl;
 
 import be.bds.bdsbes.entities.ChiTietDichVu;
+import be.bds.bdsbes.entities.DatPhong;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.ChiTietDichVuResponse1;
 import be.bds.bdsbes.repository.ChiTietDichVuRepository;
+import be.bds.bdsbes.service.dto.response.DatPhongResponse;
 import be.bds.bdsbes.service.iService.IChiTietDichVuService;
 import be.bds.bdsbes.service.dto.ChiTietDichVuDTO;
 import be.bds.bdsbes.service.mapper.ChiTietDichVuMapper;
@@ -97,6 +99,40 @@ public class ChiTietDichVuServiceImpl implements IChiTietDichVuService {
 
         return new PagedResponse<>(
                 this.chiTietDichVuMapper.toDtoList(entities.getContent()),
+                page,
+                size,
+                entities.getTotalElements(),
+                entities.getTotalPages(),
+                entities.isLast(),
+                entities.getSort().toString()
+        );
+    }
+
+    @Override
+    public PagedResponse<ChiTietDichVuResponse1> getAllByDatPhong(int page, int size, Long id) throws ServiceException {
+        if (page <= 0) {
+            throw ServiceExceptionBuilderUtil.newBuilder()
+                    .addError(new ValidationErrorResponse("page", ValidationErrorUtil.Invalid))
+                    .build();
+        }
+
+        if (size > AppConstantsUtil.MAX_PAGE_SIZE) {
+            List<KeyValue> params = new ArrayList<>();
+            params.add(new KeyValue("max", String.valueOf(AppConstantsUtil.MAX_PAGE_SIZE)));
+
+            throw ServiceExceptionBuilderUtil.newBuilder()
+                    .addError(new ValidationErrorResponse("pageSize", ValidationErrorUtil.Invalid, params))
+                    .build();
+        }
+
+        // Retrieve all entities
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
+        Page<ChiTietDichVu> entities = chiTietDichVuRepository.getAllByDatPhong(pageable, id);
+
+        List<ChiTietDichVuResponse1> dtos = this.chiTietDichVuMapper.toDtoList(entities.getContent());
+
+        return new PagedResponse<>(
+                dtos,
                 page,
                 size,
                 entities.getTotalElements(),
