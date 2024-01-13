@@ -281,6 +281,15 @@ public class HoaDonServiceImpl implements IHoaDonService {
             }
             return hoaDonRepository.updateTrangThaiById(trangThai, id);
         }
+        if (trangThai == 2) {
+            for (DatPhong datPhong : datPhongRepository.findAll()) {
+                if (datPhong.getHoaDon().getId() == hoaDon.getId()) {
+                    datPhong.setTrangThai(1);
+                    this.datPhongRepository.save(datPhong);
+                }
+            }
+            return hoaDonRepository.updateTrangThaiById(trangThai, id);
+        }
         return hoaDonRepository.updateTrangThaiById(trangThai, id);
     }
 
