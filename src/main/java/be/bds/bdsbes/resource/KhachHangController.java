@@ -43,12 +43,20 @@ public class KhachHangController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<?> create(@RequestBody @Valid KhachHangDTO khachHangDTO, BindingResult result){
-        if(result.hasErrors()){
-            List<ObjectError> errorList = result.getAllErrors();
-            return ResponseEntity.badRequest().body(errorList);
+    public ResponseEntity<?> create(@RequestBody @Valid KhachHangDTO khachHangDTO){
+//        if(result.hasErrors()){
+//            List<ObjectError> errorList = result.getAllErrors();
+//            return ResponseEntity.badRequest().body(errorList);
+//        }
+//        return ResponseEntity.ok(khachHangService.createOrUpdate(khachHangDTO));
+        try {
+            return ResponseUtil.wrap(this.khachHangService.createOrUpdate(khachHangDTO));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
         }
-        return ResponseEntity.ok(khachHangService.create(khachHangDTO));
     }
 
     @PutMapping("update")
@@ -58,5 +66,29 @@ public class KhachHangController {
             return ResponseEntity.badRequest().body(errorList);
         }
         return ResponseEntity.ok(khachHangService.update(khachHangDTO, id));
+    }
+
+    @GetMapping("find-by-cccd")
+    public ResponseEntity<?> findByCCCD(@RequestParam(value = "cccd") String cccd){
+        return ResponseEntity.ok(khachHangService.findIdByCCCD(cccd));
+    }
+
+    @GetMapping("get-khach-hang-by-user")
+    public ResponseEntity<?> getKhachHangByUser(@RequestParam( value = "id") Long id){
+        return ResponseEntity.ok(khachHangService.getKhachHangbyUser(id));
+    }
+
+    @PutMapping("update-customer")
+    public ResponseEntity<?> updateCustomer(@RequestParam(value = "id") Long id, @RequestBody @Valid KhachHangDTO khachHangDTO, BindingResult result){
+        if(result.hasErrors()){
+            List<ObjectError> errorList = result.getAllErrors();
+            return ResponseEntity.badRequest().body(errorList);
+        }
+        return ResponseUtil.wrap(khachHangService.updateKH(khachHangDTO, id));
+    }
+
+    @GetMapping("get-khach-hang-by-cccd")
+    public ResponseEntity<?> getKHbyCCCD(@RequestParam(value = "cccd") String cccd){
+        return ResponseEntity.ok(khachHangService.getKHbyCccd(cccd));
     }
 }

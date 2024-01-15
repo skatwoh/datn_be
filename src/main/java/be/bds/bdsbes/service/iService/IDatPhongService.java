@@ -6,11 +6,13 @@ import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.PhongResponse1;
 import be.bds.bdsbes.payload.TaiKhoanResponse1;
 import be.bds.bdsbes.service.dto.DatPhongDTO;
+import be.bds.bdsbes.service.dto.KhachHangDTO;
 import be.bds.bdsbes.service.dto.response.DatPhongResponse;
 import be.bds.bdsbes.service.dto.response.PhongResponse;
 import be.bds.bdsbes.utils.dto.PagedResponse;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IDatPhongService {
@@ -41,4 +43,8 @@ public interface IDatPhongService {
     Boolean createListRoom(List<DatPhongDTO> datPhongDTOList) throws ServiceException;
 
     PagedResponse<DatPhongResponse> getDatPhongByHoaDon(int page, int size, Long id) throws ServiceException;
+
+    Boolean datPhongTaiQuay(DatPhongDTO datPhongDTO) throws ServiceException;
+
+    int getSoPhongDaDat(LocalDate CheckIn, LocalDate CheckOut);
 }

@@ -67,6 +67,14 @@ public class KhachHang {
     @Column(name = COLUMN_GHICHU_NAME)
     private String ghiChu;
 
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "id_voucher")
+    private Voucher voucher;
+
+    @Size(max = 20)
+    @Column(name = "cccd", length = 13)
+    private String cccd;
+
     @OneToMany(mappedBy = "khachHang")
     private Set<DichVuSuDung> dichVuSuDungs = new LinkedHashSet<>();
 

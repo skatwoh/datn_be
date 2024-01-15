@@ -207,7 +207,7 @@ public class PdfGenerator {
         XWPFRun run = paragraph.createRun();
         run.setText("Name: " + datPhong.getGhiChu());
         run.addBreak();
-        run.setText("Mã khách hàng: " + datPhong.getUser().getName()
+        run.setText("Mã khách hàng: " + datPhong.getKhachHang().getHoTen()
         );
 
 // Add further paragraphs and formatting for other required data based on your structure and template

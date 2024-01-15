@@ -22,4 +22,14 @@ public interface IKhachHangService {
     KhachHang update(KhachHangDTO khachHangDTO, Long id);
 
     PagedResponse<KhachHangResponse1> getKhachHang(int page, int size) throws ServiceException;
+
+    Boolean createOrUpdate(KhachHangDTO khachHangDTO) throws ServiceException;
+
+    Long findIdByCCCD(String cccd);
+
+    KhachHangResponse1 getKhachHangbyUser(Long id);
+
+    Boolean updateKH(KhachHangDTO khachHangDTO, Long id);
+
+    KhachHangResponse1 getKHbyCccd(String cccd);
 }

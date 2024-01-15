@@ -2,6 +2,7 @@ package be.bds.bdsbes.resource;
 
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.repository.DatPhongRepository;
+import be.bds.bdsbes.service.dto.KhachHangDTO;
 import be.bds.bdsbes.service.iService.IDatPhongService;
 import be.bds.bdsbes.service.dto.DatPhongDTO;
 import be.bds.bdsbes.service.impl.PdfGenerator;
@@ -30,6 +31,8 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -268,6 +271,25 @@ public class DatPhongController {
     public ResponseEntity<?> createListRoom(@Valid @RequestBody List<DatPhongDTO> datPhongDTOList) {
         try {
             Boolean response = iDatPhongService.createListRoom(datPhongDTOList);
+            return ResponseUtil.wrap(response);
+        } catch (ServiceException e) {
+            log.error(this.getClass().getName(), e);
+            return ResponseUtil.generateErrorResponse(e);
+        }
+    }
+
+    @GetMapping("so-phong-da-dat")
+    public ResponseEntity<?> sophongdadat(@RequestParam(value = "checkIn") String checkIn,@RequestParam(value = "checkOut") String checkOut) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate parsedCheckIn = LocalDate.parse(checkIn, formatter);
+        LocalDate parsedCheckOut = LocalDate.parse(checkOut, formatter);
+        return ResponseUtil.wrap(this.iDatPhongService.getSoPhongDaDat(parsedCheckIn,parsedCheckOut));
+    }
+
+    @PostMapping("dat-phong-tai-quay")
+    public ResponseEntity<?> datPhongTaiQuay(@Valid @RequestBody DatPhongDTO datPhongDTO) {
+        try {
+            Boolean response = iDatPhongService.datPhongTaiQuay(datPhongDTO);
             return ResponseUtil.wrap(response);
         } catch (ServiceException e) {
             log.error(this.getClass().getName(), e);

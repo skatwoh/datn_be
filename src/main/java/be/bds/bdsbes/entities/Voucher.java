@@ -60,6 +60,6 @@ public class Voucher {
     private Integer soLuong;
 
     @OneToMany(mappedBy = "voucher")
-    private Set<DatPhong> datPhongs = new LinkedHashSet<>();
+    private Set<KhachHang> khachHangs = new LinkedHashSet<>();
 
 }

@@ -44,11 +44,11 @@ public class ChiTietDichVuController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<?> create(@RequestBody @Valid ChiTietDichVuDTO chiTietDichVuDTO, BindingResult result){
-        if(result.hasErrors()){
-            List<ObjectError> errorList = result.getAllErrors();
-            return ResponseEntity.badRequest().body(errorList);
-        }
+    public ResponseEntity<?> create(@RequestBody @Valid ChiTietDichVuDTO chiTietDichVuDTO){
+//        if(result.hasErrors()){
+//            List<ObjectError> errorList = result.getAllErrors();
+//            return ResponseEntity.badRequest().body(errorList);
+//        }
         return ResponseEntity.ok(iChiTietDichVuService.create(chiTietDichVuDTO));
     }
 
@@ -59,5 +59,20 @@ public class ChiTietDichVuController {
             return ResponseEntity.badRequest().body(errorList);
         }
         return ResponseEntity.ok(iChiTietDichVuService.update(chiTietDichVuDTO, id));
+    }
+
+    @GetMapping("/list-by-dat-phong")
+    public ResponseEntity<?> getListByDatPhong(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "id") Long id) {
+        try {
+            return ResponseUtil.wrap(this.iChiTietDichVuService.getAllByDatPhong(page, size, id));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

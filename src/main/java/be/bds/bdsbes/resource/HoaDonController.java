@@ -18,9 +18,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @Slf4j
@@ -151,5 +155,64 @@ public class HoaDonController {
         } catch (ServiceException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @PostMapping("create-or-update-tai-quay")
+    public ResponseEntity<?> createOrUpdateTaiQuay(@RequestBody HoaDonDTO hoaDonDTO) {
+        try {
+            return ResponseUtil.wrap(this.iHoaDonService.createOrUpdateTaiQuay(hoaDonDTO));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @GetMapping("doanh-thu-by-day")
+    public ResponseEntity<?> doanhthubyday(@RequestParam(value = "checkIn") String checkIn,@RequestParam(value = "checkOut") String checkOut) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate parsedCheckIn = LocalDate.parse(checkIn, formatter);
+        LocalDate parsedCheckOut = LocalDate.parse(checkOut, formatter);
+        return ResponseUtil.wrap(this.iHoaDonService.getDoanhThuByDay(parsedCheckIn,parsedCheckOut));
+    }
+
+    @GetMapping("doanh-thu-by-to-day")
+    public ResponseEntity<?> doanhThuByTime(@RequestParam(value = "year") int year,@RequestParam(value = "month") int month,@RequestParam(value = "day") int day) {
+        return ResponseUtil.wrap(this.iHoaDonService.getDoanhThuByToDay(day, month, year));
+    }
+
+    @GetMapping("doanh-thu-by-month")
+    public ResponseEntity<?> doanhThuByMonth(@RequestParam(value = "year") int year,@RequestParam(value = "month") int month) {
+        return ResponseUtil.wrap(this.iHoaDonService.getDoanhThuByMonth(month, year));
+    }
+
+    @GetMapping("doanh-thu-by-year")
+    public ResponseEntity<?> doanhThuByYear(@RequestParam(value = "year") int year) {
+        return ResponseUtil.wrap(this.iHoaDonService.getDoanhThuByYear(year));
+    }
+
+    @GetMapping("all-doanh-thu")
+    public ResponseEntity<?> getAllDoanhThu() {
+        return ResponseUtil.wrap(this.iHoaDonService.getAllDoanhThu());
+    }
+
+    @PutMapping("tinh-tien-dich-vu")
+    public ResponseEntity<?> tinhTienDichVu(@RequestParam(value = "id") Long id, @RequestBody BigDecimal tongTien) throws ServiceException {
+        return ResponseUtil.wrap(this.iHoaDonService.updateTienDichVu(tongTien, id));
+    }
+
+
+    @PostMapping("up-rank-customer")
+    public ResponseEntity<?> updateRankCustomer(@RequestParam(value = "id") Long id, @RequestBody Long idTheThanhVien) {
+         return ResponseUtil.wrap(
+                 this.iHoaDonService.updateRankKhachHang(id , idTheThanhVien)
+         );
+    }
+
+    @GetMapping("get-tong-tien-by-customer")
+    public ResponseEntity<?> getTongTienByCustomer(@RequestParam(value = "id") Long id) {
+        return ResponseUtil.wrap(
+                this.iHoaDonService.getTongTienByKhachHang(id)
+        );
     }
 }

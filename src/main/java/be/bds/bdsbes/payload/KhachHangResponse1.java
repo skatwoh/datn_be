@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
@@ -27,4 +28,11 @@ public class KhachHangResponse1 {
     private String diaChi;
 
     private String sdt;
+
+    private String cccd;
+
+    private String rank;
+
+    private BigDecimal giamGia;
+
 }
