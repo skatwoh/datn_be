@@ -174,5 +174,15 @@ public class KhachHangServiceImpl implements IKhachHangService {
         return true;
     }
 
+    @Override
+    public KhachHangResponse1 getKHbyCccd(String cccd) {
+        KhachHangResponse1 khachHangResponse1 = khachHangRepository.getKhachHangByCCCD(cccd);
+        if(khachHangResponse1 == null){
+            return null;
+        } else {
+            return khachHangResponse1;
+        }
+    }
+
 
 }

@@ -86,4 +86,9 @@ public class KhachHangController {
         }
         return ResponseUtil.wrap(khachHangService.updateKH(khachHangDTO, id));
     }
+
+    @GetMapping("get-khach-hang-by-cccd")
+    public ResponseEntity<?> getKHbyCCCD(@RequestParam(value = "cccd") String cccd){
+        return ResponseEntity.ok(khachHangService.getKHbyCccd(cccd));
+    }
 }
