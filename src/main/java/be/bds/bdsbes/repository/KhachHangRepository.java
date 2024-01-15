@@ -35,6 +35,6 @@ public interface KhachHangRepository extends JpaRepository<KhachHang, Long> {
     @Query("select new be.bds.bdsbes.payload.KhachHangResponse1(k.id, k.ma, k.hoTen, k.ngaySinh, k.gioiTinh, k.diaChi, k.sdt, k.cccd, k.theThanhVien.capBac, k.theThanhVien.giamGia) from KhachHang k join User u on k.id = u.khachHang.id where u.id = :id")
     KhachHangResponse1 getKhachHangByUser(Long id);
 
-//    @Query("select k from KhachHang k where k.cccd = :cccd")
-//    KhachHang getByCCCD()
+    @Query("select new be.bds.bdsbes.payload.KhachHangResponse1(k.id, k.ma, k.hoTen, k.ngaySinh, k.gioiTinh, k.diaChi, k.sdt, k.cccd, k.theThanhVien.capBac, k.theThanhVien.giamGia) from KhachHang k where k.cccd = ?1")
+    KhachHangResponse1 getKhachHangByCCCD(String cccd);;
 }
