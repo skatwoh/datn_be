@@ -16,6 +16,8 @@ public class HoaDonResponse {
 
     private Long id;
 
+    private String ma;
+
     private LocalDateTime ngayTao;
 
     private LocalDateTime ngayThanhToan;

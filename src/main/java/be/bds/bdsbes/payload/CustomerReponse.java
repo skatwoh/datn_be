@@ -29,4 +29,5 @@ public class CustomerReponse {
 
     private String ghiChu;
 
+    private String cccd;
 }

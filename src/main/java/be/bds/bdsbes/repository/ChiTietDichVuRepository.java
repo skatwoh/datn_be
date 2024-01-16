@@ -20,4 +20,7 @@ public interface ChiTietDichVuRepository extends JpaRepository<ChiTietDichVu, Lo
 
     @Query("select ctdv from ChiTietDichVu ctdv where ctdv.datPhong.id = :id")
     Page<ChiTietDichVu> getAllByDatPhong(Pageable pageable, Long id);
+
+    @Query("select ctdv from ChiTietDichVu ctdv where ctdv.datPhong.id = :id")
+    List<ChiTietDichVu> getListByDatPhong(Long id);
 }

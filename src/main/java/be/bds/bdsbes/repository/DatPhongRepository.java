@@ -57,7 +57,7 @@ public interface DatPhongRepository extends JpaRepository<DatPhong, Long> {
             "from DatPhong d join d.khachHang u where d.id= :id")
     List<DatPhongResponse> getDatPhong(Long id);
 
-    @Query("select p from DatPhong p where p.hoaDon.id = :id and p.trangThai = 1 or p.trangThai = 2 or p.trangThai = 3")
+    @Query("select p from DatPhong p where p.hoaDon.id = :id and (p.trangThai = 1 or p.trangThai = 2 or p.trangThai = 3)")
     List<DatPhong> getDatPhongByHoaDon(Long id);
 
     @Transactional
@@ -80,5 +80,6 @@ public interface DatPhongRepository extends JpaRepository<DatPhong, Long> {
     @Query("select count (dp.phong.id) from DatPhong dp where dp.trangThai = 1 and (cast(dp.ngayDat as date) between cast(:checkIn as date) and cast(:checkOut as date) )")
     int getSoPhongDaDat(LocalDate checkIn, LocalDate checkOut);
 
-
+    @Query("select d from DatPhong d where d.khachHang.id = :id")
+    Page<DatPhong> getPageDatPhongByKH(Pageable pageable, Long id);
 }

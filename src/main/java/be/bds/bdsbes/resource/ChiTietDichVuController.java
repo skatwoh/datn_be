@@ -3,6 +3,7 @@ package be.bds.bdsbes.resource;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.service.iService.IChiTietDichVuService;
 import be.bds.bdsbes.service.dto.ChiTietDichVuDTO;
+import be.bds.bdsbes.service.impl.PdfGenerator;
 import be.bds.bdsbes.utils.AppConstantsUtil;
 import be.bds.bdsbes.utils.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +13,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 @Slf4j
 @RestController
@@ -20,6 +25,9 @@ import java.util.List;
 public class ChiTietDichVuController {
     @Autowired
     IChiTietDichVuService iChiTietDichVuService;
+
+    @Autowired
+    PdfGenerator pdfGenerator;
 
     @GetMapping("/list")
     public ResponseEntity<?> getList(
@@ -74,5 +82,19 @@ public class ChiTietDichVuController {
         } catch (ServiceException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @GetMapping("/generate-hoa-don-dich-vu")
+    public void generatePDF(@RequestParam(value = "id") Long id, HttpServletResponse response) throws Exception {
+        response.setContentType("application/pdf");
+        response.setCharacterEncoding("UTF-8");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=pdf_" + currentDateTime + ".pdf";
+        response.setHeader(headerKey, headerValue);
+
+        this.pdfGenerator.exportDV(response, id);
     }
 }

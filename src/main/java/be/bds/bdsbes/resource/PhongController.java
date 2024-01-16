@@ -336,4 +336,12 @@ public class PhongController {
             return ResponseUtil.generateErrorResponse((ServiceException) ex);
         }
     }
+
+    @GetMapping("get-room-by-lp")
+    public ResponseEntity<?> getRoombyLoaiPhong(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "input", defaultValue = "") String tenLoaiPhong) throws ServiceException {
+        return ResponseUtil.wrap(this.iPhongService.getListRoomByLoaiPhong(page, size, tenLoaiPhong));
+    }
 }
