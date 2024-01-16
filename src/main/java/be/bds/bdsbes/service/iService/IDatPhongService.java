@@ -13,6 +13,7 @@ import be.bds.bdsbes.utils.dto.PagedResponse;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IDatPhongService {
@@ -29,7 +30,7 @@ public interface IDatPhongService {
 
     PagedResponse<DatPhongResponse> getRoomOderByUser(int page, int size, Long id, Integer trangThai) throws ServiceException;
 
-    PagedResponse<PhongResponse1> getPhongByUpperPrice(int page, int size, BigDecimal giaPhong, Long id) throws ServiceException;
+    PagedResponse<PhongResponse1> getPhongByUpperPrice(int page, int size, BigDecimal giaPhong, Long id, LocalDateTime checkIn, LocalDateTime checkOut) throws ServiceException;
 
     Integer updateTrangThai(Long id) throws ServiceException;
 
