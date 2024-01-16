@@ -22,7 +22,6 @@ public class CaptchaController {
     @PostMapping("/verify-captcha")
     @ResponseBody
     public String verifyCaptcha(@RequestBody String captchaResponse) {
-        // Add logic to verify the captchaResponse with Google reCAPTCHA API
         if (isValidCaptcha(captchaResponse)) {
             return "Captcha verified: " + captchaResponse;
         } else {
