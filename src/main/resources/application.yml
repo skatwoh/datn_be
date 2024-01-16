@@ -20,6 +20,18 @@ spring:
     scheduling:
       enabled: true
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 6LdbzFEpAAAAAAxfeii0kf8OFVKtmrzu6AUJcVnt
+            client-secret: 6LdbzFEpAAAAAKAGlT-_OXlQx6DCHNKiL3SRVuYq
+
+google:
+  recaptcha:
+    secret-key: 6LevxVEpAAAAAD-jD52HgIWXqXM4KqrC8DJLhgTS
+
 vnpay:
   url: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html  # URL của VNPAY
   merchant-id: your_merchant_id  # ID của Merchant
