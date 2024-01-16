@@ -43,8 +43,11 @@ public interface DatPhongRepository extends JpaRepository<DatPhong, Long> {
             ")")
     Boolean validateCheckIn(@Param("idPhong") Long idPhong, @Param("checkIn") LocalDateTime checkIn, LocalDateTime checkOut);
 
-    @Query("Select p from Phong  p inner join ChiTietPhong ctp on p.id = ctp.phong.id where p.trangThai = 1 and ctp.trangThai = 1 and  p.giaPhong >= :giaPhong and p.id <> :id")
-    Page<Phong> getPhongByUpperPrice(Pageable pageable, BigDecimal giaPhong, Long id);
+    @Query("Select p from Phong  p inner join ChiTietPhong ctp on p.id = ctp.phong.id where p.trangThai = 1 and ctp.trangThai = 1 and  p.giaPhong = :giaPhong and p.id <> :id and p.id not in " +
+            "(select d.phong.id from DatPhong d where (d.trangThai = 1 or d.trangThai = 2) and ((cast(:checkIn as date) between cast(d.checkIn as date) and cast(d.checkOut as date)) or (cast(:checkOut as date) between cast(d.checkIn as date) and cast(d.checkOut as date)) " +
+            "or (cast(d.checkIn as date) between cast(:checkIn as date) and cast(:checkOut as date)) or (cast(d.checkOut as date) between cast(:checkIn as date) and cast(:checkOut as date)) or cast(:checkIn as date) = cast(d.checkIn as date) or" +
+            " cast(:checkOut as date) = cast(d.checkOut as date)))")
+    Page<Phong> getPhongByUpperPrice(Pageable pageable, BigDecimal giaPhong, Long id, LocalDateTime checkIn, LocalDateTime checkOut);
 
 
     @Transactional

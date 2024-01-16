@@ -32,6 +32,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
@@ -161,10 +162,15 @@ public class DatPhongController {
             @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
             @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
             @RequestParam(value = "giaPhong", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) BigDecimal giaPhong,
+            @RequestParam(value = "checkIn", defaultValue = "") String checkIn,
+            @RequestParam(value = "checkOut", defaultValue = "") String checkOut,
             @RequestParam(value = "id") Long id
     ) {
         try {
-            return ResponseUtil.wrap(this.iDatPhongService.getPhongByUpperPrice(page, size, giaPhong, id));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//            LocalDateTime parsedCheckIn = LocalDate.parse(checkIn, formatter).atStartOfDay();
+//            LocalDateTime parsedCheckOut = LocalDate.parse(checkOut, formatter).atStartOfDay();
+            return ResponseUtil.wrap(this.iDatPhongService.getPhongByUpperPrice(page, size, giaPhong, id, LocalDateTime.parse(checkIn), LocalDateTime.parse(checkOut)));
         } catch (Exception ex) {
             log.error(this.getClass().getName(), ex);
             return ResponseUtil.generateErrorResponse(ex);
