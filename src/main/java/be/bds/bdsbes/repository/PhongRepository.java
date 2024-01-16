@@ -38,14 +38,14 @@ public interface PhongRepository extends JpaRepository<Phong, Long> {
     Integer updateTrangThaiById(int trangThai, Long id);
 
     @Query("select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id inner join LoaiPhong l on l.id = p.loaiPhong.id " +
-            "where p.trangThai = 1 and ct.trangThai = 1 and ct.soLuongNguoi = :soLuongNguoi and l.tenLoaiPhong like :tenLoaiPhong and p.id not in (select d.phong.id from DatPhong d where ((cast(:checkIn as date) between cast(d.checkIn as date) and cast(d.checkOut as date)) or (cast(:checkOut as date) between cast(d.checkIn as date) and cast(d.checkOut as date))" +
-            "or (cast(d.checkIn as date) between cast(:checkIn as date) and cast(:checkOut as date)) or (cast(d.checkOut as date) between cast(:checkIn as date) and cast(:checkOut as date)) or cast(:checkIn as date) = cast(d.checkIn as date) " +
+            "where p.trangThai = 1 and ct.trangThai = 1 and ct.soLuongNguoi = :soLuongNguoi and l.tenLoaiPhong like :tenLoaiPhong and p.id not in (select d.phong.id from DatPhong d where ((cast(:checkIn as date) > cast(d.checkIn as date) and cast(:checkIn as date) < cast(d.checkOut as date)) or (cast(:checkOut as date) > cast(d.checkIn as date) and cast(:checkOut as date) < cast(d.checkOut as date))" +
+            "or (cast(d.checkIn as date) > cast(:checkIn as date) and cast(d.checkIn as date) < cast(:checkOut as date)) or (cast(d.checkOut as date) > cast(:checkIn as date) and cast(d.checkOut as date) < cast(:checkOut as date)) or cast(:checkIn as date) = cast(d.checkIn as date) " +
             "or cast(:checkOut as date) = cast(d.checkOut as date)) and (d.trangThai = 1 or d.trangThai = 2 or d.trangThai = 4)) order by p.ma asc")
     Page<Phong> searchRoomManager(Pageable pageable, Integer soLuongNguoi, String tenLoaiPhong, LocalDateTime checkIn, LocalDateTime checkOut);
 
     @Query("select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id inner join LoaiPhong l on l.id = p.loaiPhong.id " +
-            "where p.trangThai = 1 and ct.trangThai = 1 and ct.soLuongNguoi >= :soLuongNguoi and l.tenLoaiPhong like :tenLoaiPhong and p.id not in (select d.phong.id from DatPhong d where ((cast(:checkIn as date) between cast(d.checkIn as date) and cast(d.checkOut as date)) or (cast(:checkOut as date) between cast(d.checkIn as date) and cast(d.checkOut as date))" +
-            "or (cast(d.checkIn as date) between cast(:checkIn as date) and cast(:checkOut as date)) or (cast(d.checkOut as date) between cast(:checkIn as date) and cast(:checkOut as date)) or cast(:checkIn as date) = cast(d.checkIn as date) " +
+            "where p.trangThai = 1 and ct.trangThai = 1 and ct.soLuongNguoi >= :soLuongNguoi and l.tenLoaiPhong like :tenLoaiPhong and p.id not in (select d.phong.id from DatPhong d where ((cast(:checkIn as date) > cast(d.checkIn as date) and cast(:checkIn as date) < cast(d.checkOut as date)) or (cast(:checkOut as date) > cast(d.checkIn as date) and cast(:checkOut as date) < cast(d.checkOut as date))" +
+            "or (cast(d.checkIn as date) > cast(:checkIn as date) and cast(d.checkIn as date) < cast(:checkOut as date)) or (cast(d.checkOut as date) > cast(:checkIn as date) and cast(d.checkOut as date) < cast(:checkOut as date)) or cast(:checkIn as date) = cast(d.checkIn as date) " +
             "or cast(:checkOut as date) = cast(d.checkOut as date)) and (d.trangThai = 1 or d.trangThai = 2 or d.trangThai = 4)) order by p.ma asc")
     Page<Phong> searchRoomManager3(Pageable pageable, Integer soLuongNguoi, String tenLoaiPhong, LocalDateTime checkIn, LocalDateTime checkOut);
 
