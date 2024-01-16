@@ -47,4 +47,7 @@ public interface IDatPhongService {
     Boolean datPhongTaiQuay(DatPhongDTO datPhongDTO) throws ServiceException;
 
     int getSoPhongDaDat(LocalDate CheckIn, LocalDate CheckOut);
+
+    PagedResponse<DatPhongResponse> getDatPhongByKH(int page, int size, Long id) throws ServiceException;
+
 }

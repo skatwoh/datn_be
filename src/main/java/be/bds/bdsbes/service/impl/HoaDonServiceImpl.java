@@ -247,7 +247,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
     @Override
     public Boolean updateTongTien(HoaDonDTO hoaDonDTO) {
         Long idKH = khachHangRepository.findByIdKhachHang(hoaDonDTO.getIdKhachHang());
-        HoaDonResponse hoaDonResponse = hoaDonRepository.getHoaDon(idKH, LocalDate.now());
+        HoaDonResponse hoaDonResponse = hoaDonRepository.getHoaDon(hoaDonDTO.getIdKhachHang(), LocalDate.now());
         if (hoaDonResponse != null) {
             HoaDon hoaDon = hoaDonRepository.findById(hoaDonResponse.getId()).get();
             BigDecimal tongTienCu = hoaDon.getTongTien();
@@ -296,7 +296,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
     @Override
     public Boolean deleteHoaDon(HoaDonDTO hoaDonDTO) {
         Long idKH = khachHangRepository.findByIdKhachHang(hoaDonDTO.getIdKhachHang());
-        HoaDonResponse hoaDonResponse = hoaDonRepository.getHoaDon(idKH, LocalDate.now());
+        HoaDonResponse hoaDonResponse = hoaDonRepository.getHoaDon(hoaDonDTO.getIdKhachHang(), LocalDate.now());
         System.out.println(hoaDonResponse.getId());
         List<DatPhong> list = datPhongRepository.getRoomByHoaDon0(hoaDonResponse.getId());
         if (list.size() == 0) {
@@ -395,6 +395,23 @@ public class HoaDonServiceImpl implements IHoaDonService {
     @Override
     public BigDecimal getTongTienByKhachHang(Long id) {
         return hoaDonRepository.getTongTienByKhachHang(id);
+    }
+
+    @Override
+    public PagedResponse<HoaDonResponse> findBillByCustomer(int page, int size, Long id) {
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
+        Page<HoaDon> entities = hoaDonRepository.findByKhachHang(pageable, id);
+
+        List<HoaDonResponse> dtos = this.hoaDonMapper.toDtoList(entities.getContent());
+        return new PagedResponse<>(
+                dtos,
+                page,
+                size,
+                entities.getTotalElements(),
+                entities.getTotalPages(),
+                entities.isLast(),
+                entities.getSort().toString()
+        );
     }
 
 

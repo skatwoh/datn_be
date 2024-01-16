@@ -19,26 +19,26 @@ import java.util.List;
 @Repository
 public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
 
-    @Query("select new be.bds.bdsbes.payload.HoaDonResponse(p.id, p.ngayTao, p.ngayThanhToan, p.tongTien, p.trangThai, p.ghiChu, k.id, k.hoTen) from HoaDon p inner join p.khachHang k where p.trangThai <> 5 " +
-            "group by k.id, p.id, p.ngayTao, p.ngayThanhToan, p.tongTien, p.trangThai, p.ghiChu, k.hoTen")
+    @Query("select new be.bds.bdsbes.payload.HoaDonResponse(p.id, p.ma, p.ngayTao, p.ngayThanhToan, p.tongTien, p.trangThai, p.ghiChu, k.id, k.hoTen) from HoaDon p inner join p.khachHang k where p.trangThai <> 5 " +
+            "group by k.id, p.id, p.ma, p.ngayTao, p.ngayThanhToan, p.tongTien, p.trangThai, p.ghiChu, k.hoTen")
     Page<HoaDonResponse> getList(Pageable pageable);
 
-    @Query("select new be.bds.bdsbes.payload.HoaDonResponse(p.id, p.ngayTao, p.ngayThanhToan, p.tongTien, p.trangThai, p.ghiChu, k.id, k.hoTen) from HoaDon p inner join p.khachHang k where p.trangThai <> 5 and (p.ghiChu like concat('%', :searchInput, '%') or " +
+    @Query("select new be.bds.bdsbes.payload.HoaDonResponse(p.id, p.ma, p.ngayTao, p.ngayThanhToan, p.tongTien, p.trangThai, p.ghiChu, k.id, k.hoTen) from HoaDon p inner join p.khachHang k where p.trangThai <> 5 and (p.ghiChu like concat('%', :searchInput, '%') or " +
             "p.khachHang.hoTen like concat('%', :searchInput, '%'))" +
-            "group by k.id, p.id, p.ngayTao, p.ngayThanhToan, p.tongTien, p.trangThai, p.ghiChu, k.hoTen")
+            "group by k.id, p.id, p.ma, p.ngayTao, p.ngayThanhToan, p.tongTien, p.trangThai, p.ghiChu, k.hoTen")
     Page<HoaDonResponse> getListBySearch(Pageable pageable, String searchInput);
 
     @Query("select h from HoaDon h join DatPhong d on h.id = d.hoaDon.id join KhachHang k on k.id = h.khachHang.id where k.hoTen = :hoTen and k.sdt = :sdt and h.trangThai <> 5")
     Page<HoaDon> getListByCustumer(Pageable pageable, String hoTen, String sdt);
 
-    @Query("select new be.bds.bdsbes.payload.HoaDonResponse(p.id, p.ngayTao, p.ngayThanhToan, p.tongTien, p.trangThai, p.ghiChu, k.id, k.hoTen) from HoaDon p inner join p.khachHang k " +
-            "where k.id = :idKhachHang and cast(p.ngayTao as date) = cast(:ngayTao as date) and p.trangThai = 1")
+    @Query("select new be.bds.bdsbes.payload.HoaDonResponse(p.id, p.ma, p.ngayTao, p.ngayThanhToan, p.tongTien, p.trangThai, p.ghiChu, k.id, k.hoTen) from HoaDon p inner join p.khachHang k " +
+            "where k.id = :idKhachHang and cast(p.ngayTao as date) = cast(:ngayTao as date) and (p.trangThai = 1 or p.trangThai = 3)")
     HoaDonResponse getHoaDon(Long idKhachHang, LocalDate ngayTao);
 
     @Query("select h.id from HoaDon h where h.khachHang.id = :idKH and cast(h.ngayTao as date) = cast(:ngayTao as date) and h.trangThai = 1")
     Long getId(Long idKH, LocalDate ngayTao);
 
-    @Query("select new be.bds.bdsbes.payload.HoaDonResponse(p.id, p.ngayTao, p.ngayThanhToan, p.tongTien, p.trangThai, p.ghiChu, k.id, k.hoTen) from HoaDon p inner join p.khachHang k " +
+    @Query("select new be.bds.bdsbes.payload.HoaDonResponse(p.id, p.ma, p.ngayTao, p.ngayThanhToan, p.tongTien, p.trangThai, p.ghiChu, k.id, k.hoTen) from HoaDon p inner join p.khachHang k " +
             "where p.id = :id and p.trangThai <> 5")
     HoaDonResponse get(Long id);
 
@@ -53,13 +53,13 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
     @Query(value = "SELECT * FROM hoa_don v WHERE v.ngay_tao < :date AND v.trang_thai = :status", nativeQuery = true)
     List<HoaDon> findByExpiryDateBeforeAndStatus(@Param("date") LocalDate date, @Param("status") Integer status);
 
-    @Query("select new be.bds.bdsbes.payload.HoaDonResponse(p.id, p.ngayTao, p.ngayThanhToan, p.tongTien, p.trangThai, p.ghiChu, k.id, k.hoTen) from HoaDon p inner join p.khachHang k " +
+    @Query("select new be.bds.bdsbes.payload.HoaDonResponse(p.id, p.ma, p.ngayTao, p.ngayThanhToan, p.tongTien, p.trangThai, p.ghiChu, k.id, k.hoTen) from HoaDon p inner join p.khachHang k " +
             "where k.id = :idKhachHang and cast(p.ngayTao as date) = cast(:ngayTao as date) and p.trangThai = 1")
     HoaDonResponse getHoaDon0(Long idKhachHang, LocalDate ngayTao);
 
     @Query("select h.id from HoaDon h where h.khachHang.id = :idKH and cast(h.ngayTao as date) = cast(:ngayTao as date) and (h.trangThai = 1 or h.trangThai = 3)")
     Long getIdTaiQuay(Long idKH, LocalDate ngayTao);
-    @Query("select new be.bds.bdsbes.payload.HoaDonResponse(p.id, p.ngayTao, p.ngayThanhToan, p.tongTien, p.trangThai, p.ghiChu, k.id, k.hoTen) from HoaDon p inner join p.khachHang k " +
+    @Query("select new be.bds.bdsbes.payload.HoaDonResponse(p.id, p.ma, p.ngayTao, p.ngayThanhToan, p.tongTien, p.trangThai, p.ghiChu, k.id, k.hoTen) from HoaDon p inner join p.khachHang k " +
             "where k.id = :idKhachHang and cast(p.ngayTao as date) = cast(:ngayTao as date) and (p.trangThai = 3 or p.trangThai = 1)")
     HoaDonResponse getHoaDonTaiQuay(Long idKhachHang, LocalDate ngayTao);
 
@@ -80,5 +80,8 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
 
     @Query ("select sum(h.tongTien) from HoaDon h join KhachHang k on h.khachHang.id = k.id group by k.id, h.trangThai having k.id = :id and h.trangThai = 0")
     BigDecimal getTongTienByKhachHang(Long id);
+
+    @Query("select h from HoaDon h where h.khachHang.id = :id and (h.trangThai = 0 or h.trangThai = 7)")
+    Page<HoaDon> findByKhachHang(Pageable pageable, Long id);
 
 }

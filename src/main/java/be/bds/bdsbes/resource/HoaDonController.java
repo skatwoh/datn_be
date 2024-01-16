@@ -215,4 +215,17 @@ public class HoaDonController {
                 this.iHoaDonService.getTongTienByKhachHang(id)
         );
     }
+
+    @GetMapping("find-by-customer")
+    public ResponseEntity<?> findByCustomer(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "id") Long id) {
+        try {
+            return ResponseUtil.wrap(this.iHoaDonService.findBillByCustomer(page, size, id));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        }
+    }
 }

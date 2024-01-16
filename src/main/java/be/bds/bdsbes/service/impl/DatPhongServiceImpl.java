@@ -539,4 +539,22 @@ public class DatPhongServiceImpl implements IDatPhongService {
         return datPhongRepository.getSoPhongDaDat(CheckIn, CheckOut);
     }
 
+    @Override
+    public PagedResponse<DatPhongResponse> getDatPhongByKH(int page, int size, Long id) throws ServiceException {
+        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
+        Page<DatPhong> entities = datPhongRepository.getPageDatPhongByKH(pageable, id);
+
+        List<DatPhongResponse> dtos = this.datPhongMapper.toDtoList(entities.getContent());
+
+        return new PagedResponse<>(
+                dtos,
+                page,
+                size,
+                entities.getTotalElements(),
+                entities.getTotalPages(),
+                entities.isLast(),
+                entities.getSort().toString()
+        );
+    }
+
 }

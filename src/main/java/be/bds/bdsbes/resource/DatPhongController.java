@@ -296,4 +296,19 @@ public class DatPhongController {
             return ResponseUtil.generateErrorResponse(e);
         }
     }
+
+    @GetMapping("/list-order-of-customer")
+    public ResponseEntity<?> getDatPhongByKH(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "id", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) Long id) {
+        try {
+            return ResponseUtil.wrap(this.iDatPhongService.getDatPhongByKH(page, size, id));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

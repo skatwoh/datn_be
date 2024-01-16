@@ -1,8 +1,10 @@
 package be.bds.bdsbes.service.impl;
 
+import be.bds.bdsbes.entities.ChiTietDichVu;
 import be.bds.bdsbes.entities.DatPhong;
 import be.bds.bdsbes.entities.DichVu;
 import be.bds.bdsbes.entities.HoaDon;
+import be.bds.bdsbes.repository.ChiTietDichVuRepository;
 import be.bds.bdsbes.repository.DatPhongRepository;
 import be.bds.bdsbes.repository.DichVuRepository;
 import be.bds.bdsbes.repository.HoaDonRepository;
@@ -32,6 +34,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.io.*;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -52,6 +55,9 @@ public class PdfGenerator {
 
     @Autowired
     private HoaDonRepository hoaDonRepository;
+
+    @Autowired
+    private ChiTietDichVuRepository chiTietDichVuRepository;
 
     public PdfGenerator(DatPhongRepository datPhongRepository) {
         this.datPhongRepository = datPhongRepository;
@@ -93,7 +99,7 @@ public class PdfGenerator {
         LocalDateTime now = LocalDateTime.now(zoneId);
 // Hiển thị giờ Việt Nam
         System.out.println(now.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
-        DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss");
+        DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         Paragraph paragraphMaKH = new Paragraph("Ma khach hang: " + hoaDon.getKhachHang().getMa(), fontInfor);
         paragraphMaKH.setAlignment(Paragraph.ALIGN_LEFT);
         Paragraph paragraphTenKH = new Paragraph("Ten khach hang: " + hoaDon.getKhachHang().getHoTen(), fontInfor);
@@ -226,54 +232,58 @@ public class PdfGenerator {
     }
 
     public void exportDV(HttpServletResponse response, Long id) throws IOException, DocumentException, ParseException {
-        DichVu dichVu = dichVuRepository.findById(id).get();
+        DatPhong datPhong = datPhongRepository.findById(id).get();
         response.setContentType("application/pdf");
         response.setCharacterEncoding("UTF-8");
         NumberFormat formatter = NumberFormat.getInstance(Locale.US);
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, response.getOutputStream());
         document.open();
-
+        int tongTien = 0;
         Font fontTitle = FontFactory.getFont(FontFactory.TIMES_BOLDITALIC);
         fontTitle.setColor(BaseColor.BLACK);
         fontTitle.setSize(20);
         Font fontDate = FontFactory.getFont(FontFactory.TIMES_BOLDITALIC);
         fontTitle.setColor(BaseColor.BLACK);
         fontDate.setSize(18);
-        String formattedGiaDichVu = formatter.format(dichVu.getGiaDichVu());
-        Paragraph paragraph = new Paragraph(new String("HOA DON THANH TOAN".getBytes("UTF-8")), fontTitle);
+//        String formattedGiaDichVu = formatter.format(dichVu.getGiaDichVu());
+        Paragraph paragraph = new Paragraph("HOA DON DICH VU PHONG " + datPhong.getPhong().getMa(), fontTitle);
         paragraph.setAlignment(Paragraph.ALIGN_CENTER);
         Paragraph paragraphLine = new Paragraph("", fontTitle);
         paragraph.setAlignment(Paragraph.ALIGN_CENTER);
         Chunk lineSeparator = new Chunk(new LineSeparator());
         paragraphLine.add(lineSeparator);
-        Paragraph paragraphDichVu = new Paragraph("Ten dich vu: " + dichVu.getTenDichVu(), fontDate);
-        paragraphDichVu.setAlignment(Paragraph.ALIGN_LEFT);
-        Paragraph paragraphGia = new Paragraph("Gia dich vu: " + formattedGiaDichVu, fontDate);
-        paragraphGia.setAlignment(Paragraph.ALIGN_LEFT);
-        Paragraph paragraphGhiChu = new Paragraph("Ghi chu: " + dichVu.getGhiChu(), fontDate);
-        paragraphGhiChu.setAlignment(Paragraph.ALIGN_LEFT);
-        Font fontInfor = FontFactory.getFont(FontFactory.TIMES_ROMAN);
-        fontInfor.setSize(15);
-        Font fontTable = FontFactory.getFont(FontFactory.TIMES_ROMAN);
-        fontTable.setSize(13);
-
-
-        String formattedTongTien = formatter.format(dichVu.getGiaDichVu());
-        Paragraph paragraphTongTien = new Paragraph("\nTong thanh toan: " + formattedTongTien + "VND", fontInfor);
-        paragraphTongTien.setAlignment(Paragraph.ALIGN_LEFT);
-        Paragraph paragraph9 = new Paragraph("\n", fontInfor);
+        Paragraph paragraphTenKH = new Paragraph("Ten khach hang: " + datPhong.getKhachHang().getHoTen(), fontDate);
+        paragraphTenKH.setAlignment(Paragraph.ALIGN_LEFT);
+        List<ChiTietDichVu> listCTDV = chiTietDichVuRepository.getListByDatPhong(datPhong.getId());
+//        String formattedTongTien = formatter.format(dichVu.getGiaDichVu());
+        Paragraph paragraph9 = new Paragraph("\n", fontDate);
         paragraph9.setAlignment(Paragraph.ALIGN_LEFT);
         paragraph9.add(lineSeparator);
         Paragraph paragraphEnd = new Paragraph("\nCAM ON QUY KHACH DA SU DUNG \nDICH VU CUA CHUNG TOI!", fontTitle);
         paragraphEnd.setAlignment(Paragraph.ALIGN_CENTER);
 
-
         document.add(paragraph);
         document.add(paragraphLine);
-        document.add(paragraphDichVu);
-        document.add(paragraphGia);
-        document.add(paragraphGhiChu);
+        document.add(paragraphTenKH);
+        for (ChiTietDichVu chiTietDichVu : listCTDV){
+            LocalDateTime datetime = LocalDateTime.parse(chiTietDichVu.getGhiChu(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            String formattedDateTime = datetime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+            document.add(paragraphLine);
+            Paragraph paragraphDichVu = new Paragraph("Ten dich vu: " + chiTietDichVu.getDichVu().getTenDichVu(), fontDate);
+            Paragraph paragraphGia = new Paragraph("Gia dich vu: " + formatter.format(chiTietDichVu.getDichVu().getGiaDichVu()), fontDate);
+            Paragraph paragraphSoLuong = new Paragraph("So luong: " + chiTietDichVu.getTrangThai(), fontDate);
+            Paragraph paragraphTongTien = new Paragraph("Tong tien: " + formatter.format(chiTietDichVu.getDichVu().getGiaDichVu().multiply(BigDecimal.valueOf(chiTietDichVu.getTrangThai()))), fontDate);
+            Paragraph paragraphNgayDat = new Paragraph("Thoi gian dat: " + formattedDateTime, fontDate);
+            document.add(paragraphDichVu);
+            document.add(paragraphGia);
+            document.add(paragraphSoLuong);
+            document.add(paragraphTongTien);
+            document.add(paragraphNgayDat);
+            tongTien += (int) Double.parseDouble(String.valueOf(chiTietDichVu.getDichVu().getGiaDichVu().multiply(BigDecimal.valueOf(chiTietDichVu.getTrangThai()))));
+        }
+        Paragraph paragraphTongTien = new Paragraph("\nTong thanh toan: " + formatter.format(tongTien) + "VND", fontDate);
+        paragraphTongTien.setAlignment(Paragraph.ALIGN_LEFT);
         document.add(paragraphLine);
         document.add(paragraphTongTien);
         document.add(paragraph9);

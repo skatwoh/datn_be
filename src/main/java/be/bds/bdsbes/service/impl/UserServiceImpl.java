@@ -116,7 +116,7 @@ public class UserServiceImpl implements IUserService {
             customerReponse.setDiaChi(khachHang.getDiaChi());
             customerReponse.setGioiTinh(khachHang.getGioiTinh());
             customerReponse.setNgaySinh(khachHang.getNgaySinh());
-
+            customerReponse.setCccd(khachHang.getCccd());
             return customerReponse;
         } else {
             throw new ServiceException("Không tìm thấy người dùng với Email " + email);
