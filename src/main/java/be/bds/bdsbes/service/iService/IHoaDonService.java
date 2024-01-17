@@ -57,4 +57,6 @@ public interface IHoaDonService {
     BigDecimal getTongTienByKhachHang(Long id);
 
     PagedResponse<HoaDonResponse> findBillByCustomer(int page, int size, Long id);
+
+    Integer updateGhiChubyId(String ghiChu , Long id);
 }

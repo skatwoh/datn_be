@@ -414,5 +414,11 @@ public class HoaDonServiceImpl implements IHoaDonService {
         );
     }
 
+    @Override
+    public Integer updateGhiChubyId(String ghiChu, Long id) {
+        this.hoaDonRepository.updateGhiChuById(ghiChu, id);
+        return 1;
+    }
+
 
 }

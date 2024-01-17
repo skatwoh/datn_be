@@ -228,4 +228,11 @@ public class HoaDonController {
             return ResponseUtil.generateErrorResponse(ex);
         }
     }
+
+    @PostMapping("update-tien-coc")
+    public ResponseEntity<?> updateTienCoc(@RequestParam(value = "id") Long id, @RequestBody String ghiChu) {
+        return ResponseUtil.wrap(
+                this.iHoaDonService.updateGhiChubyId(ghiChu , id)
+        );
+    }
 }

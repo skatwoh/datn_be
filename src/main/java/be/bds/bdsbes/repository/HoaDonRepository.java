@@ -84,4 +84,9 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
     @Query("select h from HoaDon h where h.khachHang.id = :id and (h.trangThai = 0 or h.trangThai = 7)")
     Page<HoaDon> findByKhachHang(Pageable pageable, Long id);
 
+    @Transactional
+    @Modifying
+    @Query("UPDATE HoaDon h SET h.ghiChu = :ghiChu WHERE h.id = :id")
+    Integer updateGhiChuById(String ghiChu, Long id);
+
 }
