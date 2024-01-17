@@ -272,6 +272,13 @@ public class HoaDonServiceImpl implements IHoaDonService {
                 this.hoaDonRepository.updateTongTienById((hoaDon.getTongTien().multiply(new BigDecimal(95))).divide(new BigDecimal(100)), id);
             }
             hoaDon.setNgayThanhToan(LocalDateTime.now());
+            ThongBao thongBao = new ThongBao();
+            thongBao.setNoiDung("Hóa đơn của bạn đã được xác nhận");
+            thongBao.setTrangThai(1);
+            thongBao.setTimestamp(LocalDateTime.now());
+            Long idKH = khachHangRepository.findByIdUser(hoaDon.getKhachHang().getId());
+            thongBao.setUser(User.builder().id(idKH).build());
+            thongBaoRepository.save(thongBao);
             this.hoaDonRepository.save(hoaDon);
             return hoaDonRepository.updateTrangThaiById(trangThai, id);
         }
