@@ -271,7 +271,6 @@ public class HoaDonServiceImpl implements IHoaDonService {
             if(hoaDon.getTrangThai() == 2){
 //                this.hoaDonRepository.updateTongTienById((hoaDon.getTongTien().multiply(BigDecimal.valueOf(Double.parseDouble("95")))).divide(BigDecimal.valueOf(Double.parseDouble("100"))), id);
                 System.out.println((hoaDon.getTongTien().multiply(BigDecimal.valueOf(Double.parseDouble("95")))).divide(BigDecimal.valueOf(Double.parseDouble("100"))));
-                hoaDon.setNgayThanhToan(LocalDateTime.now());
                 hoaDon.setTongTien((hoaDon.getTongTien().multiply(BigDecimal.valueOf(Double.parseDouble("95")))).divide(BigDecimal.valueOf(Double.parseDouble("100"))));
                 ThongBao thongBao = new ThongBao();
                 thongBao.setNoiDung("Hóa đơn của bạn đã được xác nhận");
@@ -281,6 +280,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
                 thongBao.setUser(User.builder().id(idKH).build());
                 thongBaoRepository.save(thongBao);
             }
+            hoaDon.setNgayThanhToan(LocalDateTime.now());
             this.hoaDonRepository.save(hoaDon);
             return hoaDonRepository.updateTrangThaiById(trangThai, id);
         }

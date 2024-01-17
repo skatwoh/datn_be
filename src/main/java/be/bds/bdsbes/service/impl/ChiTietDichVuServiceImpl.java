@@ -141,4 +141,13 @@ public class ChiTietDichVuServiceImpl implements IChiTietDichVuService {
                 entities.getSort().toString()
         );
     }
+
+    @Override
+    public Boolean delete(Long id) {
+        if(chiTietDichVuRepository.findById(id).isPresent()){
+            chiTietDichVuRepository.delete(chiTietDichVuRepository.findById(id).get());
+            return true;
+        }
+        return false;
+    }
 }

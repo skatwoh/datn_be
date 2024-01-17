@@ -97,4 +97,9 @@ public class ChiTietDichVuController {
 
         this.pdfGenerator.exportDV(response, id);
     }
+
+    @DeleteMapping("delete")
+    public ResponseEntity<?> delete(@RequestParam(value = "id") Long id){
+        return ResponseUtil.wrap(iChiTietDichVuService.delete(id));
+    }
 }
