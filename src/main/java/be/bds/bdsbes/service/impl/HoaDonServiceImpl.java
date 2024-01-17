@@ -268,14 +268,19 @@ public class HoaDonServiceImpl implements IHoaDonService {
     public Integer updateTrangThai(Integer trangThai, Long id) throws ServiceException {
         HoaDon hoaDon = hoaDonRepository.findById(id).get();
         if (trangThai == 0) {
+            if(hoaDon.getTrangThai() == 2){
+//                this.hoaDonRepository.updateTongTienById((hoaDon.getTongTien().multiply(BigDecimal.valueOf(Double.parseDouble("95")))).divide(BigDecimal.valueOf(Double.parseDouble("100"))), id);
+                System.out.println((hoaDon.getTongTien().multiply(BigDecimal.valueOf(Double.parseDouble("95")))).divide(BigDecimal.valueOf(Double.parseDouble("100"))));
+                hoaDon.setTongTien((hoaDon.getTongTien().multiply(BigDecimal.valueOf(Double.parseDouble("95")))).divide(BigDecimal.valueOf(Double.parseDouble("100"))));
+                ThongBao thongBao = new ThongBao();
+                thongBao.setNoiDung("Hóa đơn của bạn đã được xác nhận");
+                thongBao.setTrangThai(1);
+                thongBao.setTimestamp(LocalDateTime.now());
+                Long idKH = khachHangRepository.findByIdUser(hoaDon.getKhachHang().getId());
+                thongBao.setUser(User.builder().id(idKH).build());
+                thongBaoRepository.save(thongBao);
+            }
             hoaDon.setNgayThanhToan(LocalDateTime.now());
-            ThongBao thongBao = new ThongBao();
-            thongBao.setNoiDung("Hóa đơn của bạn đã được xác nhận");
-            thongBao.setTrangThai(1);
-            thongBao.setTimestamp(LocalDateTime.now());
-            Long idKH = khachHangRepository.findByIdUser(hoaDon.getKhachHang().getId());
-            thongBao.setUser(User.builder().id(idKH).build());
-            thongBaoRepository.save(thongBao);
             this.hoaDonRepository.save(hoaDon);
             return hoaDonRepository.updateTrangThaiById(trangThai, id);
         }
@@ -295,6 +300,19 @@ public class HoaDonServiceImpl implements IHoaDonService {
                     this.datPhongRepository.save(datPhong);
                 }
             }
+            return hoaDonRepository.updateTrangThaiById(trangThai, id);
+        }
+        if (trangThai == 7) {
+            if(hoaDon.getTrangThai() == 6){
+                ThongBao thongBao = new ThongBao();
+                thongBao.setNoiDung("Hóa đơn tiền cọc của bạn đã được xác nhận");
+                thongBao.setTrangThai(1);
+                thongBao.setTimestamp(LocalDateTime.now());
+                Long idKH = khachHangRepository.findByIdUser(hoaDon.getKhachHang().getId());
+                thongBao.setUser(User.builder().id(idKH).build());
+                thongBaoRepository.save(thongBao);
+            }
+            this.hoaDonRepository.save(hoaDon);
             return hoaDonRepository.updateTrangThaiById(trangThai, id);
         }
         return hoaDonRepository.updateTrangThaiById(trangThai, id);

@@ -25,4 +25,6 @@ public interface IChiTietDichVuService {
     PagedResponse<ChiTietDichVuResponse1> getAccounts(int page, int size) throws ServiceException;
 
     PagedResponse<ChiTietDichVuResponse1> getAllByDatPhong(int page, int size, Long id) throws ServiceException;
+
+    Boolean delete(Long id);
 }
