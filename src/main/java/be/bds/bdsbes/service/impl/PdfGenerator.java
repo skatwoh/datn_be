@@ -170,6 +170,15 @@ public class PdfGenerator {
         }
         document.add(paragraphLine);
         document.add(paragraphTongTien);
+        if(hoaDon.getGhiChu() != null){
+            String formattedTienCoc = formatter.format(BigDecimal.valueOf(Double.parseDouble(hoaDon.getGhiChu())));
+            Paragraph paragraphTienCoc = new Paragraph("\nTien coc: " + formattedTienCoc + "VND", fontInfor);
+            paragraphTienCoc.setAlignment(Paragraph.ALIGN_LEFT);
+            Paragraph paragraphThanhToanSau = new Paragraph("\nThanh toan sau: " + formatter.format(hoaDon.getTongTien().subtract(BigDecimal.valueOf(Double.parseDouble(hoaDon.getGhiChu())))) + "VND", fontInfor);
+            paragraphThanhToanSau.setAlignment(Paragraph.ALIGN_LEFT);
+            document.add(paragraphTienCoc);
+            document.add(paragraphThanhToanSau);
+        }
         document.add(paragraph9);
         document.add(paragraphEnd);
         document.close();

@@ -268,6 +268,9 @@ public class HoaDonServiceImpl implements IHoaDonService {
     public Integer updateTrangThai(Integer trangThai, Long id) throws ServiceException {
         HoaDon hoaDon = hoaDonRepository.findById(id).get();
         if (trangThai == 0) {
+            if(hoaDon.getTrangThai() == 2){
+                this.hoaDonRepository.updateTongTienById((hoaDon.getTongTien().multiply(new BigDecimal(95))).divide(new BigDecimal(100)), id);
+            }
             hoaDon.setNgayThanhToan(LocalDateTime.now());
             this.hoaDonRepository.save(hoaDon);
             return hoaDonRepository.updateTrangThaiById(trangThai, id);
