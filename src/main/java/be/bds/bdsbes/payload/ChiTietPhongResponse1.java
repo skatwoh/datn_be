@@ -16,11 +16,7 @@ public class ChiTietPhongResponse1 {
 
     private String tang;
 
-    private String tienIch;
-
     private String dichVu;
-
-    private Integer soLuongNguoi;
 
     private Double dienTich;
 

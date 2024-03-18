@@ -24,4 +24,8 @@ public interface ILoaiPhongService {
     LoaiPhong update(LoaiPhongDTO loaiPhongDTO, Long id);
 
     PagedResponse<LoaiPhongResponse1> getLoaiPhong(int page, int size) throws ServiceException;
+
+    List<LoaiPhongResponse1> listLoaiPhongBySoNguoiAndSoPhong1(int soPhong, int soNguoi);
+
+    List<LoaiPhongResponse1> listLoaiPhongBySoNguoiAndSoPhong2(int soPhong, int soNguoi);
 }

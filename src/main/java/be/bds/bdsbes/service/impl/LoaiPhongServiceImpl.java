@@ -121,4 +121,15 @@ public class LoaiPhongServiceImpl implements ILoaiPhongService {
                 entities.getSort().toString()
         );
     }
+
+    @Override
+    public List<LoaiPhongResponse1> listLoaiPhongBySoNguoiAndSoPhong1(int soPhong, int soNguoi) {
+        return loaiPhongRepository.listLoaiPhongBySearch1(soPhong, soNguoi);
+    }
+
+    @Override
+    public List<LoaiPhongResponse1> listLoaiPhongBySoNguoiAndSoPhong2(int soPhong, int soNguoi) {
+        return loaiPhongRepository.listLoaiPhongBySearch2(soPhong, soNguoi);
+    }
+
 }

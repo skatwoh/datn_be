@@ -22,7 +22,6 @@ public class ChiTietPhong {
     public static final String COLUMN_TANG_NAME = "tang";
     public static final String COLUMN_TIENICH_NAME = "tien_ich";
     public static final String COLUMN_DICHVU_NAME = "dich_vu";
-    public static final String COLUMN_SOLUONGNGUOI_NAME = "so_luong_nguoi";
     public static final String COLUMN_DIENTICH_NAME = "dien_tich";
     public static final String COLUMN_TRANGTHAI_NAME = "trang_thai";
 
@@ -49,9 +48,6 @@ public class ChiTietPhong {
     @Nationalized
     @Column(name = COLUMN_DICHVU_NAME, length = 100)
     private String dichVu;
-
-    @Column(name = COLUMN_SOLUONGNGUOI_NAME)
-    private Integer soLuongNguoi;
 
     @Column(name = COLUMN_DIENTICH_NAME)
     private Double dienTich;
