@@ -24,9 +24,6 @@ public class ChiTietPhongDTO {
     private String dichVu;
 
     @NotNull(message = "Not allow null")
-    private Integer soLuongNguoi;
-
-    @NotNull(message = "Not allow null")
     private Double dienTich;
 
     @NotNull(message = "Not allow null")
@@ -37,7 +34,6 @@ public class ChiTietPhongDTO {
     public ChiTietPhong dto(ChiTietPhong chiTietPhong){
         chiTietPhong.setDichVu(this.getDichVu());
         chiTietPhong.setTienIch(this.getTienIch());
-        chiTietPhong.setSoLuongNguoi(this.getSoLuongNguoi());
         chiTietPhong.setDienTich(this.getDienTich());
         chiTietPhong.setTrangThai(this.getTrangThai());
         chiTietPhong.setPhong(Phong.builder().id(this.getIdPhong()).build());

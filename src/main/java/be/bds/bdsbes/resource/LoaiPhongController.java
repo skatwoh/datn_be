@@ -69,4 +69,12 @@ public class LoaiPhongController {
         }
         return ResponseEntity.ok(iLoaiPhongService.update(loaiPhongDTO, id));
     }
+
+    @GetMapping("list-by-so-phong")
+    public ResponseEntity<?> listBySoPhongAndSoNguoi(@RequestParam(value = "soPhong") int soPhong, @RequestParam(value = "soNguoi") int soNguoi) {
+        if(soNguoi%soPhong != 0) {
+            return ResponseEntity.ok(iLoaiPhongService.listLoaiPhongBySoNguoiAndSoPhong2(soPhong, soNguoi/soPhong));
+        }
+        return ResponseEntity.ok(iLoaiPhongService.listLoaiPhongBySoNguoiAndSoPhong1(soPhong, soNguoi/soPhong));
+    }
 }

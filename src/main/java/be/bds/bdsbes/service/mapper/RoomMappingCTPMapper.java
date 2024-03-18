@@ -18,10 +18,10 @@ public interface RoomMappingCTPMapper extends EntityMapper<RoomMappingChiTietPho
         }
     }
 
-    @AfterMapping
-    default void mapSoLuong(Phong phong, @MappingTarget RoomMappingChiTietPhong roomDto) {
-        if (phong.getChiTietPhongs() != null && !phong.getChiTietPhongs().isEmpty()) {
-            roomDto.setSoLuong(phong.getChiTietPhongs().iterator().next().getSoLuongNguoi());
-        }
-    }
+//    @AfterMapping
+//    default void mapSoLuong(Phong phong, @MappingTarget RoomMappingChiTietPhong roomDto) {
+//        if (phong.getChiTietPhongs() != null && !phong.getChiTietPhongs().isEmpty()) {
+//            roomDto.setSoLuong(phong.getChiTietPhongs().iterator().next().getSoLuongNguoi());
+//        }
+//    }
 }

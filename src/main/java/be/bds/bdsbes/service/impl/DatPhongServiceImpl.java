@@ -2,6 +2,7 @@ package be.bds.bdsbes.service.impl;
 
 import be.bds.bdsbes.domain.User;
 import be.bds.bdsbes.entities.*;
+import be.bds.bdsbes.entities.enums.StatusRoom;
 import be.bds.bdsbes.exception.ServiceException;
 import be.bds.bdsbes.payload.PhongResponse1;
 import be.bds.bdsbes.repository.*;
@@ -291,7 +292,7 @@ public class DatPhongServiceImpl implements IDatPhongService {
             return 1;
         }
         if (datPhong.getTrangThai() == 0) {
-            return datPhongRepository.updateTrangThaiById(1, id);
+            return datPhongRepository.updateTrangThaiById(StatusRoom.STATUS1.getId(), id);
         }
         return null;
     }

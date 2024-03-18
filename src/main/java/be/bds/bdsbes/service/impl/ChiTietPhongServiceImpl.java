@@ -162,35 +162,36 @@ public class ChiTietPhongServiceImpl implements IChiTietPhongService {
 
     @Override
     public PagedResponse<ChiTietPhongResponse1> searchRoomBySoNguoi(int page, int size, Integer soLuongNguoi, Integer soPhong) {
-        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
-
-        Page<ChiTietPhong> entities = chiTietPhongRepository.findPhongBySoNguoi(soLuongNguoi, pageable);
-        List<PhongResponse1> listPhong = new ArrayList<>();
-        entities.getContent().sort(Comparator.comparing(ChiTietPhong::getSoLuongNguoi).reversed());
-        int remainingPeople = soLuongNguoi;
-        for (ChiTietPhong chiTietPhong : entities.getContent()) {
-            Phong phong = chiTietPhong.getPhong();
-            int availableCapacity = chiTietPhong.getSoLuongNguoi();
-            int people = Math.min(remainingPeople, availableCapacity);
-
-            if (people > 0) {
-                chiTietPhong.setSoLuongNguoi(chiTietPhong.getSoLuongNguoi() - people);
-                remainingPeople -= people;
-                PhongResponse1 phongResponse1 = phongMapper.toDto(phong);
-                listPhong.add(phongResponse1);
-            }
-        }
-
-        List<Phong> dtos = entities.map(ChiTietPhong::getPhong).getContent();
-        return new PagedResponse<>(
-                listPhong,
-                page,
-                size,
-                entities.getTotalElements(),
-                entities.getTotalPages(),
-                entities.isLast(),
-                entities.getSort().toString(),
-                dtos
-        );
+//        Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.DESC, "id");
+//
+//        Page<ChiTietPhong> entities = chiTietPhongRepository.findPhongBySoNguoi(soLuongNguoi, pageable);
+//        List<PhongResponse1> listPhong = new ArrayList<>();
+//        entities.getContent().sort(Comparator.comparing(ChiTietPhong::getSoLuongNguoi).reversed());
+//        int remainingPeople = soLuongNguoi;
+//        for (ChiTietPhong chiTietPhong : entities.getContent()) {
+//            Phong phong = chiTietPhong.getPhong();
+//            int availableCapacity = chiTietPhong.getSoLuongNguoi();
+//            int people = Math.min(remainingPeople, availableCapacity);
+//
+//            if (people > 0) {
+//                chiTietPhong.setSoLuongNguoi(chiTietPhong.getSoLuongNguoi() - people);
+//                remainingPeople -= people;
+//                PhongResponse1 phongResponse1 = phongMapper.toDto(phong);
+//                listPhong.add(phongResponse1);
+//            }
+//        }
+//
+//        List<Phong> dtos = entities.map(ChiTietPhong::getPhong).getContent();
+//        return new PagedResponse<>(
+//                listPhong,
+//                page,
+//                size,
+//                entities.getTotalElements(),
+//                entities.getTotalPages(),
+//                entities.isLast(),
+//                entities.getSort().toString(),
+//                dtos
+//        );
+        return null;
     }
 }
