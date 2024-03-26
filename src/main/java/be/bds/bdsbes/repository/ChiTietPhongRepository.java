@@ -20,7 +20,7 @@ public interface ChiTietPhongRepository extends JpaRepository<ChiTietPhong, Long
     ChiTietPhongResponse1 get(Long id);
 
     @Query("select p from ChiTietPhong p where p.tang like concat('%', ?1, '%') or p.phong.ma like concat('%', ?1, '%') " +
-            "or p.tienIch like concat('%', ?1, '%') or p.dichVu like concat('%', ?1, '%')")
+            " or p.dichVu like concat('%', ?1, '%')")
     Page<ChiTietPhong> searchRoomInformation(Pageable pageable, String inputSearch);
 
     @Transactional

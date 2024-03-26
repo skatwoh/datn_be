@@ -17,10 +17,6 @@ public class ChiTietPhongDTO {
 
     @NotNull(message = "Not allow null")
     @NotBlank(message = "Không được để trống")
-    private String tienIch;
-
-    @NotNull(message = "Not allow null")
-    @NotBlank(message = "Không được để trống")
     private String dichVu;
 
     @NotNull(message = "Not allow null")
@@ -33,7 +29,6 @@ public class ChiTietPhongDTO {
 
     public ChiTietPhong dto(ChiTietPhong chiTietPhong){
         chiTietPhong.setDichVu(this.getDichVu());
-        chiTietPhong.setTienIch(this.getTienIch());
         chiTietPhong.setDienTich(this.getDienTich());
         chiTietPhong.setTrangThai(this.getTrangThai());
         chiTietPhong.setPhong(Phong.builder().id(this.getIdPhong()).build());

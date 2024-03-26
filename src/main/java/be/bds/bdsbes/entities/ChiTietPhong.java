@@ -41,11 +41,6 @@ public class ChiTietPhong {
 
     @Size(max = 100)
     @Nationalized
-    @Column(name = COLUMN_TIENICH_NAME, length = 100)
-    private String tienIch;
-
-    @Size(max = 100)
-    @Nationalized
     @Column(name = COLUMN_DICHVU_NAME, length = 100)
     private String dichVu;
 
