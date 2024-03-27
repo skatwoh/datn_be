@@ -553,17 +553,18 @@ public class PhongServiceImpl implements IPhongService {
         }
 
         Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
-        Page<Phong> entities = phongRepository.getListRoomByTienIch2(pageable, tienIch,tenLoaiPhong);
-        List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());
-        return new PagedResponse<>(
-                dtos,
-                page,
-                size,
-                entities.getTotalElements(),
-                entities.getTotalPages(),
-                entities.isLast(),
-                entities.getSort().toString()
-        );
+//        Page<Phong> entities = phongRepository.getListRoomByTienIch2(pageable, tienIch,tenLoaiPhong);
+//        List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());
+//        return new PagedResponse<>(
+//                dtos,
+//                page,
+//                size,
+//                entities.getTotalElements(),
+//                entities.getTotalPages(),
+//                entities.isLast(),
+//                entities.getSort().toString()
+//        );
+        return null;
     }
 
     @Override
@@ -739,17 +740,18 @@ public class PhongServiceImpl implements IPhongService {
         }
 
         Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
-        Page<Phong> entities = phongRepository.getRoomByCheckDateandTienIch(pageable, tienIch, checkIn, checkOut);
-        List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());
-        return new PagedResponse<>(
-                dtos,
-                page,
-                size,
-                entities.getTotalElements(),
-                entities.getTotalPages(),
-                entities.isLast(),
-                entities.getSort().toString()
-        );
+//        Page<Phong> entities = phongRepository.getRoomByCheckDateandTienIch(pageable, tienIch, checkIn, checkOut);
+//        List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());
+//        return new PagedResponse<>(
+//                dtos,
+//                page,
+//                size,
+//                entities.getTotalElements(),
+//                entities.getTotalPages(),
+//                entities.isLast(),
+//                entities.getSort().toString()
+//        );
+        return null;
     }
 
     @Override
@@ -780,17 +782,18 @@ public class PhongServiceImpl implements IPhongService {
         }
 
         Pageable pageable = PageRequest.of((page - 1), size, Sort.Direction.ASC, "id");
-        Page<Phong> entities = phongRepository.getRoomByCheckDateandAll(pageable, tienIch, tenLoaiPhong, checkIn, checkOut);
-        List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());
-        return new PagedResponse<>(
-                dtos,
-                page,
-                size,
-                entities.getTotalElements(),
-                entities.getTotalPages(),
-                entities.isLast(),
-                entities.getSort().toString()
-        );
+//        Page<Phong> entities = phongRepository.getRoomByCheckDateandAll(pageable, tienIch, tenLoaiPhong, checkIn, checkOut);
+//        List<PhongResponse1> dtos = this.phongMapper.toDtoList(entities.getContent());
+//        return new PagedResponse<>(
+//                dtos,
+//                page,
+//                size,
+//                entities.getTotalElements(),
+//                entities.getTotalPages(),
+//                entities.isLast(),
+//                entities.getSort().toString()
+//        );
+        return null;
     }
 
 }

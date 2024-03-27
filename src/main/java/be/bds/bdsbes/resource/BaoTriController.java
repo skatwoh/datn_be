@@ -84,4 +84,19 @@ public class BaoTriController {
             throw new RuntimeException(e);
         }
     }
+
+    @GetMapping("list-by-ct")
+    public ResponseEntity<?> getListbyCTPhong(
+            @RequestParam(value = "page", defaultValue = AppConstantsUtil.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstantsUtil.DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(value = "id") Long id, @RequestParam(value = "ghiChu") String ghiChu) {
+        try {
+            return ResponseUtil.wrap(this.baoTriService.getListByCTPhong(page, size, id, ghiChu));
+        } catch (Exception ex) {
+            log.error(this.getClass().getName(), ex);
+            return ResponseUtil.generateErrorResponse(ex);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

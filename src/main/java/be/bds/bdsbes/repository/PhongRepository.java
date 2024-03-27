@@ -76,7 +76,7 @@ public interface PhongRepository extends JpaRepository<Phong, Long> {
     Page<Phong> getListRoomOfFloar(Pageable pageable);
 
     @Query("select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id inner join LoaiPhong l on l.id = p.loaiPhong.id " +
-            "where p.trangThai = 1 and ct.trangThai = 1 and (ct.tienIch like concat('%', :searchInput,'%') or l.tenLoaiPhong like concat('%', :searchInput, '%') or ct.dichVu like concat('%', :searchInput,'%')) ")
+            "where p.trangThai = 1 and ct.trangThai = 1 or l.tenLoaiPhong like concat('%', :searchInput, '%') or ct.dichVu like concat('%', :searchInput,'%') ")
     Page<Phong> searchRoomByString(Pageable pageable, String searchInput);
 
 //    @Query(value = "SELECT * FROM phong p " +
@@ -100,12 +100,12 @@ public interface PhongRepository extends JpaRepository<Phong, Long> {
             " or cast(:checkOut as date) = cast(d.checkOut as date)) and (d.trangThai = 1 or d.trangThai = 2 or d.trangThai = 4)) order by p.ma asc")
     Page<Phong> getListRoomActive(Pageable pageable, LocalDateTime checkIn, LocalDateTime checkOut);
 
-    @Query("select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id where ct.tienIch in :tienIch  ")
+    @Query("select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id")
     Page<Phong> getListRoomByTienIch(Pageable pageable, @Param("tienIch") List<String> tienIch);
 //    @Query("select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id where ct.tienIch in :tienIch and ct.soLuongNguoi = :soLuongNguoi")
 //    Page<Phong> getListRoomByTienIch1(Pageable pageable, @Param("tienIch") List<String> tienIch , int soLuongNguoi);
-    @Query("select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id where ct.tienIch in :tienIch and p.loaiPhong.tenLoaiPhong like :tenLoaiPhong")
-    Page<Phong> getListRoomByTienIch2(Pageable pageable, @Param("tienIch") List<String> tienIch , String tenLoaiPhong);
+//    @Query("select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id where p.loaiPhong.tenLoaiPhong like :tenLoaiPhong")
+//    Page<Phong> getListRoomByTienIch2(Pageable pageable, @Param("tienIch") List<String> tienIch , String tenLoaiPhong);
 //    @Query("select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id where ct.tienIch in :tienIch and p.loaiPhong.tenLoaiPhong like :tenLoaiPhong and ct.soLuongNguoi = :soLuongNguoi")
 //    Page<Phong> getListRoomByTienIch3(Pageable pageable, @Param("tienIch") List<String> tienIch , String tenLoaiPhong, int soLuongNguoi);
 
@@ -124,17 +124,17 @@ public interface PhongRepository extends JpaRepository<Phong, Long> {
             " or cast(:checkOut as date) = cast(d.checkOut as date)) and (d.trangThai = 1 or d.trangThai = 2)) order by p.ma asc")
     Page<Phong> getRoomByCheckDateandLoaiPhong(Pageable pageable, String tenLoaiPhong, LocalDateTime checkIn, LocalDateTime checkOut);
 
-    @Query("select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id where p.trangThai = 1 and ct.trangThai = 1 and ct.tienIch in :tienIch and p.id not in (select d.phong.id from DatPhong d where (d.trangThai = 1 or d.trangThai = 2) and ((cast(:checkIn as date) > cast(d.checkIn as date) and" +
-            " cast(:checkIn as date) < cast(d.checkOut as date)) or (cast(:checkOut as date) > cast(d.checkIn as date) and cast(:checkOut as date) < cast(d.checkOut as date))" +
-            " or (cast(d.checkIn as date) > cast(:checkIn as date) and cast(d.checkIn as date) < cast(:checkOut as date)) or (cast(d.checkOut as date) > cast(:checkIn as date) and cast(d.checkOut as date) < cast(:checkOut as date)) or cast(:checkIn as date) = cast(d.checkIn as date)" +
-            " or cast(:checkOut as date) = cast(d.checkOut as date)))")
-    Page<Phong> getRoomByCheckDateandTienIch(Pageable pageable,@Param("tienIch") List<String> tienIch, LocalDateTime checkIn, LocalDateTime checkOut);
+//    @Query("select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id where p.trangThai = 1 and ct.trangThai = 1 and p.id not in (select d.phong.id from DatPhong d where (d.trangThai = 1 or d.trangThai = 2) and ((cast(:checkIn as date) > cast(d.checkIn as date) and" +
+//            " cast(:checkIn as date) < cast(d.checkOut as date)) or (cast(:checkOut as date) > cast(d.checkIn as date) and cast(:checkOut as date) < cast(d.checkOut as date))" +
+//            " or (cast(d.checkIn as date) > cast(:checkIn as date) and cast(d.checkIn as date) < cast(:checkOut as date)) or (cast(d.checkOut as date) > cast(:checkIn as date) and cast(d.checkOut as date) < cast(:checkOut as date)) or cast(:checkIn as date) = cast(d.checkIn as date)" +
+//            " or cast(:checkOut as date) = cast(d.checkOut as date)))")
+//    Page<Phong> getRoomByCheckDateandTienIch(Pageable pageable,@Param("tienIch") List<String> tienIch, LocalDateTime checkIn, LocalDateTime checkOut);
 
-    @Query("select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id where p.trangThai = 1 and ct.trangThai = 1 and p.loaiPhong.tenLoaiPhong like :tenLoaiPhong and ct.tienIch in :tienIch and p.id not in (select d.phong.id from DatPhong d where (d.trangThai = 1 or d.trangThai = 2) and" +
-            " ((cast(:checkIn as date) > cast(d.checkIn as date) and cast(:checkIn as date) < cast(d.checkOut as date)) or (cast(:checkOut as date) > cast(d.checkIn as date) and" +
-            " cast(:checkOut as date) < cast(d.checkOut as date))" +
-            " or (cast(d.checkIn as date) > cast(:checkIn as date) and cast(d.checkIn as date) < cast(:checkOut as date)) or (cast(d.checkOut as date) > cast(:checkIn as date) and cast(d.checkOut as date) < cast(:checkOut as date)) or cast(:checkIn as date) = cast(d.checkIn as date)" +
-            " or cast(:checkOut as date) = cast(d.checkOut as date)))")
-    Page<Phong> getRoomByCheckDateandAll(Pageable pageable,@Param("tienIch") List<String> tienIch, String tenLoaiPhong, LocalDateTime checkIn, LocalDateTime checkOut);
+//    @Query("select p from Phong p inner join ChiTietPhong ct on p.id = ct.phong.id where p.trangThai = 1 and ct.trangThai = 1 and p.loaiPhong.tenLoaiPhong like :tenLoaiPhong and p.id not in (select d.phong.id from DatPhong d where (d.trangThai = 1 or d.trangThai = 2) and" +
+//            " ((cast(:checkIn as date) > cast(d.checkIn as date) and cast(:checkIn as date) < cast(d.checkOut as date)) or (cast(:checkOut as date) > cast(d.checkIn as date) and" +
+//            " cast(:checkOut as date) < cast(d.checkOut as date))" +
+//            " or (cast(d.checkIn as date) > cast(:checkIn as date) and cast(d.checkIn as date) < cast(:checkOut as date)) or (cast(d.checkOut as date) > cast(:checkIn as date) and cast(d.checkOut as date) < cast(:checkOut as date)) or cast(:checkIn as date) = cast(d.checkIn as date)" +
+//            " or cast(:checkOut as date) = cast(d.checkOut as date)))")
+//    Page<Phong> getRoomByCheckDateandAll(Pageable pageable,@Param("tienIch") List<String> tienIch, String tenLoaiPhong, LocalDateTime checkIn, LocalDateTime checkOut);
 
 }

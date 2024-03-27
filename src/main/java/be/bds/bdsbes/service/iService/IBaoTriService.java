@@ -30,4 +30,6 @@ public interface IBaoTriService {
     BaoTri update(BaoTriDto baoTriDto, Long id);
     Integer updateTrangThaiById( Long id);
     PagedResponse<BaoTriResponse1> getBaoTri(int page, int size) throws ServiceException;
+
+    List<BaoTriResponse1> getListByCTPhong(int page, int size, Long id, String ghiChu) throws ServiceException;
 }
