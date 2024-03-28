@@ -15,6 +15,9 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Slf4j
@@ -71,10 +74,16 @@ public class LoaiPhongController {
     }
 
     @GetMapping("list-by-so-phong")
-    public ResponseEntity<?> listBySoPhongAndSoNguoi(@RequestParam(value = "soPhong") int soPhong, @RequestParam(value = "soNguoi") int soNguoi) {
+    public ResponseEntity<?> listBySoPhongAndSoNguoi(@RequestParam(value = "soPhong") int soPhong,
+                                                     @RequestParam(value = "soNguoi") int soNguoi,
+                                                     @RequestParam(value = "checkIn") String checkIn,
+                                                     @RequestParam(value = "checkOut") String checkOut) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime parsedCheckIn = LocalDate.parse(checkIn, formatter).atStartOfDay();
+        LocalDateTime parsedCheckOut = LocalDate.parse(checkOut, formatter).atStartOfDay();
         if(soNguoi%soPhong != 0) {
-            return ResponseEntity.ok(iLoaiPhongService.listLoaiPhongBySoNguoiAndSoPhong2(soPhong, soNguoi/soPhong));
+            return ResponseEntity.ok(iLoaiPhongService.listLoaiPhongBySoNguoiAndSoPhong2(soPhong, soNguoi/soPhong, parsedCheckIn, parsedCheckOut));
         }
-        return ResponseEntity.ok(iLoaiPhongService.listLoaiPhongBySoNguoiAndSoPhong1(soPhong, soNguoi/soPhong));
+        return ResponseEntity.ok(iLoaiPhongService.listLoaiPhongBySoNguoiAndSoPhong1(soPhong, soNguoi/soPhong, parsedCheckIn, parsedCheckOut));
     }
 }
