@@ -21,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -83,7 +84,7 @@ public class LoaiPhongServiceImpl implements ILoaiPhongService {
     @Override
     public LoaiPhong update(LoaiPhongDTO loaiPhongDTO, Long id) {
         Optional<LoaiPhong> optionalLoaiPhong = loaiPhongRepository.findById(id);
-        if(optionalLoaiPhong.isPresent()){
+        if (optionalLoaiPhong.isPresent()) {
             LoaiPhong loaiPhong = loaiPhongDTO.dto(optionalLoaiPhong.get());
             return loaiPhongRepository.save(loaiPhong);
         }
@@ -123,13 +124,33 @@ public class LoaiPhongServiceImpl implements ILoaiPhongService {
     }
 
     @Override
-    public List<LoaiPhongResponse1> listLoaiPhongBySoNguoiAndSoPhong1(int soPhong, int soNguoi) {
-        return loaiPhongRepository.listLoaiPhongBySearch1(soPhong, soNguoi);
+    public List<LoaiPhongResponse1> listLoaiPhongBySoNguoiAndSoPhong1(int soPhong, int soNguoi, LocalDateTime checkIn, LocalDateTime checkOut) {
+        List<LoaiPhongResponse1> listLoaiPhong = loaiPhongRepository.listLoaiPhongBySearch1(soPhong, soNguoi);
+        List<LoaiPhongResponse1> listLP = new ArrayList<>();
+        if (listLoaiPhong.size() > 0) {
+            for (int x = 0; x < listLoaiPhong.size(); x++) {
+                int soPhongTheoLoai = loaiPhongRepository.getCountRoomByCheckDate(checkIn, checkOut, listLoaiPhong.get(x).getId());
+                if(soPhongTheoLoai >= soPhong){
+                    listLP.add(listLoaiPhong.get(x));
+                }
+            }
+        }
+        return listLP;
     }
 
     @Override
-    public List<LoaiPhongResponse1> listLoaiPhongBySoNguoiAndSoPhong2(int soPhong, int soNguoi) {
-        return loaiPhongRepository.listLoaiPhongBySearch2(soPhong, soNguoi);
+    public List<LoaiPhongResponse1> listLoaiPhongBySoNguoiAndSoPhong2(int soPhong, int soNguoi, LocalDateTime checkIn, LocalDateTime checkOut) {
+        List<LoaiPhongResponse1> listLoaiPhong = loaiPhongRepository.listLoaiPhongBySearch2(soPhong, soNguoi);
+        List<LoaiPhongResponse1> listLP = new ArrayList<>();
+        if (listLoaiPhong.size() > 0) {
+            for (int x = 0; x < listLoaiPhong.size(); x++) {
+                int soPhongTheoLoai = loaiPhongRepository.getCountRoomByCheckDate(checkIn, checkOut, listLoaiPhong.get(x).getId());
+                if(soPhongTheoLoai >= soPhong){
+                    listLP.add(listLoaiPhong.get(x));
+                }
+            }
+        }
+        return listLP;
     }
 
 }

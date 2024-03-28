@@ -8,6 +8,7 @@ import be.bds.bdsbes.service.dto.response.LoaiPhongResponse;
 import be.bds.bdsbes.utils.dto.PagedResponse;
 import org.springframework.data.domain.Page;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ILoaiPhongService {
@@ -25,7 +26,7 @@ public interface ILoaiPhongService {
 
     PagedResponse<LoaiPhongResponse1> getLoaiPhong(int page, int size) throws ServiceException;
 
-    List<LoaiPhongResponse1> listLoaiPhongBySoNguoiAndSoPhong1(int soPhong, int soNguoi);
+    List<LoaiPhongResponse1> listLoaiPhongBySoNguoiAndSoPhong1(int soPhong, int soNguoi, LocalDateTime checkIn, LocalDateTime checkOut);
 
-    List<LoaiPhongResponse1> listLoaiPhongBySoNguoiAndSoPhong2(int soPhong, int soNguoi);
+    List<LoaiPhongResponse1> listLoaiPhongBySoNguoiAndSoPhong2(int soPhong, int soNguoi, LocalDateTime checkIn, LocalDateTime checkOut);
 }

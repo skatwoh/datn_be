@@ -28,6 +28,6 @@ public interface BaoTriRepository extends JpaRepository<BaoTri, Long> {
     @Query("UPDATE BaoTri p SET p.trangThai = :trangThai WHERE p.id = :id")
     Integer updateTrangThaiById(int trangThai, Long id);
 
-    @Query("select b from BaoTri b inner join ChiTietPhong ct on b.chiTietPhong.id = ct.id where (ct.id = :idCT or :idCT is null or :idCT = 0) and (b.ghiChu like :ghiChu or b.ghiChu = '')")
+    @Query("select b from BaoTri b inner join ChiTietPhong ct on b.chiTietPhong.id = ct.id where (ct.id = :idCT or :idCT is null or :idCT = 0) and (b.ghiChu like :ghiChu or :ghiChu is null or :ghiChu = '')")
     Page<BaoTri> getListByChiTiet(Pageable pageable, Long idCT, String ghiChu);
 }
